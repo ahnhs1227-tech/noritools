@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[93632,["/noritools/_next/static/chunks/0b-.ij0mqhtov.js","/noritools/_next/static/chunks/17f2ht9wo-phb.js","/noritools/_next/static/chunks/0_mmq9in~l-u7.js"],"default"]
+3:I[77916,["/noritools/_next/static/chunks/0b-.ij0mqhtov.js","/noritools/_next/static/chunks/17f2ht9wo-phb.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"tool":"unit-converter"}],[["$","script","script-0",{"src":"/noritools/_next/static/chunks/0_mmq9in~l-u7.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"6Bl_cIFAucHQk2eOxGI-1"}
+5:null

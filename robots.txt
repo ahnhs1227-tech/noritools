@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://ahnhs1227-tech.github.io/noritools/sitemap.xml

@@ -48,4 +48,4 @@
 <changefreq>yearly</changefreq>
 <priority>0.4</priority>
 </url>
-</urlset>
+<url><loc>https://ahnhs1227-tech.github.io/noritools/tools/daily-fortune/</loc><changefreq>daily</changefreq><priority>0.9</priority></url></urlset>

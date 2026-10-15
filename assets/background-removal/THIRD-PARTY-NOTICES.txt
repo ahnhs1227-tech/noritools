@@ -1,0 +1,31 @@
+NORI Tools — Image background removal
+
+U²-Net / U2NETP
+Authors: Xuebin Qin, Zichen Zhang, Chenyang Huang, Masood Dehghan,
+Osmar R. Zaiane and Martin Jagersand.
+Source: https://github.com/xuebinqin/U-2-Net
+License: Apache License 2.0 (full text: licenses/U-2-Net.txt)
+Unmodified ONNX conversion distributed by rembg:
+https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx
+SHA-256: 309c8469258dda742793dce0ebea8e6dd393174f89934733ecc8b14c76f4ddd8
+Model architecture and pretrained model are provided by the U²-Net project.
+The conversion is used without changing the model weights.
+
+ONNX Runtime Web 1.20.1
+Copyright (c) Microsoft Corporation. All rights reserved.
+Source: https://github.com/microsoft/onnxruntime/tree/v1.20.1
+License: MIT (full text: licenses/ONNX-Runtime.txt)
+Runtime JavaScript and WebAssembly are loaded from jsDelivr.
+
+Both licenses permit commercial use subject to their terms, including
+retention of required license and attribution notices. No paid inference
+service or API key is used. No image data is sent to a server by this tool.
+The U2NETP model is served by this site and cached by the browser when possible.
+
+Standard U2NET model (quality mode), also from the U²-Net project:
+https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx
+Pinned mirror: https://huggingface.co/Heliosoph/u2net-onnx/tree/7fc34deee10329bc039c10a73b98090d0c6f5c59
+SHA-256: 8d10d2f3bb75ae3b6d527c77944fc5e7dcd94b29809d47a739a7a728a912b491
+This model (approximately 176 MB) is downloaded directly to the browser
+from Hugging Face. No user image is uploaded. The mirror file is checked
+against the SHA-256 of the upstream ONNX weights before first use.

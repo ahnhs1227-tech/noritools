@@ -6,7 +6,8 @@
   let worker=null, timer=null, selected=null, originalCanvas=null, originalURL=null, resultURL=null, busy=false, generation=0;
   const setStatus=(text,value)=>{status.textContent=text;progress.hidden=!busy;if(Number.isFinite(value)){progress.max=100;progress.value=value;}else progress.removeAttribute('value');};
   function setBusy(value){busy=value;$('choose').disabled=value;$('quality').disabled=value;$('retry').disabled=value;$('cancel').hidden=!value;$('replace').hidden=!selected; $('comparison').setAttribute('aria-busy',String(value));progress.hidden=!value;}
-  function clearResult(){if(resultURL) URL.revokeObjectURL(resultURL);resultURL=null;$('result').removeAttribute('src');$('result').hidden=true;$('download').hidden=true;$('download').removeAttribute('href');$('result-placeholder').hidden=false;}
+  const pngExport=new NoriPngExport({download:$('download'),help:$('save-help'),dialog:$('save-dialog'),preview:$('save-preview'),direct:$('save-direct'),share:$('save-share'),close:$('save-close'),note:$('save-note'),status:setStatus});
+  function clearResult(){pngExport.clear();if(resultURL) URL.revokeObjectURL(resultURL);resultURL=null;$('result').removeAttribute('src');$('result').hidden=true;$('download').hidden=true;$('download').removeAttribute('href');$('result-placeholder').hidden=false;}
   function stopWorker(){clearTimeout(timer);timer=null;if(worker)worker.terminate();worker=null;}
   function fail(message){stopWorker();setBusy(false);$('error').textContent=message;$('error').hidden=false;$('retry').hidden=!originalCanvas;setStatus('아래 안내를 확인해 주세요.');}
   function canvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
@@ -58,7 +59,7 @@
             octx.drawImage(originalCanvas,0,0);octx.globalCompositeOperation='destination-in';octx.imageSmoothingEnabled=true;octx.imageSmoothingQuality='high';octx.drawImage(mask,0,0,out.width,out.height);
             const blob=await toBlob(out);if(ticket!==generation)return;
             resultURL=URL.createObjectURL(blob);$('result').src=resultURL;$('result').hidden=false;$('result-placeholder').hidden=true;
-            $('download').href=resultURL;$('download').download=(selected.name.replace(/\.[^.]+$/,'')||'nori')+'-배경제거.png';$('download').hidden=false;
+            if(!await pngExport.prepare(blob)||ticket!==generation)return;
             setBusy(false);setStatus('완료됐어요. 결과를 확인하고 투명 PNG로 저장하세요.');
           }catch(e){if(ticket===generation)fail(e.message);}
         }
@@ -67,6 +68,15 @@
       timer=setTimeout(()=>{if(ticket===generation)fail('처리가 오래 걸려 중단했어요. 다른 탭을 닫거나 더 작은 이미지로 다시 시도해 주세요.');},180000);
       worker.postMessage({type:'remove',input,mode:$('quality').value},[input.buffer]);
     }catch(e){fail('이 브라우저에서 처리를 시작하지 못했어요. 최신 브라우저에서 다시 시도해 주세요.');}
+  }
+  if(/KAKAOTALK/i.test(navigator.userAgent)){
+    $('inapp-notice').hidden=false;
+    const siteURL='https://ahnhs1227-tech.github.io/noritools/tools/background-remover/';
+    if(/Android/i.test(navigator.userAgent)){
+      const intent='intent://ahnhs1227-tech.github.io/noritools/tools/background-remover/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(siteURL)+';end';
+      $('open-chrome').href=intent;$('open-chrome').hidden=false;$('save-chrome').href=intent;$('inapp-save-actions').hidden=false;
+    }
+    $('copy-site').onclick=async()=>{try{await navigator.clipboard.writeText(siteURL);$('copy-status').textContent='주소를 복사했어요. Chrome 또는 삼성 인터넷 주소창에 붙여 넣어주세요.';}catch{$('copy-status').textContent='이 주소를 길게 눌러 복사해 주세요: '+siteURL;}};
   }
   $('quality').onchange=()=>{stopWorker();$('mode-note').textContent=$('quality').value==='quality'?'정밀 모드는 더 많은 디테일을 남겨요. 첫 사용은 Wi-Fi를 권장해요.':'빠른 모드는 가볍지만 가는 부분이나 복잡한 경계를 놓칠 수 있어요.';if(originalCanvas){clearResult();$('retry').hidden=false;setStatus('처리 방식을 바꿨어요. 다시 시도를 눌러주세요.');}};
   $('choose').onclick=$('replace').onclick=()=>{fileInput.value='';fileInput.click();};
@@ -78,6 +88,8 @@
   ['dragleave','drop'].forEach(event=>drop.addEventListener(event,e=>{e.preventDefault();drop.classList.remove('dragging');}));
   drop.addEventListener('drop',e=>accept(e.dataTransfer.files));
   window.addEventListener('dragover',e=>e.preventDefault());window.addEventListener('drop',e=>e.preventDefault());
-  window.addEventListener('pagehide',()=>{generation++;stopWorker();if(originalURL)URL.revokeObjectURL(originalURL);if(resultURL)URL.revokeObjectURL(resultURL);});
-  window.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});
+  window.addEventListener('pagehide',()=>{generation++;stopWorker();if(busy){setBusy(false);$('retry').hidden=!originalCanvas;setStatus('처리가 중단됐어요. 다시 시도를 눌러주세요.');}});
+  // Keep completed results alive while a mobile viewer/save sheet opens.
+  // URLs are released on replacement; the browser releases them on disposal.
+
 })();

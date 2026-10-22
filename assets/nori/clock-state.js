@@ -1,0 +1,12 @@
+'use strict';
+(function(root){const E=typeof module!=='undefined'?require('./garden-engine.js'):root.NoriGarden;
+ const seeds=['데이지','튤립','해바라기'];
+ function normalize(raw,now=Date.now()){const s=E.normalize(raw,now);s.version=3;s.tab=['timer','stopwatch','focus'].includes(raw?.tab)?raw.tab:raw?.run?.kind==='focus'?'focus':'timer';s.seed=seeds.includes(raw?.seed)?raw.seed:seeds[0];s.plants=Array.isArray(raw?.plants)?raw.plants.filter(p=>p&&typeof p.id==='string'&&typeof p.goal==='string'&&Number.isFinite(p.minutes)&&p.minutes>0&&Number.isFinite(p.at)).map(p=>({...p,goal:p.goal.slice(0,80),seed:seeds.includes(p.seed)?p.seed:seeds[0]})):[];s.tasks=Array.isArray(raw?.tasks)?raw.tasks.slice(0,12).filter(t=>t&&typeof t.id==='string').map(t=>({...t,title:String(t.title||'업무 알림').slice(0,40),text:String(t.text||'').slice(0,180),h:String(t.h??0).slice(0,2),m:String(t.m??5).slice(0,2),s:String(t.s??0).slice(0,2),sound:t.sound!==false,voice:!!t.voice,run:E.normalize({run:t.run},now).run})):[];s.sw=E.normalize({run:raw?.sw},now).run;
+ if(s.sw?.kind!=='stopwatch')s.sw=null;
+ if(s.run?.kind==='timer'){if(!s.tasks.some(t=>t.id==='legacy-'+s.run.id))s.tasks.unshift({id:'legacy-'+s.run.id,title:s.run.goal||'이전 타이머',text:s.settings.text,sound:s.settings.sound,voice:s.settings.voice,h:String(Math.floor(s.run.duration/3600000)),m:String(Math.floor(s.run.duration/60000)%60),s:String(Math.floor(s.run.duration/1000)%60),run:s.run});s.run=null}
+ if(s.run?.kind==='stopwatch'){s.sw=s.run;s.run=null}
+ s.selected=E.presets[s.selected]?.kind==='focus'?s.selected:'study';return s}
+ function seconds(h,m,s){const values=[h,m,s].map(x=>String(x).trim()===''?NaN:Number(x));if(values.some((v,i)=>!Number.isInteger(v)||v<0||v>(i===0?23:59)))throw Error('시는 0~23, 분·초는 0~59의 정수로 입력해 주세요.');const total=values[0]*3600+values[1]*60+values[2];if(!total)throw Error('1초 이상의 시간을 설정해 주세요.');return total}
+ function harvest(s,now=Date.now()){const r=s.run;if(!r||r.kind!=='focus'||r.status!=='done'||r.confirmed)return s;const next=E.award(s,now);return {...next,plants:s.plants.some(p=>p.id===r.id)?s.plants:[...s.plants,{id:r.id,goal:r.goal||'나를 위한 집중',minutes:Math.round(r.duration/60000),seed:seeds.includes(r.seed)?r.seed:seeds[0],at:r.finishedAt||now}]}}
+ const api={normalize,seconds,harvest,seeds};if(typeof module!=='undefined')module.exports=api;else root.NoriClock=api;
+})(typeof window==='undefined'?globalThis:window);

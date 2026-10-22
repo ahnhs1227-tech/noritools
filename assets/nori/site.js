@@ -3,7 +3,7 @@ window.Nori=(()=>{
  const base='/noritools/',groups=['이미지·글쓰기','생활·쇼핑','공간·제작','건강·식단','노리 놀이터'];
  const tools=[
  {id:'text-polish',group:0,name:'글 점검·다듬기',desc:'기본 맞춤법 표현·공백을 점검하고 간결하게.',path:'tools/text-polish/',mark:'Aa',fresh:true,tags:'맞춤법 맞춤법검사 검사 교정 문법 글다듬기 글 다듬기 문장 수정 윤문 띄어쓰기 오타 자소서 자기소개서 메일 보고서 텍스트 polish spell spelling'},
- {id:'symbols',group:0,name:'이모지·특수문자 모음',desc:'하트·별·화살표·귀여운 표정, 눌러서 복사.',path:'tools/symbols/',mark:'♡',fresh:true,tags:'이모지 이모티콘 emoji 특수문자 특수 문자 기호 하트 별 화살표 체크 표정 귀여운 프로필 꾸미기 복사 symbols'},
+ {id:'symbols',group:0,name:'이모지·특수문자 모음',desc:'텍스트 표정 148개·하트·기호, 눌러서 복사.',path:'tools/symbols/',mark:'♡',fresh:true,tags:'이모지 이모티콘 emoji 특수문자 특수 문자 기호 하트 별 화살표 체크 표정 귀여운 프로필 꾸미기 복사 symbols 텍스트표정 텍스트 표정 텍스트이모티콘 텍스트 이모티콘 문자표정 문자 표정 카오모지 kaomoji 포옹 응원 파이팅 웃음 울음 고양이 곰'},
  {id:'business-card',group:2,name:'간단 명함 편집기',desc:'이름과 연락처로 명함 만들기. PNG·인쇄까지.',path:'tools/business-card/',mark:'▤',fresh:true,tags:'명함 명함만들기 명함 만들기 편집기 디자인 이름 연락처 회사 비즈니스 business card namecard 인쇄 PNG PDF'},
  {id:'stamp-maker',group:2,name:'도장 만들기',desc:'이름·문구를 담은 투명 도장 PNG.',path:'tools/stamp-maker/',mark:'印',fresh:true,tags:'도장 도장만들기 도장 만들기 이름 직인 인감 확인 결재 날인 스탬프 stamp seal 투명 PNG'},
  {id:'currency',group:1,name:'환율 계산기',desc:'달러·엔화·유로를 원화로. 기준일도 확인해요.',path:'tools/currency-converter/',mark:'₩',fresh:true,tags:'환율 환율계산 환율계산기 환전 달러 엔 엔화 유로 원화 위안 바트 여행 외화 돈 USD KRW JPY EUR currency exchange forex'},

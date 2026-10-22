@@ -4,7 +4,7 @@ window.Nori=(()=>{
  const tools=[
  {id:'sticker-maker',group:2,name:'노리 스티커 공방',desc:'노리·사진·문구를 담아 나만의 스티커 만들기.',path:'tools/sticker-maker/',mark:'✦',art:'assets/nori/characters/nori-sticker.webp',fresh:true,tags:'이름표 라벨 꾸미기 만들기 디자인 포장 감사 인쇄 PNG 스티커'},
  {id:'batch-images',group:0,name:'사진 여러 장 정리',desc:'사진 크기·형식·용량을 한 번에 맞춰요.',path:'tools/batch-images/',mark:'▧',fresh:true,tags:'일괄 변환 압축 이미지 사진 여러장 리사이즈 JPG PNG WebP ZIP 용량'},
- {id:'focus-garden',group:1,name:'노리 집중 정원',desc:'집중 시간을 쌓고 작은 화분을 키워요.',path:'tools/focus-garden/',mark:'❀',fresh:true,tags:'공부 업무 집중 휴식 타이머 시간 포모도로 뽀모도로 정원 습관'},
+ {id:'focus-garden',group:1,name:'노리 집중 정원',desc:'모드별 집중·타이머·스톱워치를 한곳에.',path:'tools/focus-garden/',mark:'❀',fresh:true,tags:'공부 업무 작업 집중 휴식 타이머 일반타이머 스톱워치 스탑워치 초시계 알람 알림 음성 읽기 시간 포모도로 뽀모도로 정원 습관'},
  {id:'studio',group:0,name:'상품사진 작업실',desc:'배경부터 여백까지, 올릴 사진을 한 번에.',path:'tools/product-photo-studio/',mark:'▧',fresh:true,tags:'사진 편집 상품 중고거래 누끼 정렬 크기 용량'},
  {id:'background',group:0,name:'이미지 배경 지우기',desc:'주인공만 남기고 투명 PNG로 저장해요.',path:'tools/background-remover/',mark:'✧',tags:'누끼 투명 배경 제거'},
  {id:'text',group:0,name:'글자 수 세기',desc:'글자·단어·바이트 수를 바로 확인해요.',path:'tools/character-counter/',mark:'Aa',tags:'문서 텍스트 문자'},

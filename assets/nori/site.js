@@ -4,7 +4,7 @@ window.Nori=(()=>{
  const tools=[
  {id:'symbols',group:0,name:'이모지·특수문자 모음',desc:'텍스트 표정 148개·하트·기호, 눌러서 복사.',path:'tools/symbols/',mark:'♡',fresh:true,tags:'이모지 이모티콘 emoji 특수문자 특수 문자 기호 하트 별 화살표 체크 표정 귀여운 프로필 꾸미기 복사 symbols 텍스트표정 텍스트 표정 텍스트이모티콘 텍스트 이모티콘 문자표정 문자 표정 카오모지 kaomoji 포옹 응원 파이팅 웃음 울음 고양이 곰'},
  {id:'business-card',group:2,name:'간단 명함 편집기',desc:'이름과 연락처로 명함 만들기. PNG·인쇄까지.',path:'tools/business-card/',mark:'▤',fresh:true,tags:'명함 명함만들기 명함 만들기 편집기 디자인 이름 연락처 회사 비즈니스 business card namecard 인쇄 PNG PDF'},
- {id:'stamp-maker',group:2,name:'도장 만들기',desc:'이름·문구를 담은 투명 도장 PNG.',path:'tools/stamp-maker/',mark:'印',fresh:true,tags:'도장 도장만들기 도장 만들기 이름 직인 인감 확인 결재 날인 스탬프 stamp seal 투명 PNG'},
+ {id:'stamp-maker',group:2,name:'도장 만들기',desc:'타원 이름도장·사업자 인감·직인을 투명 PNG로.',path:'tools/stamp-maker/',mark:'印',fresh:true,tags:'도장 도장만들기 도장 만들기 이름 직인 인감 사업자 법인 회사 타원 원형 사각 인주 붓글씨 글꼴 확인 결재 날인 스탬프 stamp seal 투명 PNG'},
  {id:'currency',group:1,name:'환율 계산기',desc:'달러·엔화·유로를 원화로. 기준일도 확인해요.',path:'tools/currency-converter/',mark:'₩',fresh:true,tags:'환율 환율계산 환율계산기 환전 달러 엔 엔화 유로 원화 위안 바트 여행 외화 돈 USD KRW JPY EUR currency exchange forex'},
 
  {id:'sticker-maker',group:2,name:'노리 스티커 공방',desc:'노리·사진·문구를 담아 나만의 스티커 만들기.',path:'tools/sticker-maker/',mark:'✦',art:'assets/nori/characters/nori-sticker.webp',fresh:true,tags:'이름표 라벨 꾸미기 만들기 디자인 포장 감사 인쇄 PNG 스티커'},

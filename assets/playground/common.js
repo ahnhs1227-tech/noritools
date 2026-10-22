@@ -12,14 +12,14 @@ function controller({key,onStart,onPause=()=>{},onResume=()=>{}}){
  function show(h,p,button){title.textContent=h;desc.textContent=p;go.textContent=button;overlay.hidden=false}
  function announce(text){$('game-status').textContent=text}
  function updateBest(n){if(n>best){best=n;save('nori-play-'+key,best)}$('game-best').textContent=best;return best}
- function start(){phase='running';overlay.hidden=true;pause.disabled=false;pause.textContent='잠깐 쉬기';again.hidden=false;onStart();announce('게임을 시작했어요.');if($('game-canvas'))$('game-canvas').focus({preventScroll:true})}
+ function start(){window.NoriPlay.records?.begin();phase='running';overlay.hidden=true;pause.disabled=false;pause.textContent='잠깐 쉬기';again.hidden=false;onStart();announce('게임을 시작했어요.');if($('game-canvas'))$('game-canvas').focus({preventScroll:true})}
  function pauseGame(){if(phase!=='running')return;phase='paused';onPause();show('잠깐 쉬어가요','준비되면 이어서 해요. 쉬는 동안 시간과 점수는 멈춰요.','이어서 하기');pause.textContent='이어서 하기';announce('일시정지했어요.')}
  function resume(){if(phase!=='paused')return;phase='running';overlay.hidden=true;pause.textContent='잠깐 쉬기';onResume();announce('이어서 시작해요.');if($('game-canvas'))$('game-canvas').focus({preventScroll:true})}
  go.onclick=()=>phase==='paused'?resume():start();pause.onclick=()=>phase==='paused'?resume():pauseGame();again.onclick=start;
  document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame()});window.addEventListener('blur',pauseGame);window.addEventListener('pagehide',pauseGame);
  document.addEventListener('keydown',e=>{if(e.code==='Escape'&&phase==='running'){e.preventDefault();pauseGame()}});
  updateBest(best);
- return {get phase(){return phase},start,pause:pauseGame,announce,updateBest,end(score,heading,message){phase='over';pause.disabled=true;const old=best;updateBest(score);show(heading,message+(score>old?' 새로운 최고 기록이에요!':''),'한 번 더 하기');announce(heading+' '+message);sound('win');go.focus({preventScroll:true})},setBestLabel(n){$('game-best').textContent=n}};
+ return {get phase(){return phase},start,pause:pauseGame,announce,updateBest,end(score,heading,message,result){phase='over';pause.disabled=true;const old=best;updateBest(score);show(heading,message+(score>old?' 새로운 최고 기록이에요!':''),'한 번 더 하기');announce(heading+' '+message);sound('win');window.NoriPlay.records?.finish(key,score,result);go.focus({preventScroll:true})},setBestLabel(n){$('game-best').textContent=n}};
 }
 function canvasStage(){const canvas=$('game-canvas'),ctx=canvas.getContext('2d');const w=480,h=Number(canvas.dataset.height)||600;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=w*dpr;canvas.height=h*dpr;ctx.scale(dpr,dpr);return {canvas,ctx,w,h}}
 function image(src){const im=new Image();im.src=base+src;return im}

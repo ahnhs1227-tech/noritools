@@ -19,9 +19,9 @@ window.Nori=(()=>{
  {id:'unit',group:2,name:'단위 변환기',desc:'길이·무게·온도·인쇄 단위를 바꿔요.',path:'tools/unit-converter/',mark:'↔',tags:'변환 인치 센티미터 mm cm'},
  {id:'calorie',group:3,name:'칼로리 계산기',desc:'하루 기준과 먹은 음식의 열량을 확인.',path:'tools/calorie-calculator/',mark:'kcal',tags:'음식 건강 식단'},
  {id:'recipe',group:3,name:'레시피 인분 조절',desc:'2인분을 5인분으로, 재료 양을 맞춰요.',path:'tools/recipe-scaler/',mark:'½',fresh:true,tags:'요리 재료 음식 인분'},
- {id:'fruit-game',group:4,game:true,name:'과일 바구니',desc:'노리와 떨어지는 과일을 받아 콤보를 쌓아요.',path:'playground/fruit-basket/',mark:'✦',art:'assets/playground/nori-catch.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 과일 받기 바구니 캐치 드래그'},
- {id:'memory-game',group:4,game:true,name:'짝꿍 찾기',desc:'그림을 기억하고 같은 카드 두 장을 찾아요.',path:'playground/memory/',mark:'▦',art:'assets/nori/characters/nori-sticker.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 카드 짝 맞추기 짝맞추기 기억 기억력 메모리 퍼즐 뒤집기'},
- {id:'runner-game',group:4,game:true,name:'달려라 노리!',desc:'통통 점프해 장애물을 피하고 별사탕을 모아요.',path:'playground/nori-run/',mark:'↗',art:'assets/playground/nori-run.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 달리기 달리는 러닝 러너 런 점프 장애물 피하기 별사탕'}];
+ {id:'fruit-game',group:4,game:true,name:'과일 바구니',desc:'노리와 떨어지는 과일을 받아 콤보를 쌓아요.',path:'playground/fruit-basket/',mark:'✦',art:'assets/playground/nori-catch.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 과일 받기 바구니 캐치 드래그'},
+ {id:'memory-game',group:4,game:true,name:'짝꿍 찾기',desc:'그림을 기억하고 같은 카드 두 장을 찾아요.',path:'playground/memory/',mark:'▦',art:'assets/nori/characters/nori-sticker.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 카드 짝 맞추기 짝맞추기 기억 기억력 메모리 퍼즐 뒤집기'},
+ {id:'runner-game',group:4,game:true,name:'달려라 노리!',desc:'통통 점프해 장애물을 피하고 별사탕을 모아요.',path:'playground/nori-run/',mark:'↗',art:'assets/playground/nori-run.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 달리기 달리는 러닝 러너 런 점프 장애물 피하기 별사탕'}];
  const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const fmt=(n,d=2)=>Number(n).toLocaleString('ko-KR',{maximumFractionDigits:d});
  function stored(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}

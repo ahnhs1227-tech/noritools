@@ -4,7 +4,10 @@ const P=NoriPlay,{$,R}=P,{canvas,ctx,w,h}=P.canvasStage(),nori=P.image('assets/p
 const C=NoriCatch,Y=C.CATCH_Y,names=['햇살 과수원','분주한 수확','마지막 수확 축제'];
 let model=C.create(),s=model.s,held=0,keys=new Set(),pop=0,shake=0,toast='바구니 한가운데로 쏙!',toastTime=3,floaters=[],hudClock=0;
 function clearInput(){held=0;keys.clear();model.aim(s.x);for(const id of ['move-left','move-right'])$(id).classList.remove('is-held')}
-const game=P.controller({key:'catch',onStart(){model=C.create();s=model.s;clearInput();fx.clear();pop=shake=0;floaters=[];toast='바구니 한가운데로 쏙!';toastTime=3;hudClock=0;hud();if(typeof matchMedia==='function'&&matchMedia('(max-width:650px)').matches)canvas.closest('.game-panel')?.scrollIntoView({block:'start',behavior:'auto'})},onPause:clearInput,onResume:clearInput});
+const game=P.controller({key:'catch',onStart(){model=C.create();s=model.s;clearInput();fx.clear();pop=shake=0;floaters=[];toast='바구니 한가운데로 쏙!';toastTime=3;hudClock=0;hud();P.catchMusic?.start();if(typeof matchMedia==='function'&&matchMedia('(max-width:650px)').matches)canvas.closest('.game-panel')?.scrollIntoView({block:'start',behavior:'auto'})},onPause(){clearInput();P.catchMusic?.pause()},onResume(){clearInput();P.catchMusic?.resume()}});
+const effectsButton=$('game-mute'),toggleEffects=effectsButton.onclick;
+function effectsLabel(){effectsButton.textContent=effectsButton.textContent.replace(/^소리/,'효과음')}
+effectsLabel();effectsButton.onclick=()=>{toggleEffects?.();effectsLabel()};
 function hud(){
  $('score').textContent=s.score.toLocaleString();$('remaining').textContent=Math.ceil(C.DURATION-s.time)+'초';$('lives').textContent='♥'.repeat(s.lives)+'♡'.repeat(5-s.lives);$('lives').setAttribute('aria-label','남은 기회 '+s.lives+'번');
  $('combo').textContent=s.combo?`${s.combo}연속 · 최고 ${s.bestCombo}연속`:'화면을 좌우로 드래그해요';
@@ -40,7 +43,7 @@ function update(dt){
   if(e.type==='mission'){message('수확 꾸러미 완성! +100점',2.2);P.sound('win')}
  }
  pop=Math.max(0,pop-dt);shake=Math.max(0,shake-dt);toastTime=Math.max(0,toastTime-dt);fx.step(dt);floaters=floaters.filter(f=>{f.t-=dt;f.y-=32*dt;return f.t>0});hudClock-=dt;if(hudClock<=0||s.over){hud();hudClock=.08}
- if(s.over){clearInput();const title=s.complete?'오늘의 수확 대성공!':'오늘의 수확 완료!';game.end(s.score,title,`${s.score.toLocaleString()}점 · 과일 ${s.caught}개 · 최고 ${s.bestCombo}연속 · 정확히 ${s.perfect}번! ${s.mission?'수확 꾸러미도 완성했어요.':'다음에는 세 과일을 2개씩 모아보세요.'}`)}
+ if(s.over){clearInput();P.catchMusic?.stop();const title=s.complete?'오늘의 수확 대성공!':'오늘의 수확 완료!';game.end(s.score,title,`${s.score.toLocaleString()}점 · 과일 ${s.caught}개 · 최고 ${s.bestCombo}연속 · 정확히 ${s.perfect}번! ${s.mission?'수확 꾸러미도 완성했어요.':'다음에는 세 과일을 2개씩 모아보세요.'}`)}
 }
 function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()}
 function box(x,y,bw,bh,r,c){ctx.fillStyle=c;P.round(ctx,x,y,bw,bh,r);ctx.fill()}

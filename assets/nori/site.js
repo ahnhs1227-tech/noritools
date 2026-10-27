@@ -20,7 +20,7 @@ window.Nori=(()=>{
  {id:'calorie',group:3,name:'칼로리 계산기',desc:'하루 기준과 먹은 음식의 열량을 확인.',path:'tools/calorie-calculator/',mark:'kcal',tags:'음식 건강 식단'},
  {id:'recipe',group:3,name:'레시피 인분 조절',desc:'2인분을 5인분으로, 재료 양을 맞춰요.',path:'tools/recipe-scaler/',mark:'½',fresh:true,tags:'요리 재료 음식 인분'},
  {id:'fruit-game',group:4,game:true,name:'과일 바구니',desc:'60초 수확 축제! 과일을 받고 밤송이를 피해 콤보·피버에 도전해요.',path:'playground/fruit-basket/',mark:'✦',art:'assets/playground/nori-catch.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 과일 받기 바구니 캐치 드래그 수확 과수원 피버 콤보 밤송이 황금 열매'},
- {id:'memory-game',group:4,game:true,name:'짝꿍 찾기',desc:'그림을 기억하고 같은 카드 두 장을 찾아요.',path:'playground/memory/',mark:'▦',art:'assets/nori/characters/nori-sticker.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 카드 짝 맞추기 짝맞추기 기억 기억력 메모리 퍼즐 뒤집기'},
+ {id:'memory-game',group:4,game:true,name:'짝꿍 찾기',desc:'같은 노리를 찾아 앨범에 쏙! 연속 성공과 별 세 개에 도전해요.',path:'playground/memory/',mark:'▦',art:'assets/nori/characters/nori-sticker.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 카드 짝 맞추기 짝맞추기 기억 기억력 메모리 퍼즐 뒤집기 노리앨범 노리 앨범 별 배지 힌트 살짝보기 연속 성공'},
  {id:'runner-game',group:4,game:true,name:'달려라 노리!',desc:'2단 점프·슬라이드로 사탕 숲을 달려요. 모으면 피버 타임!',path:'playground/nori-run/',mark:'↗',art:'assets/playground/nori-run.webp',tags:'게임 미니게임 미니 게임 놀이 놀이터 노리놀이터 노리 놀이터 game games play 닉네임 기록 점수 순위 순위표 랭킹 트로피 금은동 경쟁 달리기 달리는 러닝 러너 런 점프 2단점프 이단점프 슬라이드 피버 자석 보호막 사탕숲 장애물 피하기 별사탕'}];
  const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const fmt=(n,d=2)=>Number(n).toLocaleString('ko-KR',{maximumFractionDigits:d});

@@ -1,7 +1,7 @@
 'use strict';
 (()=>{
 const P=NoriPlay,{$}=P,{canvas,ctx}=P.canvasStage(),{W:w,H:h,G:ground,PX:px}=NoriRun;
-const run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp'),slidePose=P.image('assets/playground/nori-slide.webp');
+const run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp'),slidePose=P.image('assets/playground/nori-slide-v2.webp');
 let model=NoriRun.create(),s=model.s,particles=[],floaters=[],banner='별사탕 숲으로 출발!',bannerTime=3,shake=0,lastSound=0,lastBiome=0,held=false,hudTime=0;
 const game=P.controller({key:'run',onStart(){model=NoriRun.create();s=model.s;particles=[];floaters=[];banner='별사탕 숲으로 출발!';bannerTime=3;shake=0;lastSound=0;lastBiome=0;held=false;hudTime=0;hud();P.runMusic?.start()},onPause(){release();P.runMusic?.pause()},onResume(){release();P.runMusic?.resume()}});
 const effectsButton=$('game-mute'),toggleEffects=effectsButton.onclick;

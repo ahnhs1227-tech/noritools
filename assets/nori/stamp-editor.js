@@ -1,9 +1,9 @@
 'use strict';
 (()=>{
  const $=id=>document.getElementById(id),canvas=$('stamp-canvas'),ctx=canvas.getContext('2d'),out=Nori.exporter($('stamp-download'),$('stamp-help'));
- const fonts={song:['Song Myung',400],nanum:['Nanum Myeongjo',800],brush:['Nanum Brush Script',400],dohyeon:['Do Hyeon',400],noto:['Noto Serif KR',900],system:['serif',700]};
+ const fonts={gasoek:['Gasoek One',400],gugi:['Gugi',400],dokdo:['Dokdo',400],yeonsung:['Yeon Sung',400],song:['Song Myung',400],nanum:['Nanum Myeongjo',800],brush:['Nanum Brush Script',400],dohyeon:['Do Hyeon',400],noto:['Noto Serif KR',900],system:['serif',700]};
  const templates={oval:{label:'타원 이름도장',text:'김노리',limit:8,hint:'공백 없이 1~8자. 타원 안에 세로로 배치해요.'},personal:{label:'원형 인감 스타일',text:'김노리',limit:8,hint:'이름과 끝 글자를 오른쪽 열부터 위아래로 배치해요.'},business:{label:'사업자 원형',text:'주식회사노리',limit:24,hint:'회사명 1~24자. 바깥 원을 따라 배치해요.'},square:{label:'사각 직인',text:'주식회사노리대표인',limit:16,hint:'1~16자. 오른쪽 열부터 위아래로 채워요. 4·9·16자로 맞추면 반듯해요.'},wide:{label:'가로 확인 도장',text:'확인완료',limit:12,hint:'확인·검수·감사 등 짧은 문구를 넣어주세요. 최대 12자.'}};
- let type='oval',ticket=0,ready=false,exporting=false,composition=false;const drafts={};
+ let type='oval',ticket=0,ready=false,exporting=false,composition=false;const drafts={};let localFace=null,localSerial=0;
  const value=id=>$(id).value.trim();const clean=s=>Array.from(s.replace(/\s/g,''));
  function state(){return {type,text:clean(value('stamp-text')).join(''),center:clean(value('stamp-center')).join(''),suffix:value('stamp-suffix'),font:value('stamp-font'),border:value('stamp-border'),weight:Number(value('stamp-weight')),texture:Number(value('stamp-texture')),color:value('stamp-color'),size:Number(value('stamp-size'))/100,spacing:Number(value('stamp-spacing'))/100,centerSize:Number(value('stamp-center-size'))/100,centerSpacing:Number(value('stamp-center-spacing'))/100,mark:value('stamp-mark'),markSize:Number(value('stamp-mark-size'))/100}}
  function valid(s){return !!s.text&&(s.type!=='business'||!!s.center)}
@@ -31,9 +31,32 @@
  document.querySelectorAll('[data-template]').forEach(b=>b.onclick=()=>{drafts[type]=$('stamp-text').value;type=b.dataset.template;const t=templates[type];$('stamp-text').value=drafts[type]??t.text;$('stamp-text').maxLength=t.limit;$('stamp-text-label').textContent=type==='business'?'회사·상호명':type==='square'||type==='wide'?'새길 문구':'이름';$('stamp-text-hint').textContent=t.hint;$('stamp-center-field').hidden=type!=='business';$('stamp-center-tuning').hidden=type!=='business';$('stamp-mark-tuning').hidden=type!=='business';$('stamp-size-label').textContent=type==='business'?'회사명 글자 크기':'글자 크기';$('stamp-spacing-label').textContent=type==='business'?'회사명 자간':'자간';$('stamp-suffix-field').hidden=type!=='personal';document.querySelectorAll('[data-template]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));refresh()});
  document.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{$('stamp-color').value=b.dataset.color;document.querySelectorAll('[data-color]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));refresh()});
  document.querySelector('.stamp-controls').addEventListener('compositionstart',()=>{composition=true;ticket++;ready=false;out.clear();buttons()});document.querySelector('.stamp-controls').addEventListener('compositionend',()=>{composition=false;refresh()});
- document.querySelector('.stamp-controls').addEventListener('input',e=>{if(e.target.id==='stamp-color')document.querySelectorAll('[data-color]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.color===e.target.value)));if(!composition)refresh()});
- function updateTuning(){['size','spacing','center-size','center-spacing','mark-size'].forEach(key=>{const el=$('stamp-'+key);$('stamp-'+key+'-value').textContent=(key.includes('spacing')&&Number(el.value)>0?'+':'')+el.value+'%'});$('stamp-mark-size').disabled=value('stamp-mark')==='none'}
+ document.querySelector('.stamp-controls').addEventListener('input',e=>{if(e.target.id==='stamp-font-file')return;if(e.target.id==='stamp-color')document.querySelectorAll('[data-color]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.color===e.target.value)));if(!composition)refresh()});
+ function updateTuning(){document.querySelectorAll('[data-font]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.font===value('stamp-font'))));['size','spacing','center-size','center-spacing','mark-size'].forEach(key=>{const el=$('stamp-'+key);$('stamp-'+key+'-value').textContent=(key.includes('spacing')&&Number(el.value)>0?'+':'')+el.value+'%'});$('stamp-mark-size').disabled=value('stamp-mark')==='none'}
  $('stamp-reset-tuning').onclick=()=>{['size','center-size','mark-size'].forEach(key=>$('stamp-'+key).value='100');['spacing','center-spacing'].forEach(key=>$('stamp-'+key).value='0');$('stamp-mark').value='dot';refresh()};
+ document.querySelectorAll('[data-font]').forEach(b=>b.onclick=()=>{$('stamp-font').value=b.dataset.font;refresh()});
+ $('stamp-font-file').addEventListener('change',async()=>{
+  const input=$('stamp-font-file'),file=input.files?.[0];if(!file)return;
+  const status=$('stamp-file-status');
+  if(!/\.(ttf|otf|woff2?)$/i.test(file.name)||file.size===0||file.size>10*1024*1024){status.textContent='10MB 이하의 TTF · OTF · WOFF · WOFF2 글꼴 파일을 선택해 주세요.';input.value='';return}
+  const selection=ticket;input.disabled=true;$('stamp-font-remove').disabled=true;status.textContent='내 글꼴을 준비하고 있어요…';let timeout;
+  try{
+   const face=new FontFace('NoriLocalStamp'+(++localSerial),await file.arrayBuffer(),{weight:'400'});
+   await Promise.race([face.load(),new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('timeout')),15000)})]);
+   document.fonts.add(face);const old=localFace;localFace=face;fonts.custom=[face.family,400];
+   const option=$('stamp-custom-option');option.hidden=false;option.disabled=false;option.textContent='내 글꼴 · '+file.name;
+   if(ticket===selection)$('stamp-font').value='custom';
+   if(old)document.fonts.delete(old);
+   $('stamp-font-remove').hidden=false;status.textContent=file.name+' · 이 페이지에서만 사용해요.';refresh();
+  }catch(e){status.textContent='이 파일을 글꼴로 읽지 못했어요. 다른 글꼴 파일을 선택해 주세요. 기존 글꼴은 그대로 유지해요.'}
+  finally{clearTimeout(timeout);input.disabled=false;input.value='';$('stamp-font-remove').disabled=false}
+ });
+ $('stamp-font-remove').onclick=()=>{
+  if(localFace)document.fonts.delete(localFace);localFace=null;delete fonts.custom;
+  if(value('stamp-font')==='custom')$('stamp-font').value='song';
+  const option=$('stamp-custom-option');option.hidden=true;option.disabled=true;option.textContent='내 글꼴';
+  $('stamp-font-remove').hidden=true;$('stamp-file-status').textContent='내 글꼴을 지웠어요.';refresh();
+ };
  $('stamp-retry').onclick=refresh;
  $('stamp-export').onclick=async()=>{if(!ready||!valid(state()))return;const id=ticket;exporting=true;buttons();try{const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('이미지를 만들지 못했어요. 다시 시도해 주세요.');if(id!==ticket)return;await out.prepare(blob,'nori-stamp-'+type+'.png');if(id!==ticket){out.clear();return}$('stamp-status').textContent='투명 PNG가 준비됐어요. PNG 저장을 눌러주세요.'}catch(e){$('stamp-status').textContent=e.message}finally{exporting=false;buttons()}};
  refresh();

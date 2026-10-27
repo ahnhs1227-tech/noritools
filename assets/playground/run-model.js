@@ -14,7 +14,7 @@ function create(random=Math.random){
   const x=W+55,n=s.pattern++,d=difficulty(s.distance),pool=d.tier===1?[0,1,2]:d.tier===2?[0,1,2,3,4]:d.tier===3?[1,2,3,4,5,6]:[1,2,3,4,5,6,7];
   let type=n===0?0:n===1?1:n===2?2:pool[Math.floor(random()*pool.length)%pool.length];
   // Introduce each new route, then avoid back-to-back copies of the same course.
-  if(d.tier>=2&&n%4===3)type=n%8===3?4:5;
+  if(d.tier>=2&&n%4===3)type=d.tier>=3&&n%8===7?5:4;
   if(type===s.lastType)type=pool[(pool.indexOf(type)+1)%pool.length];s.lastType=type;
   const a=[];const item=(kind,dx,height,bw=22,bh=22)=>a.push({kind,x:x+dx,y:G-height,w:bw,h:bh,hit:false});
   const arc=(dx,base,count=7,spacing=30,peak=60)=>{for(let i=0;i<count;i++)item('star',dx+i*spacing,base+Math.sin(i/(count-1)*Math.PI)*peak)};

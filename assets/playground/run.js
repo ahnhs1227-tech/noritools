@@ -1,15 +1,87 @@
 'use strict';
 (()=>{
-const P=NoriPlay,{$,R}=P,{canvas,ctx,w,h}=P.canvasStage(),run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp'),fx=P.particles();
-const ground=h-70,px=100;let y=0,v=0,time=0,distance=0,score=0,stars=0,hearts=3,objects=[],spawn=1.3,invincible=0,landing=0,jumpBuffer=0;
-const game=P.controller({key:'run',onStart(){y=v=time=distance=score=stars=0;hearts=3;objects=[];spawn=1.3;invincible=landing=jumpBuffer=0;fx.clear();hud()},onPause(){jumpBuffer=0}});
-function leap(){if(game.phase!=='running')return;if(y===0){v=620;y=.1;P.sound('jump')}else jumpBuffer=.12}
-canvas.addEventListener('pointerdown',e=>{if(game.phase==='running'){e.preventDefault();leap()}});$('jump-button').onclick=leap;
-document.addEventListener('keydown',e=>{if(game.phase!=='running'||e.repeat||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(['Space','ArrowUp','KeyW'].includes(e.code)&&!e.target.closest('button,a')){e.preventDefault();leap()}});
-function hud(){$('score').textContent=score;$('distance').textContent=Math.floor(distance)+'m';$('lives').textContent=hearts+' / 3';$('stars').textContent=stars+'개'}
-function update(dt){if(game.phase!=='running')return;time+=dt;const speed=Math.min(310,200+time*1.1);distance+=speed*dt/14;score=Math.floor(distance)+stars*20;const wasAir=y>0;const step=R.jumpStep(y,v,dt);y=step.y;v=step.v;if(wasAir&&step.landed){landing=.13;if(jumpBuffer>0)leap()}jumpBuffer=Math.max(0,jumpBuffer-dt);landing=Math.max(0,landing-dt);invincible=Math.max(0,invincible-dt);spawn-=dt;if(spawn<=0){const tall=Math.random()>.6,ox=w+42;objects.push({kind:'obstacle',x:ox,y:ground-(tall?44:32),w:tall?31:37,h:tall?44:32,hit:false});objects.push({kind:'star',x:ox+5,y:ground-112,w:25,h:25,hit:false});if(Math.random()>.55)objects.push({kind:'star',x:ox+70,y:ground-75,w:25,h:25,hit:false});spawn=1.65+Math.random()*.65}
-const player={x:px-23,y:ground-y-69,w:43,h:64};for(const o of objects){o.x-=speed*dt;if(o.hit)continue;if(R.overlaps(player,o)){o.hit=true;if(o.kind==='star'){stars++;fx.burst(o.x+12,o.y+12,'#edc05d');P.sound()}else if(invincible===0){hearts--;invincible=1.5;fx.burst(px,ground-y-40,'#ecb5b1');P.sound('bad');game.announce('장애물에 닿았어요. 남은 기회 '+Math.max(hearts,0)+'번.')}}}objects=objects.filter(o=>o.x> -70);fx.step(dt);score=Math.floor(distance)+stars*20;hud();if(hearts<=0){hearts=0;hud();game.end(score,'잘 달렸어요, 노리!',Math.floor(distance)+'m를 달리고 별사탕 '+stars+'개를 모았어요. 총 '+score+'점!')}}
-function mushroom(x,y,w,h){ctx.fillStyle='#f6e6d0';P.round(ctx,x+w*.35,y+h*.35,w*.3,h*.65,6);ctx.fill();ctx.fillStyle='#d3a0bc';ctx.beginPath();ctx.ellipse(x+w*.5,y+h*.38,w*.65,h*.4,0,Math.PI,2*Math.PI);ctx.lineTo(x+w*1.15,y+h*.38);ctx.quadraticCurveTo(x+w*.5,y+h*.65,x-w*.15,y+h*.38);ctx.fill();ctx.fillStyle='#fae9ee';for(const [a,b]of[[.25,.25],[.7,.15],[.65,.38]]){ctx.beginPath();ctx.arc(x+w*a,y+h*b,3,0,7);ctx.fill()}}
-function draw(){P.scenery(ctx,w,h,P.reduced?0:time,true);for(const o of objects){if(o.kind==='star'){if(!o.hit)P.star(ctx,o.x+12,o.y+12,15)}else mushroom(o.x,o.y,o.w,o.h)}ctx.fillStyle='#5c75452a';ctx.beginPath();ctx.ellipse(px,ground+5,33*(1-y/500),7,0,0,7);ctx.fill();ctx.save();ctx.translate(px,ground-y);if(invincible>0)ctx.globalAlpha=.65;if(y===0){const t=game.phase==='running'&&!P.reduced?Math.sin(time*22):0;ctx.translate(0,-Math.abs(t)*3);ctx.rotate(t*.025);if(landing>0)ctx.scale(1.06,.94)}P.sprite(ctx,y>0?jump:landing>0?contact:(!P.reduced&&Math.floor(time*7)%2?contact:run),-57,-110,114,114);ctx.restore();fx.draw(ctx);if(game.phase==='idle'){P.star(ctx,295,ground-95,16);mushroom(355,ground-34,35,34)}}
+const P=NoriPlay,{$}=P,{canvas,ctx}=P.canvasStage(),{W:w,H:h,G:ground,PX:px}=NoriRun;
+const run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp');
+let model=NoriRun.create(),s=model.s,particles=[],floaters=[],banner='별사탕 숲으로 출발!',bannerTime=3,shake=0,lastSound=0,lastBiome=0,held=false,hudTime=0;
+const game=P.controller({key:'run',onStart(){model=NoriRun.create();s=model.s;particles=[];floaters=[];banner='별사탕 숲으로 출발!';bannerTime=3;shake=0;lastSound=0;lastBiome=0;held=false;hudTime=0;hud()},onPause(){release()},onResume(){release()}});
+function leap(){if(game.phase==='running'&&model.jump()){P.sound('jump');burst(px,ground-s.y-8,'#ffffff',9)}}
+function release(){held=false;model.slide(false);$('slide-button').classList.remove('is-held')}
+function duck(){if(game.phase!=='running')return;held=true;model.slide(true);$('slide-button').classList.add('is-held')}
+canvas.addEventListener('pointerdown',e=>{if(game.phase==='running'){e.preventDefault();leap()}});
+$('jump-button').addEventListener('pointerdown',e=>{e.preventDefault();leap()});
+$('jump-button').addEventListener('click',e=>{if(e.detail===0)leap()});
+$('slide-button').addEventListener('pointerdown',e=>{e.preventDefault();$('slide-button').setPointerCapture(e.pointerId);duck()});
+for(const type of ['pointerup','pointercancel','lostpointercapture'])$('slide-button').addEventListener(type,release);
+$('slide-button').addEventListener('keydown',e=>{if(['Space','Enter'].includes(e.code)){e.preventDefault();duck()}});
+$('slide-button').addEventListener('keyup',release);
+$('slide-button').addEventListener('blur',release);
+document.addEventListener('keydown',e=>{if(game.phase!=='running'||e.repeat||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.target.closest('button,a'))return;if(['Space','ArrowUp','KeyW'].includes(e.code)){e.preventDefault();leap()}if(['ArrowDown','KeyS'].includes(e.code)){e.preventDefault();duck()}});
+document.addEventListener('keyup',e=>{if(['ArrowDown','KeyS'].includes(e.code))release()});
+function hud(){
+ $('score').textContent=model.total().toLocaleString();$('distance').textContent=Math.floor(s.distance)+'m';$('lives').textContent='♥'.repeat(s.hearts)+'♡'.repeat(3-s.hearts);$('lives').setAttribute('aria-label','남은 기회 '+s.hearts+'번');$('stars').textContent=s.stars+'개';
+ $('fever-fill').style.width=(s.fever>0?s.fever/7:s.charge/18)*100+'%';$('fever-label').textContent=s.fever>0?'피버! 별사탕 점수 2배':`별사탕 ${s.charge} / 18 · 모으면 피버!`;
+ $('run-combo').textContent=s.combo>=5?s.combo+' COMBO':'SWEET RUN';
+ $('run-power').textContent=s.shield>0?'보호막 '+Math.ceil(s.shield)+'초':s.magnet>0?'사탕 자석 '+Math.ceil(s.magnet)+'초':'2단 점프 + 슬라이드';
+ $('run-zone').textContent=['01 별사탕 숲','02 복숭아 구름길','03 보랏빛 꿈길'][Math.floor(s.distance/300)%3];
+ $('run-mission').textContent=s.distance>=300&&s.stars>=30?'첫 도전 성공! 더 멀리 달려봐요.':`첫 도전 · ${Math.min(300,Math.floor(s.distance))}/300m · 별사탕 ${Math.min(30,s.stars)}/30개`;
+}
+function burst(x,y,color,n=10){if(P.reduced)return;for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*140,vy:-30-Math.random()*130,t:.55,c:color});if(particles.length>100)particles.splice(0,particles.length-100)}
+function message(text){banner=text;bannerTime=1.8;game.announce(text)}
+function update(dt){if(game.phase!=='running')return;model.step(dt);for(const e of s.events){
+ if(e.type==='star'){burst(e.x,e.y,'#ffdc70',5);if(s.time-lastSound>.09){P.sound();lastSound=s.time}if(s.combo%5===0)floaters.push({x:e.x,y:e.y,text:s.combo+' COMBO',t:.8})}
+ if(e.type==='damage'){shake=.22;burst(px,ground-s.y-40,'#f7a3ab',14);P.sound('bad');message('괜찮아, 다시 달려보자!')}
+ if(e.type==='fever'){message('SWEET FEVER! 무적 + 사탕 2배');P.sound('win');burst(px,ground-50,'#e7f89b',24)}
+ if(e.type==='shield')message('보호막! 한 번 막아줘요');if(e.type==='magnet')message('사탕 자석! 가까운 사탕을 쏙');
+ if(e.type==='protect'){burst(px,ground-35,'#a9e5ff',20);message('보호막이 지켜줬어요!')}
+ if(e.type==='smash')burst(e.x,e.y,'#f5cd90',12);
+ if(e.type==='land')burst(px,ground,'#fff9df',5);
+ }
+ const biome=Math.floor(s.distance/300);if(biome!==lastBiome){lastBiome=biome;message(['별사탕 숲에 돌아왔어요!','복숭아 구름길에 도착!','보랏빛 꿈길에 도착!'][biome%3])}
+ particles=particles.filter(p=>{p.t-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=360*dt;return p.t>0});floaters=floaters.filter(p=>{p.t-=dt;p.y-=35*dt;return p.t>0});bannerTime=Math.max(0,bannerTime-dt);shake=Math.max(0,shake-dt);hudTime-=dt;if(hudTime<=0||s.over){hud();hudTime=.08;}
+ if(s.over){release();game.end(model.total(),'달콤한 모험 완료!',Math.floor(s.distance)+'m · 별사탕 '+s.stars+'개 · 최고 '+s.bestCombo+'콤보. 다시 달리면 더 멀리 갈 수 있어요!')}
+}
+const palettes=[['#c4e9f1','#fcf8df','#b9d5bd','#8bbaa5','#a6ce82'],['#f4dae2','#fff0db','#dfb9cf','#bb9fc5','#b6c691'],['#d9d4f1','#f3e8f3','#bfb1d5','#979bc6','#94bbae']];
+function ellipse(x,y,rx,ry,c){ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()}
+function box(x,y,bw,bh,r,c){ctx.fillStyle=c;P.round(ctx,x,y,bw,bh,r);ctx.fill()}
+function text(t,x,y,size=12,color='#3f635b',align='center'){ctx.fillStyle=color;ctx.font=`800 ${size}px system-ui, sans-serif`;ctx.textAlign=align;ctx.fillText(t,x,y)}
+function scenery(){
+ const pal=palettes[Math.floor(s.distance/300)%3],travel=P.reduced?0:s.travel;
+ const grad=ctx.createLinearGradient(0,0,0,h);grad.addColorStop(0,pal[0]);grad.addColorStop(1,pal[1]);ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ ellipse(386,61,29,29,'#fff5bd');ellipse(378,55,31,28,pal[0]);
+ for(let i=0;i<4;i++)P.cloud(ctx,((i*180-travel*.08)%720+720)%720-70,50+(i%2)*37,.65+(i%2)*.2);
+ for(let i=0;i<5;i++){const x=((i*160-travel*.14)%800+800)%800-100;ellipse(x,280,140,106+i%2*25,pal[2]);ellipse(x-32,220,16,8,'#ffffff35')}
+ // Rounded candy trees move at a separate depth from the hills.
+ for(let i=0;i<6;i++){const x=((i*115-travel*.32)%690+690)%690-60,top=140+(i%3)*25;box(x-5,top+28,10,ground-top,4,'#c4a889');ellipse(x,top,32,43,pal[3]);ellipse(x-11,top-12,13,21,'#ffffff32');ellipse(x-6,top+3,3,4,'#55746a');ellipse(x+6,top+3,3,4,'#55746a');}
+ for(let i=0;i<9;i++){const x=((i*70-travel*.65)%630+630)%630-40;ellipse(x,ground+7,53,33,pal[4]);}
+ box(0,ground,w,h-ground,0,'#d9b992');box(0,ground,w,12,0,'#f7efcc');
+ for(let x=-(travel%32);x<w;x+=32){ellipse(x+16,ground+11,17,9,'#f7efcc');box(x+8,ground+38,17,5,3,'#c3a17e');box(x+30,ground+57,10,4,2,'#ebd0a4')}
+ for(let i=0;i<7;i++){const x=((i*83-travel*.9)%581+581)%581-30;box(x,ground-6,3,8,1,'#659c79');ellipse(x,ground-9,5,4,i%2?'#fff0bd':'#f4b6c2')}
+ if(s.fever>0){ctx.fillStyle='#fff3ad25';ctx.fillRect(0,0,w,h);if(!P.reduced){ctx.strokeStyle='#fff9e8a8';ctx.lineWidth=2;for(let i=0;i<6;i++){let x=(s.time*320+i*91)%600;ctx.beginPath();ctx.moveTo(w-x,i*38+25);ctx.lineTo(w-x+35,i*38+25);ctx.stroke()}}}
+}
+function obstacle(o){
+ if(o.kind==='gate'){
+  box(o.x-6,o.y,o.w+12,o.h,15,'#b894bd');box(o.x-6,o.y,o.w+12,14,9,'#e4c8df');for(let i=0;i<4;i++)ellipse(o.x+8+i*23,o.y+o.h-1,12,10,'#b894bd');
+  ellipse(o.x+30,o.y+28,3,4,'#654967');ellipse(o.x+52,o.y+28,3,4,'#654967');text('↓',o.x+43,o.y+56,22,'#fff9ed');
+ }else{
+  box(o.x,o.y+10,o.w,o.h-10,8,'#b28062');box(o.x-5,o.y,o.w+10,17,7,'#f2c397');box(o.x+6,o.y+22,4,Math.max(3,o.h-30),2,'#dca77e');ellipse(o.x+13,o.y+25,2,3,'#77523e');ellipse(o.x+26,o.y+25,2,3,'#77523e');
+ }
+}
+function candy(o){const cx=o.x+o.w/2,cy=o.y+o.h/2;ctx.save();ctx.translate(cx,cy);if(!P.reduced)ctx.translate(0,Math.sin(s.time*5+o.x*.02)*2);if(o.kind==='star'){ellipse(0,2,14,14,'#ffffff75');P.star(ctx,0,0,12,'#f6be43');ellipse(-3,-3,2,2,'#fff7c5')}else{ellipse(0,0,18,18,'#ffffffba');ellipse(0,0,15,15,o.kind==='shield'?'#9bdce7':'#eca7c5');text(o.kind==='shield'?'◇':'U',0,6,20,'#fff');}ctx.restore()}
+function draw(){
+ ctx.save();if(shake>0&&!P.reduced)ctx.translate(Math.sin(s.time*85)*3,0);scenery();for(const o of s.objects){if(o.kind==='stump'||o.kind==='gate')obstacle(o);else candy(o)}
+ ellipse(px,ground+5,Math.max(12,30-s.y*.08),5,'#688d7840');ctx.save();ctx.translate(px,ground-s.y);
+ if(s.fever>0&&!P.reduced){for(let i=3;i>0;i--){ctx.globalAlpha=.08;P.sprite(ctx,run,-51-i*16,-94,100,100)}ctx.globalAlpha=1}
+ if(s.shield>0||s.invincible>0||s.fever>0){ellipse(0,-40,43,48,s.fever>0?'#fff9c760':'#c6f1ff60');ctx.strokeStyle=s.fever>0?'#fff8c2':'#e2fbff';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-40,43,48,0,0,7);ctx.stroke()}
+ if(s.invincible>0&&Math.floor(s.time*12)%2)ctx.globalAlpha=.5;
+ const sliding=s.slide&&s.y===0,t=game.phase==='running'&&!P.reduced?Math.sin(s.time*24):0;
+ if(sliding){ctx.translate(4,4);ctx.scale(1.2,.48)}else if(s.y===0){ctx.translate(0,-Math.abs(t)*2);ctx.rotate(t*.035);if(s.land>0)ctx.scale(1.09,.91)}else ctx.rotate(Math.max(-.13,Math.min(.13,-s.v/3000)));
+ P.sprite(ctx,s.y>0?jump:(!P.reduced&&Math.floor(s.time*9)%2?contact:run),-51,-94,100,100);ctx.restore();
+ if(s.jumps===1&&game.phase==='running'){ellipse(px-4,ground-s.y+8,2,2,'#fffef1');ellipse(px+4,ground-s.y+8,2,2,'#e7c65a')}
+ for(const p of particles){ctx.globalAlpha=Math.max(0,p.t/.55);ellipse(p.x,p.y,3,3,p.c)}ctx.globalAlpha=1;
+ for(const f of floaters){ctx.globalAlpha=Math.min(1,f.t*3);text(f.text,f.x,f.y,15,'#8a5a9d')}ctx.globalAlpha=1;
+ if(bannerTime>0&&game.phase==='running'){box(73,18,334,31,15,'#fffdf0e8');text(banner,240,38,12)}
+ if(game.phase==='idle'){for(let i=0;i<5;i++)candy({kind:'star',x:190+i*41,y:ground-75-Math.sin(i/4*Math.PI)*45,w:22,h:22});obstacle({kind:'stump',x:310,y:ground-36,w:36,h:36})}
+ ctx.restore();
+}
 P.animate(update,draw);P.ready([run,contact,jump]);hud();
 })();

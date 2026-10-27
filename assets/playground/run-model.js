@@ -3,7 +3,7 @@
 'use strict';
 const W=480,H=360,G=292,PX=92,FEVER_STARS=28,FEVER_SECONDS=4,MAGNET_SECONDS=3,MAGNET_RADIUS=72,SHIELD_SECONDS=6,POWER_GAP=26;
 const overlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
-function difficulty(distance){const level=1+Math.floor(distance/160),tier=Math.min(8,level);return{level,tier,speed:Math.min(340,210+distance*.085),rest:Math.max(.65,1.2-(tier-1)*.08)}}
+function difficulty(distance){const level=1+Math.floor(distance/160),tier=Math.min(8,level);return{level,tier,speed:Math.min(340,210+distance*.085),rest:Math.max(.9,1.35-(tier-1)*.065)}}
 function create(random=Math.random){
  const s={y:0,v:0,jumps:0,grounded:true,slide:false,time:0,travel:0,distance:0,score:0,stars:0,hearts:3,combo:0,bestCombo:0,charge:0,fever:0,shield:0,magnet:0,invincible:0,land:0,objects:[],events:[],next:180,pattern:0,lastType:-1,over:false,speed:210,level:1,nextPowerAt:18,powerCount:0};
  function emit(type,x=PX,y=G-s.y-40,value){s.events.push({type,x,y,value})}
@@ -19,9 +19,9 @@ function create(random=Math.random){
   const a=[];const item=(kind,dx,height,bw=22,bh=22)=>a.push({kind,x:x+dx,y:G-height,w:bw,h:bh,hit:false});
   const arc=(dx,base,count=7,spacing=30,peak=60)=>{for(let i=0;i<count;i++)item('star',dx+i*spacing,base+Math.sin(i/(count-1)*Math.PI)*peak)};
   // Pairs are spaced by recovery time, not just pixels, at every running speed.
-  const beat=Math.max(210,d.speed*.83),gateWidth=86+Math.min(24,d.tier*3);
+  const beat=Math.max(240,d.speed*1.05),gateWidth=86+Math.min(24,d.tier*3);
   if(type===0){item('stump',90,36,36,36);arc(0,70)}
-  if(type===1){item('gate',80,106,gateWidth,70);for(let i=0;i<6;i++)item('star',i*32,27)}
+  if(type===1){item('gate',80,122,gateWidth,70);for(let i=0;i<6;i++)item('star',i*32,27)}
   if(type===2){item('stump',100,68,45,68);arc(0,85,7,31,65)}
   if(type===3){item('stump',80,40,38,40);item('stump',80+beat,58,42,58);arc(0,74,6,28,48);arc(beat,85,6,28,55)}
   if(type===4){
@@ -32,10 +32,10 @@ function create(random=Math.random){
    item('platform',0,56,110,56);item('platform',174,108,110,108);item('platform',348,74,125,74);item('spikes',110,20,238,20);
    arc(5,90,4,26,12);arc(179,142,4,26,12);arc(353,110,4,28,12);
   }
-  if(type===6){item('gate',70,106,gateWidth,70);item('stump',70+gateWidth+beat,62,42,62);for(let i=0;i<6;i++)item('star',i*30,27);arc(gateWidth+beat-15,85,7,30,60)}
+  if(type===6){item('gate',70,122,gateWidth,70);item('stump',70+gateWidth+beat,62,42,62);for(let i=0;i<6;i++)item('star',i*30,27);arc(gateWidth+beat-15,85,7,30,60)}
   if(type===7){
-   item('platform',0,52,145,52);item('platform',174,100,150,100);item('spikes',145,20,29,20);item('gate',195,206,94,70);item('stump',324+beat,70,46,70);
-   arc(8,88,4,28,12);for(let i=0;i<5;i++)item('star',185+i*27,127);arc(324+beat-70,94,6,30,50);
+   item('platform',0,52,145,52);item('platform',174,100,150,100);item('spikes',145,20,29,20);item('gate',324+Math.max(240,d.speed*.9),122,94,70);
+   arc(8,88,4,28,12);arc(185,136,4,30,12);for(let i=0;i<5;i++)item('star',324+Math.max(240,d.speed*.9)+i*22,27);
   }
   // At most one pickup every 26 seconds; magnets alternate with shields.
   if(s.time>=s.nextPowerAt){const end=Math.max(...a.map(o=>o.x+o.w))-x;item(s.powerCount%2?'shield':'magnet',end+48,100,28,28);s.powerCount++;s.nextPowerAt=s.time+POWER_GAP}

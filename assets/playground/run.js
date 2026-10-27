@@ -1,9 +1,12 @@
 'use strict';
 (()=>{
 const P=NoriPlay,{$}=P,{canvas,ctx}=P.canvasStage(),{W:w,H:h,G:ground,PX:px}=NoriRun;
-const run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp');
+const run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp'),slidePose=P.image('assets/playground/nori-slide.webp');
 let model=NoriRun.create(),s=model.s,particles=[],floaters=[],banner='별사탕 숲으로 출발!',bannerTime=3,shake=0,lastSound=0,lastBiome=0,held=false,hudTime=0;
-const game=P.controller({key:'run',onStart(){model=NoriRun.create();s=model.s;particles=[];floaters=[];banner='별사탕 숲으로 출발!';bannerTime=3;shake=0;lastSound=0;lastBiome=0;held=false;hudTime=0;hud()},onPause(){release()},onResume(){release()}});
+const game=P.controller({key:'run',onStart(){model=NoriRun.create();s=model.s;particles=[];floaters=[];banner='별사탕 숲으로 출발!';bannerTime=3;shake=0;lastSound=0;lastBiome=0;held=false;hudTime=0;hud();P.runMusic?.start()},onPause(){release();P.runMusic?.pause()},onResume(){release();P.runMusic?.resume()}});
+const effectsButton=$('game-mute'),toggleEffects=effectsButton.onclick;
+function effectLabel(){effectsButton.textContent=effectsButton.textContent.replace(/^소리/,'효과음')}
+effectLabel();effectsButton.onclick=()=>{toggleEffects?.();effectLabel()};
 function leap(){if(game.phase==='running'&&model.jump()){P.sound('jump');burst(px,ground-s.y-8,'#ffffff',9)}}
 function release(){held=false;model.slide(false);$('slide-button').classList.remove('is-held')}
 function duck(){if(game.phase!=='running')return;held=true;model.slide(true);$('slide-button').classList.add('is-held')}
@@ -44,9 +47,9 @@ function update(dt){if(game.phase!=='running')return;model.step(dt);for(const e 
  if(e.type==='smash')burst(e.x,e.y,'#f5cd90',12);
  if(e.type==='land')burst(px,ground-s.y,'#fff9df',5);
  }
- const level=s.level;if(level!==lastBiome&&level>1){lastBiome=level;message('LEVEL '+level+' · '+(level===2?'계단 블록 등장! 위로 올라가요':level===3?'징검 발판과 연속 장애물!':'더 빠르고 촘촘한 길, 집중해요!'))}
+ const level=s.level;if(level!==lastBiome&&level>1){lastBiome=level;message('LEVEL '+level+' · '+(level===2?'계단 블록 등장! 위로 올라가요':level===3?'징검 발판과 연속 장애물!':'블록을 넘고 착지한 뒤 슬라이드!' ))}
  particles=particles.filter(p=>{p.t-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=360*dt;return p.t>0});floaters=floaters.filter(p=>{p.t-=dt;p.y-=35*dt;return p.t>0});bannerTime=Math.max(0,bannerTime-dt);shake=Math.max(0,shake-dt);hudTime-=dt;if(hudTime<=0||s.over){hud();hudTime=.08;}
- if(s.over){release();game.end(model.total(),'달콤한 모험 완료!',Math.floor(s.distance)+'m · 별사탕 '+s.stars+'개 · 최고 '+s.bestCombo+'콤보. 다시 달리면 더 멀리 갈 수 있어요!')}
+ if(s.over){release();P.runMusic?.stop();game.end(model.total(),'달콤한 모험 완료!',Math.floor(s.distance)+'m · 별사탕 '+s.stars+'개 · 최고 '+s.bestCombo+'콤보. 다시 달리면 더 멀리 갈 수 있어요!')}
 }
 const palettes=[['#c4e9f1','#fcf8df','#b9d5bd','#8bbaa5','#a6ce82'],['#f4dae2','#fff0db','#dfb9cf','#bb9fc5','#b6c691'],['#d9d4f1','#f3e8f3','#bfb1d5','#979bc6','#94bbae']];
 function ellipse(x,y,rx,ry,c){ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()}
@@ -85,13 +88,13 @@ function candy(o){const cx=o.x+o.w/2,cy=o.y+o.h/2;ctx.save();ctx.translate(cx,cy
 function draw(){
  ctx.save();if(shake>0&&!P.reduced)ctx.translate(Math.sin(s.time*85)*3,0);scenery();for(const o of s.objects){if(['stump','gate','platform','spikes'].includes(o.kind))obstacle(o);else candy(o)}
  ellipse(px,ground-(s.grounded?s.y:0)+5,Math.max(12,30-(s.grounded?0:s.y)*.08),5,'#688d7840');ctx.save();ctx.translate(px,ground-s.y);
- if(s.fever>0&&!P.reduced){for(let i=3;i>0;i--){ctx.globalAlpha=.08;P.sprite(ctx,run,-51-i*16,-94,100,100)}ctx.globalAlpha=1}
+ if(s.fever>0&&!P.reduced){for(let i=3;i>0;i--){ctx.globalAlpha=.08;if(s.slide&&s.grounded){const sw=48*(slidePose.naturalWidth||384)/(slidePose.naturalHeight||256);P.sprite(ctx,slidePose,-sw*.52-i*16,-47,sw,48)}else P.sprite(ctx,run,-51-i*16,-94,100,100)}ctx.globalAlpha=1}
  if(s.shield>0||s.invincible>0||s.fever>0){ellipse(0,-40,43,48,s.fever>0?'#fff9c760':'#c6f1ff60');ctx.strokeStyle=s.fever>0?'#fff8c2':'#e2fbff';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-40,43,48,0,0,7);ctx.stroke()}
  if(s.magnet>0){ctx.strokeStyle='#e99cb6a0';ctx.lineWidth=1.5;ctx.setLineDash([4,6]);ctx.beginPath();ctx.arc(0,-35,NoriRun.MAGNET_RADIUS,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}
  if(s.invincible>0&&Math.floor(s.time*12)%2)ctx.globalAlpha=.5;
  const sliding=s.slide&&s.grounded,t=game.phase==='running'&&!P.reduced?Math.sin(s.time*24):0;
- if(sliding){ctx.translate(4,4);ctx.scale(1.2,.48)}else if(s.grounded){ctx.translate(0,-Math.abs(t)*2);ctx.rotate(t*.035);if(s.land>0)ctx.scale(1.09,.91)}else ctx.rotate(Math.max(-.13,Math.min(.13,-s.v/3000)));
- P.sprite(ctx,!s.grounded?jump:(!P.reduced&&Math.floor(s.time*9)%2?contact:run),-51,-94,100,100);ctx.restore();
+ if(sliding){ctx.translate(0,1)}else if(s.grounded){ctx.translate(0,-Math.abs(t)*2);ctx.rotate(t*.035);if(s.land>0)ctx.scale(1.09,.91)}else ctx.rotate(Math.max(-.13,Math.min(.13,-s.v/3000)));
+ if(sliding){const sh=48,sw=sh*(slidePose.naturalWidth||384)/(slidePose.naturalHeight||256);P.sprite(ctx,slidePose,-sw*.52,-sh,sw,sh)}else P.sprite(ctx,!s.grounded?jump:(!P.reduced&&Math.floor(s.time*9)%2?contact:run),-51,-94,100,100);ctx.restore();
  if(s.jumps===1&&!s.grounded&&game.phase==='running'){ellipse(px-4,ground-s.y+8,2,2,'#fffef1');ellipse(px+4,ground-s.y+8,2,2,'#e7c65a')}
  for(const p of particles){ctx.globalAlpha=Math.max(0,p.t/.55);ellipse(p.x,p.y,3,3,p.c)}ctx.globalAlpha=1;
  for(const f of floaters){ctx.globalAlpha=Math.min(1,f.t*3);text(f.text,f.x,f.y,15,'#8a5a9d')}ctx.globalAlpha=1;
@@ -99,5 +102,5 @@ function draw(){
  if(game.phase==='idle'){for(let i=0;i<5;i++)candy({kind:'star',x:190+i*41,y:ground-75-Math.sin(i/4*Math.PI)*45,w:22,h:22});obstacle({kind:'stump',x:310,y:ground-36,w:36,h:36})}
  ctx.restore();
 }
-P.animate(update,draw);P.ready([run,contact,jump]);hud();
+P.animate(update,draw);P.ready([run,contact,jump,slidePose]);hud();
 })();

@@ -14,7 +14,10 @@ const faces=[
  ['집 꾸미는 노리','우리 집 꾸미기','assets/playground/memory-floor-measure.webp','#e8ebd8']
 ];
 let model=NoriMemory.create(6),s=model.s,lastSecond=-1,lastPreview=-1,messageTime=0,message='',count=6,focusAfterResolve=false;
-const game=P.controller({key:'memory-6',onStart:start,onPause(){board.inert=true;$('memory-peek').disabled=true},onResume(){board.inert=false;redraw()}});
+const game=P.controller({key:'memory-6',onStart:start,onPause(){P.memoryMusic?.pause();board.inert=true;$('memory-peek').disabled=true},onResume(){P.memoryMusic?.resume();board.inert=false;redraw()}});
+const effectsButton=$('game-mute'),toggleEffects=effectsButton.onclick;
+function effectsLabel(){effectsButton.textContent=effectsButton.textContent.replace(/^소리/,'효과음')}
+effectsLabel();effectsButton.onclick=()=>{toggleEffects?.();effectsLabel()};
 function best(){const b=P.read('nori-memory-'+count,null);return b&&Number.isFinite(b.moves)&&Number.isFinite(b.seconds)?b:null}
 function bestLabel(){const b=best();game.setBestLabel(b?b.moves+'회 · '+b.seconds+'초':'아직 없어요')}
 function build(){
@@ -38,12 +41,14 @@ function hintText(){
  $('memory-hint').classList.toggle('is-preview',s.preview>0||s.reveal>0);
 }
 function start(){
+ P.memoryMusic?.start();
  count=Number(level.value);model=NoriMemory.create(count);s=model.s;lastSecond=lastPreview=-1;messageTime=0;focusAfterResolve=false;level.disabled=true;board.inert=false;build();redraw();bestLabel();
  if(typeof matchMedia==='function'&&matchMedia('(max-width:650px)').matches)board.closest('.game-panel')?.scrollIntoView({block:'start',behavior:'auto'});
  game.announce(Math.ceil(s.preview)+'초 동안 노리의 모습을 기억해요.');
 }
 function focusNext(){[...board.children].find(b=>!b.disabled)?.focus({preventScroll:true})}
 function end(){
+ P.memoryMusic?.stop();
  level.disabled=false;const seconds=Math.floor(s.time),old=best();if(!old||s.moves<old.moves||(s.moves===old.moves&&seconds<old.seconds))P.save('nori-memory-'+count,{moves:s.moves,seconds});
  const title=['','끝까지 모았어요!','멋진 짝꿍 수집가!','노리 기억의 달인!'][model.stars()];
  game.end(0,'★'.repeat(model.stars())+' '+title,`${count}쌍을 ${s.moves}회 · ${seconds}초에 완성했어요. 최고 ${s.bestStreak}연속 성공!${s.hints?' 살짝 보기 없이 해냈어요.':' 살짝 보기 +2회가 기록에 포함돼요.'}`,{board:'memory-'+count,moves:s.moves,seconds});bestLabel();

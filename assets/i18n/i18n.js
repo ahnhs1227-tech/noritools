@@ -60,13 +60,20 @@
  function choose(value){
   const next=valid(value)||'ko';if(locale===next)return;locale=next;cache.clear();missing.clear();try{localStorage.setItem('nori-language',locale)}catch{}
   const url=new URL(location.href);url.searchParams.set('lang',locale);history.replaceState(history.state,'',url.href);
-  const select=document.getElementById('nori-language');if(select)select.value=locale;metadata();document.querySelectorAll('input,textarea').forEach(attrs);translateTree(document);document.dispatchEvent(new CustomEvent('nori:languagechange',{detail:{locale}}));
+  syncPicker();metadata();document.querySelectorAll('input,textarea').forEach(attrs);translateTree(document);document.dispatchEvent(new CustomEvent('nori:languagechange',{detail:{locale}}));
+ }
+ function syncPicker(){
+  document.querySelectorAll('.nori-language-button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.language===locale)));
  }
  function picker(){
   if(document.getElementById('nori-language'))return;
   const bar=document.createElement('div');bar.className='nori-language-bar';bar.setAttribute('translate','no');
-  const label=document.createElement('label');label.htmlFor='nori-language';label.textContent='Language';const select=document.createElement('select');select.id='nori-language';select.setAttribute('aria-label','언어 선택 / Choose language');
-  ['한국어','English','日本語','简体中文'].forEach((name,i)=>{const option=document.createElement('option');option.value=codes[i];option.textContent=name;select.append(option)});select.value=locale;select.onchange=()=>choose(select.value);bar.append(label,select);document.body.prepend(bar);
+  const label=document.createElement('span');label.className='nori-language-label';label.textContent='Language';
+  const group=document.createElement('div');group.id='nori-language';group.className='nori-language-flags';group.setAttribute('role','group');group.setAttribute('aria-label','언어 선택 / Choose language');
+  ['한국어','English','日本語','简体中文'].forEach((name,i)=>{
+   const button=document.createElement('button');button.type='button';button.className='nori-language-button';button.dataset.language=codes[i];button.setAttribute('aria-label',name);button.title=name;
+   const flag=document.createElement('img');flag.src='/noritools/assets/i18n/flags/'+codes[i]+'.svg';flag.alt='';flag.width=32;flag.height=32;flag.setAttribute('aria-hidden','true');button.append(flag);button.onclick=()=>choose(codes[i]);group.append(button);
+  });bar.append(label,group);document.body.prepend(bar);syncPicker();
  }
  function confirmLocalized(message){return window.confirm(t(message))}
  function alertLocalized(message){return window.alert(t(message))}

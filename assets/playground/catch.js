@@ -47,7 +47,7 @@ function update(dt){
 }
 function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()}
 function box(x,y,bw,bh,r,c){ctx.fillStyle=c;P.round(ctx,x,y,bw,bh,r);ctx.fill()}
-function label(t,x,y,size=12,color='#486049'){ctx.fillStyle=color;ctx.font=`800 ${size}px system-ui,sans-serif`;ctx.textAlign='center';ctx.fillText(t,x,y)}
+function label(t,x,y,size=12,color='#486049'){ctx.fillStyle=color;ctx.font=`800 ${size}px system-ui,sans-serif`;ctx.textAlign='center';ctx.fillText(typeof NoriI18n!=='undefined'?NoriI18n.t(t):t,x,y)}
 function fruit(f,size=19){
  ctx.save();ctx.translate(f.x,f.y);if(!P.reduced)ctx.rotate(Math.sin(s.time*3+f.spin)*.12);
  if(f.kind==='thorn'){

@@ -54,7 +54,7 @@ function update(dt){if(game.phase!=='running')return;model.step(dt);for(const e 
 const palettes=[['#c4e9f1','#fcf8df','#b9d5bd','#8bbaa5','#a6ce82'],['#f4dae2','#fff0db','#dfb9cf','#bb9fc5','#b6c691'],['#d9d4f1','#f3e8f3','#bfb1d5','#979bc6','#94bbae']];
 function ellipse(x,y,rx,ry,c){ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()}
 function box(x,y,bw,bh,r,c){ctx.fillStyle=c;P.round(ctx,x,y,bw,bh,r);ctx.fill()}
-function text(t,x,y,size=12,color='#3f635b',align='center'){ctx.fillStyle=color;ctx.font=`800 ${size}px system-ui, sans-serif`;ctx.textAlign=align;ctx.fillText(t,x,y)}
+function text(t,x,y,size=12,color='#3f635b',align='center'){ctx.fillStyle=color;ctx.font=`800 ${size}px system-ui, sans-serif`;ctx.textAlign=align;ctx.fillText(typeof NoriI18n!=='undefined'?NoriI18n.t(t):t,x,y)}
 function scenery(){
  const pal=palettes[Math.floor(s.distance/300)%3],travel=P.reduced?0:s.travel;
  const grad=ctx.createLinearGradient(0,0,0,h);grad.addColorStop(0,pal[0]);grad.addColorStop(1,pal[1]);ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);

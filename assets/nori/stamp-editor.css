@@ -12,3 +12,6 @@
 .stamp-font-sample{flex-shrink:0;overflow:hidden}
 .stamp-sample-text{display:block;white-space:nowrap;word-break:normal;overflow-wrap:normal;line-height:1.12}
 .mini-seal{flex-shrink:0;white-space:nowrap;word-break:normal;overflow-wrap:normal}
+
+.stamp-font-gallery [data-font=dongle] .stamp-sample-text{line-height:.88}
+.stamp-font-gallery [data-font=pen] .stamp-sample-text,.stamp-font-gallery [data-font=eastsea] .stamp-sample-text{line-height:1}

@@ -15,3 +15,7 @@
 
 .stamp-font-gallery [data-font=dongle] .stamp-sample-text{line-height:.88}
 .stamp-font-gallery [data-font=pen] .stamp-sample-text,.stamp-font-gallery [data-font=eastsea] .stamp-sample-text{line-height:1}
+
+/* Localized sample fitting owns font size and line height, including fallback glyphs. */
+.mini-seal{overflow:hidden}
+.stamp-sample-text{text-align:center;flex-shrink:0}

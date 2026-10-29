@@ -4,6 +4,33 @@
  let H=600;
  const out=Nori.exporter($('signature-download'),$('signature-help'));
  let history=[[]],active=null,pointer=null,revision=0,busy=false;
+ // A drawing session spans multiple strokes. Finger lifts must not re-enable scrolling.
+ let scrollLock=null;
+ const lockBar=$('signature-lock-bar');
+ function lockPage(){
+  if(scrollLock)return;
+  const body=document.body,props=['position','top','left','width','overflow'];
+  scrollLock={x:window.scrollX,y:window.scrollY,styles:props.map(name=>[name,body.style.getPropertyValue(name),body.style.getPropertyPriority(name)])};
+  const width=body.getBoundingClientRect().width;
+  document.documentElement.classList.add('signature-drawing');
+  body.style.position='fixed';body.style.top=-scrollLock.y+'px';body.style.left=-scrollLock.x+'px';body.style.width=width+'px';body.style.overflow='hidden';
+  lockBar.hidden=false;
+ }
+ function unlockPage(){
+  finish();if(!scrollLock)return;
+  const saved=scrollLock;scrollLock=null;
+  for(const [name,value,priority] of saved.styles){if(value)document.body.style.setProperty(name,value,priority);else document.body.style.removeProperty(name)}
+  lockBar.hidden=true;
+  window.scrollTo({left:saved.x,top:saved.y,behavior:'instant'});
+  document.documentElement.classList.remove('signature-drawing');
+ }
+ const blockSessionScroll=e=>{if(scrollLock&&e.cancelable)e.preventDefault()};
+ document.addEventListener('touchmove',blockSessionScroll,{passive:false,capture:true});
+ document.addEventListener('wheel',blockSessionScroll,{passive:false,capture:true});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')unlockPage()});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)unlockPage()});
+ window.addEventListener('pagehide',unlockPage);
+ $('signature-drawing-done').onclick=unlockPage;
  const strokes=()=>history[history.length-1];
  function status(text){$('signature-status').textContent=text}
  function controls(){const empty=!strokes().length&&!active;$('signature-export').disabled=empty||busy||!!active;$('signature-undo').disabled=history.length<2||!!active;$('signature-clear').disabled=empty||!!active;$('signature-empty').hidden=!empty}
@@ -27,10 +54,10 @@
  shell.addEventListener('contextmenu',stopPadGesture);
  function point(e){const r=canvas.getBoundingClientRect();return {x:Math.max(0,Math.min(W,(e.clientX-r.left)*W/r.width)),y:Math.max(0,Math.min(H,(e.clientY-r.top)*H/r.height))}}
  function finish(cancel=false){if(!active)return;const stroke=active,id=pointer;active=null;pointer=null;if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id);if(!cancel)commit([...strokes(),stroke]);render();if(cancel)status('입력이 중단됐어요. 마지막 획을 다시 그려주세요.')}
- canvas.addEventListener('pointerdown',e=>{if(active||(e.pointerType==='mouse'&&e.button!==0))return;e.preventDefault();invalidate();pointer=e.pointerId;active={color:$('signature-color').value,width:Number($('signature-width').value)*W/canvas.getBoundingClientRect().width,points:[point(e)]};canvas.setPointerCapture(pointer);render()});
+ canvas.addEventListener('pointerdown',e=>{if(active||(e.pointerType==='mouse'&&e.button!==0))return;e.preventDefault();lockPage();invalidate();pointer=e.pointerId;active={color:$('signature-color').value,width:Number($('signature-width').value)*W/canvas.getBoundingClientRect().width,points:[point(e)]};canvas.setPointerCapture(pointer);render()});
  canvas.addEventListener('pointermove',e=>{if(!active||e.pointerId!==pointer)return;e.preventDefault();const events=e.getCoalescedEvents?.()||[];for(const event of events.length?events:[e]){const p=point(event),last=active.points[active.points.length-1];if(Math.hypot(p.x-last.x,p.y-last.y)>.5)active.points.push(p)}render()});
  canvas.addEventListener('pointerup',e=>{if(e.pointerId!==pointer)return;const p=point(e),last=active.points[active.points.length-1];if(Math.hypot(p.x-last.x,p.y-last.y)>.5)active.points.push(p);finish()});
- canvas.addEventListener('pointercancel',e=>{if(e.pointerId===pointer)finish(true)});canvas.addEventListener('lostpointercapture',()=>{if(active)finish(true)});window.addEventListener('blur',()=>finish());window.addEventListener('resize',resizeSurface);
+ canvas.addEventListener('pointercancel',e=>{if(e.pointerId===pointer)finish(true)});canvas.addEventListener('lostpointercapture',()=>{if(active)finish(true)});window.addEventListener('blur',unlockPage);window.addEventListener('resize',()=>{if(scrollLock)document.body.style.width=document.documentElement.clientWidth+'px';resizeSurface()});
  if(window.ResizeObserver)new ResizeObserver(resizeSurface).observe(canvas);
  $('signature-undo').onclick=()=>{if(active||history.length<2)return;history.pop();invalidate();render();status('이전 단계로 되돌렸어요.')};
  $('signature-clear').onclick=()=>{if(active||!strokes().length)return;commit([]);invalidate();render();status('모두 지웠어요. 되돌리기로 복원할 수 있어요.')};
@@ -38,7 +65,7 @@
  document.querySelectorAll('[data-signature-color]').forEach(b=>b.onclick=()=>{$('signature-color').value=b.dataset.signatureColor;colors()});
  function colors(){document.querySelectorAll('[data-signature-color]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.signatureColor===$('signature-color').value)))}$('signature-color').oninput=colors;
  $('signature-crop').onchange=invalidate;
- $('signature-export').onclick=async()=>{if(active||!strokes().length||busy)return;busy=true;controls();const ticket=revision;try{
+ $('signature-export').onclick=async()=>{if(active||!strokes().length||busy)return;unlockPage();busy=true;controls();const ticket=revision;try{
   let x=0,y=0,w=W,h=H;
   if($('signature-crop').checked){const pixels=ctx.getImageData(0,0,W,H).data;let l=W,t=H,r=-1,b=-1;for(let yy=0;yy<H;yy++)for(let xx=0;xx<W;xx++)if(pixels[(yy*W+xx)*4+3]){l=Math.min(l,xx);r=Math.max(r,xx);t=Math.min(t,yy);b=Math.max(b,yy)}if(r<0)throw Error('먼저 사인을 그려주세요.');x=l;y=t;w=r-l+1;h=b-t+1}
   const output=document.createElement('canvas'),pad=24;output.width=w+pad*2;output.height=h+pad*2;output.getContext('2d').drawImage(canvas,x,y,w,h,pad,pad,w,h);

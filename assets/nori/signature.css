@@ -12,3 +12,11 @@
 @media(max-width:950px) and (max-height:500px) and (orientation:landscape){
  .signature-pad-shell canvas{height:65svh;min-height:220px;aspect-ratio:auto}
 }
+
+/* Keep the page still between strokes, not only while a pointer is held down. */
+html.signature-drawing{overflow:hidden!important;overscroll-behavior:none;touch-action:none;scroll-behavior:auto!important}
+html.signature-drawing body{touch-action:none;overscroll-behavior:none}
+.signature-lock-bar{position:fixed;z-index:1000;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(520px,calc(100% - 24px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 16px;background:#33482c;color:#fff;border:1px solid #6e855a;border-radius:17px;box-shadow:0 8px 28px #24342133}
+.signature-lock-bar strong{font-size:13px;display:block;line-height:1.5}
+.signature-lock-bar small{font-size:11px;display:block;line-height:1.5;color:#dce8d2}
+.signature-lock-bar button{flex-shrink:0;min-height:44px;padding:10px 14px;border:0;border-radius:11px;background:#dfff3f;color:#26351f;font-weight:800;font-size:13px;touch-action:manipulation}

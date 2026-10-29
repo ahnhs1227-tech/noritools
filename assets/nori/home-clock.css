@@ -29,3 +29,57 @@
 #home-feature .game-art>img{width:125px;height:138px;left:calc(50% - 62px);top:9px}
 @media(max-width:1050px){#home-feature .hot-grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:228px;overflow-x:auto;scroll-snap-type:x proximity;scroll-padding-inline:2px;overscroll-behavior-x:contain;padding:3px 2px 18px;scrollbar-width:thin;scrollbar-color:#b1c293 transparent}#home-feature .hot-card{scroll-snap-align:start}#home-feature .hot-grid:focus-visible{outline:2px solid #819b55;outline-offset:5px}}
 @media(max-width:650px){#home-feature .hot-grid{grid-auto-columns:min(76vw,260px);gap:12px}#home-feature .hot-copy{padding:16px}#home-feature .hot-art{height:180px;margin:7px 7px 0}#home-feature .hot-copy h3{font-size:18px}#home-feature .hot-copy>small{font-size:10px}#home-feature .hot-copy p{font-size:12px}#home-feature .hot-cta{font-size:12px}}
+
+/* Mobile recommendations are independent of the existing desktop HOT row. */
+#home-feature .mobile-hot-content{display:none}
+@media(max-width:650px){
+ #home-feature .hot-grid{display:none}
+ #home-feature .mobile-hot-content{display:block}
+ #home-feature .mobile-hot-grid,#home-feature .mobile-docs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ #home-feature .mobile-tool{min-width:0;border:1px solid #fff;border-radius:22px;background:#fbfcf8;padding:6px;text-decoration:none;color:#273825;box-shadow:0 7px 18px #344b2908;display:flex;flex-direction:column}
+ #home-feature .mobile-tool:focus-visible{outline:3px solid #698440;outline-offset:3px}
+ #home-feature .mobile-art{height:110px;border-radius:16px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+ #home-feature .mobile-art img{width:112px;height:106px;object-fit:contain;position:relative;filter:drop-shadow(0 5px 5px #31432515)}
+ #home-feature .mobile-copy{padding:10px 7px 8px;min-width:0;flex:1}
+ #home-feature .mobile-copy h3{font-size:15px;line-height:1.45;letter-spacing:-.5px;margin:0 0 4px;overflow-wrap:anywhere}
+ #home-feature .mobile-copy p{font-size:11px;line-height:1.55;color:#68735e;margin:0;overflow-wrap:anywhere}
+ #home-feature .mobile-photo{background:#e7efd5}
+ #home-feature .mobile-cutout{position:absolute;right:10px;top:14px;width:70px;height:85px;transform:rotate(9deg);border:4px solid white;border-radius:9px;background:repeating-conic-gradient(#e3e9dc 0% 25%,white 0% 50%) 0/14px 14px}
+ #home-feature .mobile-photo img{margin-left:-15px}
+ #home-feature .mobile-timer{background:#eaf1e2;justify-content:flex-start}
+ #home-feature .mobile-timer strong{font-size:26px;background:#fcfff3;border:1px solid #dbe6ca;border-radius:13px;padding:12px 8px;margin-left:7px;margin-top:-18px;letter-spacing:-1px;color:#526239}
+ #home-feature .mobile-timer img{position:absolute;width:77px;height:85px;right:0;bottom:0}
+ #home-feature .mobile-fortune{background:#f0e7fa}
+ #home-feature .mobile-fortune img{width:90px;height:103px;margin-left:30px}
+ #home-feature .mobile-fortune>span{position:absolute;top:10px;right:13px;color:#b09acb;font-size:21px}
+ #home-feature .mobile-fortune i{position:absolute;left:16px;top:22px;background:#fff8dd;border:2px solid #e8d9aa;transform:rotate(-12deg);border-radius:13px 13px 7px 7px;width:49px;height:67px;font-size:38px;text-align:center;color:#759055;font-style:normal}
+ #home-feature .mobile-symbols{background:#ffecd8;color:#526637}
+ #home-feature .mobile-symbols strong{font-size:21px;background:#fffdf3;border-radius:15px;padding:10px 7px;transform:rotate(-6deg);box-shadow:0 5px 0 #ecd4bb;white-space:nowrap}
+ #home-feature .symbol-heart{position:absolute;left:13px;top:0;font-size:32px;color:#d78485;transform:rotate(-15deg)}
+ #home-feature .symbol-star{position:absolute;right:9px;bottom:0;font-size:30px;color:#d0a34a}
+ #home-feature .mobile-play{grid-column:1/-1;display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center}
+ #home-feature .mobile-game{background:#e8f0d3;height:116px}
+ #home-feature .mobile-game img{height:108px;width:96px}
+ #home-feature .mobile-game>span{position:absolute;top:8px;right:8px;color:#c0a649;font-size:23px}
+ #home-feature .mobile-play .mobile-copy{padding:9px 11px}
+ #home-feature .mobile-copy small{font-size:10px;color:#7b865f;display:block;margin-bottom:4px}
+ #home-feature .mobile-game-list{font-size:9px;line-height:1.6;display:block;color:#596a41;background:#edf3e3;border-radius:7px;padding:5px 7px;margin-top:9px}
+ #home-feature .mobile-documents{margin-top:28px}
+ #home-feature .mobile-docs-heading>span{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#73834f}
+ #home-feature .mobile-docs-heading h2{font-size:20px;line-height:1.5;letter-spacing:-.6px;margin:5px 0}
+ #home-feature .mobile-docs-heading p{font-size:12px;color:#68735e;margin:0 0 13px}
+ #home-feature .mobile-pc-note{display:flex;align-items:center;gap:10px;background:#e9f0d9;border:1px solid #d2debb;border-radius:13px;padding:12px;margin-bottom:12px;color:#3b512d}
+ #home-feature .mobile-pc-note svg{flex-shrink:0}
+ #home-feature .mobile-pc-note strong{font-size:13px;line-height:1.5;display:block}
+ #home-feature .mobile-pc-note span{font-size:11px;line-height:1.6;display:block;color:#65744f;margin-top:2px}
+ #home-feature .mobile-resume{background:#eaf1d4}
+ #home-feature .mobile-quote{background:#f2eed8}
+ #home-feature .mobile-document .mobile-art{height:115px}
+ #home-feature .mobile-document .mobile-art img{width:123px;height:113px}
+ #home-feature .mobile-document .mobile-copy{display:flex;flex-direction:column;align-items:flex-start}
+ #home-feature .mobile-free{font-size:10px;font-weight:800;line-height:1.6;color:#3b5323;background:#e5f39d;padding:4px 6px;border-radius:7px;margin-bottom:8px}
+ #home-feature .mobile-document h3{font-size:14px}
+ #home-feature .mobile-document p{margin-bottom:12px}
+ #home-feature .mobile-doc-cta{font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:5px;padding-top:10px;border-top:1px solid #e4e9dc;width:100%;margin-top:auto;color:#4a6135}
+}
+@media(max-width:360px){#home-feature .mobile-timer strong{font-size:22px;padding:10px 5px;margin-left:4px}#home-feature .mobile-timer img{width:61px;height:73px}}

@@ -2,6 +2,7 @@
 window.Nori=(()=>{
  const base='/noritools/',groups=['이미지·글쓰기','생활·쇼핑','공간·제작','건강·식단','노리 놀이터'];
  const tools=[
+ {id:'quotation-maker',group:2,name:'노리 견적서·거래명세서',desc:'품목·부가세 자동 계산부터 PDF 저장까지.',path:'tools/quotation-maker/',mark:'▤',art:'assets/nori/characters/nori-quotation.webp',fresh:true,tags:'견적 견적서 견적서만들기 견적서작성 거래명세 거래명세서 거래내역 공급자 품목 단가 수량 부가세 VAT 사업자 문서 인쇄 PDF quotation quote estimate invoice statement 見積書 納品書 报价单 交易明细'},
  {id:'resume-maker',group:0,name:'노리 이력서',desc:'사진·학력·경력을 담아 A4 이력서와 PDF로.',path:'tools/resume-maker/',mark:'▤',art:'assets/nori/characters/nori-resume.webp',fresh:true,tags:'이력서 이력서작성 이력서만들기 이력서공방 이력서 공방 취업 구직 취준 입사지원 지원서 경력 학력 증명사진 인쇄 PDF resume cv job career 履歴書 就職 简历 求职'},
  {id:'signature-maker',group:2,name:'사인 만들기',desc:'손으로 그린 사인을 투명 PNG로 저장해요.',path:'tools/signature-maker/',mark:'✎',fresh:true,tags:'사인 싸인 서명 사인만들기 싸인만들기 서명만들기 사인패드 서명패드 전자서명 손글씨 그리기 투명 PNG signature sign autograph handwriting drawing サイン 署名 手書き 签名 手写签名'},
  {id:'symbols',group:0,name:'이모지·특수문자 모음',desc:'텍스트 표정 148개·하트·기호, 눌러서 복사.',path:'tools/symbols/',mark:'♡',fresh:true,tags:'이모지 이모티콘 emoji 특수문자 특수 문자 기호 하트 별 화살표 체크 표정 귀여운 프로필 꾸미기 복사 symbols 텍스트표정 텍스트 표정 텍스트이모티콘 텍스트 이모티콘 문자표정 문자 표정 카오모지 kaomoji 포옹 응원 파이팅 웃음 울음 고양이 곰'},

@@ -14,3 +14,7 @@
 /* Three secondary HOT tools remain below the featured resume. */
 .hot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:650px){.hot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hot-grid>.game-card{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,42%) minmax(0,1fr)}.hot-grid>.game-card .hot-art{height:190px;margin:6px}.hot-grid>.game-card .hot-copy{justify-content:center}.hot-grid>.game-card .hot-copy p{flex:0 0 auto;min-height:0}.hot-grid>.game-card .hot-cta{margin-top:0}}
+
+/* Quotation feature follows the resume across the full HOT row. */
+.hot-quotation-card{background:linear-gradient(110deg,#f7f5e6,#fcfdf8 64%)}.hot-quotation-art{background:radial-gradient(ellipse at center,#fffdf1,#edf2d4)}.hot-quotation-art>img{margin-left:0;width:195px;height:210px}
+@media(max-width:650px){.hot-quotation-art>img{width:135px;height:175px;margin:20px 0 0}.hot-quotation-card .hot-copy h3{font-size:20px;line-height:1.4;word-break:keep-all}}

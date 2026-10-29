@@ -1,1 +1,2 @@
 window.NoriMessages=window.NoriMessages||{};Object.assign(window.NoriMessages,{"노리 견적서·거래명세서": ["Nori Quotes & Statements", "ノリ見積書・取引明細書", "诺里报价单·交易明细"], "품목·부가세 자동 계산부터 PDF 저장까지.": ["Calculate items and VAT, then save a PDF.", "品目・消費税の自動計算からPDF保存まで。", "自动计算项目与增值税，保存为PDF。"]});
+Object.assign(window.NoriMessages,{"거래의 시작과 마무리를 깔끔하게": ["From quote to final statement", "見積から取引明細まで、すっきり", "从报价到交易明细，清晰有序"], "견적서 작성하기": ["Create a quote", "見積書を作成", "制作报价单"]});

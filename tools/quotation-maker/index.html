@@ -1061,7 +1061,123 @@ body{background:#f3f6ed;color:#253022;padding:0 20px 40px;font-family:"Apple SD 
 @media(max-width:600px){body{padding:0 12px 28px}.nori-topbar{padding:18px 0}.nori-hero{padding:22px 19px;gap:2px;margin:20px auto}.nori-hero img{width:104px;height:145px}.nori-hero p{font-size:13px}.nori-hero h1{font-size:26px;line-height:1.25}.nori-chips{gap:4px}.nori-chips span{font-size:10px;padding:6px 8px}.toolbar{padding:12px;gap:6px}.toolbar button{font-size:12px;padding:8px 10px}.document-type-control{font-size:12px}.document-scroll{padding:6px 28px 20px 0;border-radius:0}.nori-help{font-size:12px}.nori-topbar>a:last-child{font-size:12px}}
 @media print{.nori-chrome{display:none!important}.document-scroll{display:block!important;overflow:visible!important;padding:0!important;max-width:none!important;margin:0!important}.document-scroll>.sheet{box-shadow:none!important}.nori-attribution{color:#92988c!important} [contenteditable=true]:focus{outline:none!important;background:transparent!important}}
 </style>
-</head>
+<style>.nori-language-bar{display:flex;justify-content:flex-end;align-items:center;gap:12px;min-height:50px;padding:3px max(18px,calc((100vw - 1180px)/2));background:#eff3e9;border-bottom:1px solid #e3e8dc;color:#738365;font:11px/1.4 system-ui,sans-serif;position:relative;z-index:20}
+.nori-language-flags{display:flex;align-items:center;gap:3px}
+.nori-language-button{appearance:none;display:grid;place-items:center;box-sizing:border-box;width:44px;height:44px;min-width:44px;padding:4px;margin:0;border:2px solid transparent;border-radius:50%;background:transparent;cursor:pointer;box-shadow:none;line-height:1;touch-action:manipulation}
+.nori-language-button img{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 1px #27312e16;pointer-events:none}
+.nori-language-button:hover{background:#e1e8d5}
+.nori-language-button[aria-pressed="true"]{border-color:#73874c;background:#f9fbf3}
+.nori-language-button:focus-visible{outline:3px solid #364f38;outline-offset:2px}
+@media(forced-colors:active){.nori-language-button[aria-pressed="true"]{border-color:Highlight}}
+html[data-nori-lang]:not([data-nori-lang="ko"]){font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}html[data-nori-lang]:not([data-nori-lang="ko"]) button,html[data-nori-lang]:not([data-nori-lang="ko"]) label{overflow-wrap:anywhere}html[data-nori-lang="en"] .game-toolbar button{font-size:11px}html[data-nori-lang="en"] .memory-face>small{font-size:8px;white-space:normal;text-align:center;line-height:1.15}html[data-nori-lang="en"] .game-hud strong{overflow-wrap:normal}html[data-nori-lang="en"] .tool-card h3{line-height:1.3}html[data-nori-lang]:not([data-nori-lang="ko"]) .catch-status,html[data-nori-lang]:not([data-nori-lang="ko"]) .memory-story{flex-wrap:wrap}@media(max-width:650px){.nori-language-bar{padding:3px 12px;gap:8px}html[data-nori-lang="en"] .game-option select{max-width:140px}html[data-nori-lang="en"] .memory-options{flex-wrap:wrap}}
+</style><script id="nori-document-messages">window.NoriMessages={"노리 견적서": ["Nori Quotation", "ノリ見積書", "诺里报价单"], "노리 견적서·거래명세서": ["Nori Quotes & Statements", "ノリ見積書・取引明細書", "诺里报价单·交易明细"], "견적서": ["Quotation", "見積書", "报价单"], "견 적 서": ["QUOTATION", "見積書", "报价单"], "거래명세서": ["Transaction Statement", "取引明細書", "交易明细单"], "거 래 명 세 서": ["TRANSACTION STATEMENT", "取引明細書", "交易明细单"], "도구함으로 돌아가기 ↗": ["Back to tools ↗", "ツール一覧へ ↗", "返回工具箱 ↗"], "품목만 채우면, 금액은 노리가.": ["Add your items. Nori handles the totals.", "品目を入力すると、ノリが金額を計算。", "填写项目，金额交给诺里。"], "거래의 시작과 마무리를 깔끔하게 준비해요.": ["Keep your quotes and transaction records tidy.", "見積から取引明細まで、すっきり作成。", "轻松整理报价与交易记录。"], "부가세 자동 계산": ["Automatic VAT calculation", "付加価値税を自動計算", "自动计算增值税"], "PDF·인쇄": ["PDF & print", "PDF・印刷", "PDF·打印"], "내 기기에 보관": ["Save on this device", "この端末に保存", "保存在本机"], "문서 종류": ["Document type", "書類の種類", "文档类型"], "문서 종류 선택": ["Choose document type", "書類の種類を選択", "选择文档类型"], "세액 계산 방식": ["VAT display mode", "税額の表示方式", "税额显示方式"], "잔금 표시 방식": ["Balance display mode", "残額の表示方式", "余额显示方式"], "세액": ["VAT", "税額", "税额"], "세액 포함": ["Include VAT", "税額を含める", "包含税额"], "세액 별도": ["Exclude VAT", "税額を別途扱う", "不含税额"], "잔금": ["Previous balance", "前回残額", "前期余额"], "잔금 없음": ["No previous balance", "残額なし", "无前期余额"], "잔금 합산 (상단 금액에 포함)": ["Add balance to total", "残額を合計に加算", "余额计入总额"], "잔금 별도표기 (상단은 당거래액만)": ["Show balance separately", "残額を別に表示", "余额单独显示"], "현재 견적 저장": ["Save current document", "現在の書類を保存", "保存当前文档"], "저장된 견적": ["Saved documents", "保存した書類", "已保存的文档"], "로고 변경": ["Change logo", "ロゴを変更", "更换标志"], "로고 삭제": ["Remove logo", "ロゴを削除", "删除标志"], "도장 변경": ["Change stamp", "印影を変更", "更换印章"], "배경색 변경": ["Change colors", "色を変更", "更改颜色"], "수정가능 파일 저장": ["Save editable file", "編集用ファイルを保存", "保存可编辑文件"], "고정형 PDF 저장": ["Download PDF", "PDFをダウンロード", "下载PDF"], "인쇄 / PDF 저장": ["Print / Save PDF", "印刷・PDF保存", "打印 / 保存PDF"], "배경색 선택": ["Choose a color", "色を選択", "选择颜色"], "직접 입력": ["Enter a color code", "カラーコードを入力", "输入颜色代码"], "적용": ["Apply", "適用", "应用"], "기기 색상 선택기 열기": ["Open color picker", "カラーピッカーを開く", "打开颜色选择器"], "글자를 눌러 바로 수정하세요.": ["Click any text to edit it.", "文字をクリックして編集できます。", "点击文字即可编辑。"], "기본 정보는 가상의 예시입니다. 발송 전 내 사업자 정보로 바꿔 주세요.": ["The defaults are fictional examples. Replace them with your business details before sending.", "初期情報は架空の例です。送付前にご自身の事業者情報に変更してください。", "默认信息为虚构示例，请在发送前替换为自己的企业信息。"], "모바일에서는 문서를 좌우로 밀어 편집할 수 있어요. 작성 중인 내용은 자동 저장되지 않습니다.": ["On mobile, swipe the document sideways to edit. Changes are not saved automatically.", "スマートフォンでは書類を左右にスクロールして編集できます。内容は自動保存されません。", "手机上可左右滑动文档进行编辑，填写内容不会自动保存。"], "담당자:": ["Contact:", "担当者：", "联系人："], "공급자 관리": ["Manage suppliers", "発行者を管理", "管理供应商"], "공급자 정보 삭제": ["Clear supplier details", "発行者情報をクリア", "清空供应商信息"], "자주 쓰는 공급자": ["Saved suppliers", "よく使う発行者", "常用供应商"], "현재 공급자 정보와 로고·도장을 함께 저장할 수 있습니다. ★ 표시한 최대 3개는 견적서 위에 원클릭 버튼으로 표시됩니다.": ["Save supplier details with their logo and stamp. Star up to 3 suppliers for quick access.", "発行者情報とロゴ・印影を保存できます。最大3件を★で登録すると、すぐに呼び出せます。", "可将供应商信息与标志、印章一起保存，最多标星3家以便快速调用。"], "현재 공급자 저장": ["Save this supplier", "現在の発行者を保存", "保存当前供应商"], "저장 이름 (예: 노리주식회사 / 노리상점)": ["Save as (e.g. Nori Company)", "保存名（例：株式会社ノリ）", "保存名称（例：诺里有限公司）"], "거래처명": ["Customer name", "取引先名", "客户名称"], "귀중": ["To", "御中", "收"], "공 급 자": ["Supplier", "発行者", "供应商"], "등록번호": ["Registration no.", "登録番号", "登记编号"], "상호": ["Company", "会社名", "公司名称"], "성명": ["Name", "氏名", "姓名"], "주소": ["Address", "住所", "地址"], "업태": ["Business type", "業態", "经营类别"], "종목": ["Activity", "業種", "经营项目"], "아래와 같이 견적 합니다.": ["We submit the following quotation.", "下記のとおりお見積りいたします。", "现提供以下报价。"], "아래와 같이 거래 내역을 확인합니다.": ["The transaction details are listed below.", "下記のとおり取引内容を確認いたします。", "交易明细如下。"], "견적금액": ["Quoted total", "見積金額", "报价总额"], "합계금액": ["Total amount", "合計金額", "合计金额"], "(VAT포함)": ["(VAT included)", "（税込）", "（含税）"], "(VAT별도)": ["(VAT excluded)", "（税別）", "（不含税）"], "최종금액 절삭": ["Round total down", "合計金額の切り捨て", "总额向下取整"], "10원 절삭": ["Round down to ₩100", "100ウォン単位で切り捨て", "向下取整至100韩元"], "100원 절삭": ["Round down to ₩1,000", "1,000ウォン単位で切り捨て", "向下取整至1,000韩元"], "1,000원 절삭": ["Round down to ₩10,000", "10,000ウォン単位で切り捨て", "向下取整至10,000韩元"], "품명": ["Item", "品名", "品名"], "규격": ["Specs", "仕様", "规格"], "단위": ["Unit", "単位", "单位"], "수량": ["Qty", "数量", "数量"], "단가": ["Unit price", "単価", "单价"], "공급가액": ["Subtotal", "税抜金額", "未税金额"], "합계": ["Total", "合計", "合计"], "품목 추가": ["Add item", "品目を追加", "添加项目"], "당거래액": ["Current amount", "今回取引額", "本次金额"], "잔금 포함 합계": ["Total with balance", "残額を含む合計", "含余额总额"], "잔금 포함 잔액": ["Balance due", "残額込みの請求残高", "应付余额"], "비 고": ["Notes", "備考", "备注"], "납기일": ["Delivery date", "納期", "交货日期"], "유효일": ["Valid until", "有効期限", "有效期限"], "결제조건": ["Payment terms", "支払条件", "付款条件"], "참조": ["Reference", "参照", "参考"], "공급일": ["Supply date", "納品日", "供货日期"], "거래일": ["Transaction date", "取引日", "交易日期"], "본 견적서는 견적 제출일 기준이며, 부가세(10%) 포함 금액입니다.": ["This quotation is based on the issue date and includes 10% Korean VAT.", "本見積書は発行日を基準とし、韓国の付加価値税10%を含みます。", "本报价以出具日期为准，包含10%的韩国增值税。"], "본 견적서는 견적 제출일 기준이며, 부가세(10%) 별도 금액입니다.": ["This quotation is based on the issue date and excludes 10% Korean VAT.", "本見積書は発行日を基準とし、韓国の付加価値税10%は別途です。", "本报价以出具日期为准，不包含10%的韩国增值税。"], "이와 같이 거래 내역을 확인합니다.": ["The transaction details are confirmed as above.", "上記のとおり取引内容を確認いたします。", "确认上述交易明细。"], "이 견적서는 노리툴즈에서 무료로 제작하였습니다": ["This quotation was created for free with NORI Tools.", "この見積書はNORI Toolsで無料作成しました。", "本报价单由NORI Tools免费制作。"], "이 거래명세서는 노리툴즈에서 무료로 제작하였습니다": ["This transaction statement was created for free with NORI Tools.", "この取引明細書はNORI Toolsで無料作成しました。", "本交易明细单由NORI Tools免费制作。"], "저장과 인쇄 안내": ["Saving and printing", "保存・印刷について", "保存与打印说明"], "공급자와 견적 보관함은 이 기기의 현재 브라우저에 저장돼요. 다른 기기로 옮길 때는 보관함의 전체 백업이나 수정가능 파일 저장을 이용하세요. 브라우저 데이터를 지우면 보관함도 삭제됩니다.": ["Suppliers and documents are stored in this browser on this device. Use a full backup or editable file to move them. Clearing browser data deletes saved records.", "発行者と書類はこの端末のブラウザーに保存されます。他の端末へ移すには全件バックアップまたは編集用ファイルを使ってください。ブラウザーデータを削除すると保存内容も消えます。", "供应商和文档保存在当前设备的浏览器中。转移设备时请使用完整备份或可编辑文件，清除浏览器数据会删除保存的记录。"], "내용은 서버로 전송하지 않습니다. 로고·도장 이미지를 직접 첨부하고 색상을 바꿀 수 있어요. PDF 저장은 처음 실행할 때 변환 프로그램을 불러오므로 인터넷 연결이 필요합니다.": ["Your entries are not uploaded. Add your own logo or stamp and change colors. The first PDF download requires internet access to load the converter.", "入力内容は送信しません。ロゴ・印影を添付して色を変更できます。初回のPDF保存は変換プログラムの読み込みにインターネット接続が必要です。", "填写内容不会上传。可添加标志、印章并更改颜色，首次保存PDF需要联网加载转换程序。"], "인쇄 시 A4 세로를 선택하고 머리글·바닥글을 꺼 주세요. 품목이 많으면 PDF가 작아질 수 있으니 미리보기를 확인해 주세요.": ["Print in A4 portrait with browser headers and footers off. Many items may shrink the PDF; check the preview.", "A4縦を選び、ブラウザーのヘッダー・フッターをオフにしてください。品目が多いとPDFが縮小されるため、プレビューを確認してください。", "打印请选择A4纵向并关闭浏览器页眉页脚。项目较多时PDF可能缩小，请检查预览。"], "표시 언어만 바뀌며 통화는 원화(KRW), 부가세는 10%로 유지됩니다.": ["Only the display language changes. Currency remains KRW and VAT remains 10%.", "表示言語のみ変わります。通貨は韓国ウォン（KRW）、税率は10%のままです。", "仅更改显示语言，货币仍为韩元（KRW），增值税率仍为10%。"], "개인정보처리방침": ["Privacy policy", "プライバシーポリシー", "隐私政策"], "전체 백업": ["Back up all", "全件バックアップ", "完整备份"], "백업 복원": ["Restore backup", "バックアップを復元", "恢复备份"], "닫기": ["Close", "閉じる", "关闭"], "날짜, 거래처명, 견적번호 검색": ["Search date, customer or document no.", "日付・取引先名・書類番号で検索", "按日期、客户或单据编号搜索"], "저장된 견적 검색": ["Search saved documents", "保存した書類を検索", "搜索已保存文档"], "아직 저장된 견적이 없습니다.": ["No saved documents yet.", "保存した書類はまだありません。", "尚无已保存的文档。"], "검색 결과가 없습니다.": ["No matching documents.", "該当する書類はありません。", "没有匹配的文档。"], "불러오기": ["Load", "読み込む", "载入"], "현재 내용으로 덮어쓰기": ["Replace with current entries", "現在の内容で上書き", "用当前内容覆盖"], "삭제": ["Delete", "削除", "删除"], "입력": ["Use", "使用", "使用"], "즐겨찾기": ["Favorite", "お気に入り", "收藏"], "로고": ["Logo", "ロゴ", "标志"], "도장": ["Stamp", "印影", "印章"], "저장됨": ["Saved", "保存済み", "已保存"], "아직 저장된 공급자가 없습니다.": ["No saved suppliers yet.", "保存した発行者はまだありません。", "尚无已保存供应商。"], "현재 로고를 삭제할까요?": ["Remove the current logo?", "現在のロゴを削除しますか？", "删除当前标志吗？"], "이 품목을 삭제하시겠습니까?": ["Delete this item?", "この品目を削除しますか？", "删除此项目吗？"], "저장할 공급자 이름을 입력해주세요.": ["Enter a name for this supplier.", "保存する発行者の名前を入力してください。", "请输入供应商保存名称。"], "같은 이름의 공급자가 있습니다. 현재 정보로 덮어쓸까요?": ["A supplier with this name exists. Replace it with the current details?", "同名の発行者が存在します。現在の情報で上書きしますか？", "已存在同名供应商，是否用当前信息覆盖？"], "즐겨찾기는 최대 3개까지 지정할 수 있습니다.": ["You can favorite up to 3 suppliers.", "お気に入りは最大3件です。", "最多可收藏3家供应商。"], "고정형 PDF 생성에 실패했습니다. 인터넷 연결 상태를 확인한 뒤 다시 시도해주세요.": ["PDF creation failed. Check your internet connection and try again.", "PDF作成に失敗しました。接続を確認して再度お試しください。", "PDF生成失败，请检查网络连接后重试。"], "색상은 #DDF58A 같은 6자리 HEX 형식으로 입력해주세요.": ["Enter a 6-digit HEX color, such as #DDF58A.", "#DDF58Aのような6桁のHEXカラーを入力してください。", "请输入六位HEX颜色代码，如#DDF58A。"], "공급자 정보를 저장할 공간이 부족합니다. 큰 도장 이미지가 포함된 경우 이미지 용량을 줄여주세요.": ["Storage is full. Try using smaller logo or stamp images.", "保存容量が不足しています。ロゴや印影の画像サイズを小さくしてください。", "存储空间不足，请缩小标志或印章图片。"], "현재 공급자 정보를 모두 비울까요?\\n저장해 둔 공급자 목록은 삭제되지 않습니다.": ["Clear the current supplier details? Saved suppliers will remain.", "現在の発行者情報をクリアしますか？保存済みの一覧は残ります。", "清空当前供应商信息？已保存的供应商列表将保留。"], "지원하지 않는 백업 형식입니다.": ["Unsupported backup format.", "対応していないバックアップ形式です。", "不支持此备份格式。"], "견적을 덮어썼습니다.": ["Document replaced.", "書類を上書きしました。", "已覆盖文档。"], "현재 견적을 저장했습니다.": ["Document saved.", "書類を保存しました。", "文档已保存。"], "견적 저장 중 오류가 발생했습니다.": ["Could not save the document.", "書類を保存できませんでした。", "无法保存文档。"], "현재 작성 중인 내용을 저장된 견적으로 바꿀까요?": ["Replace your current entries with this saved document?", "編集中の内容を保存した書類に置き換えますか？", "用已保存文档替换当前内容吗？"], "선택한 저장 견적을 현재 화면 내용으로 덮어쓸까요?": ["Replace this saved document with the current entries?", "選択した書類を現在の内容で上書きしますか？", "用当前内容覆盖选中的已保存文档吗？"], "이 저장 견적을 삭제할까요? 삭제 후에는 복구할 수 없습니다.": ["Delete this saved document? This cannot be undone.", "保存した書類を削除しますか？元に戻せません。", "删除此保存文档？删除后无法恢复。"], "저장된 견적을 불러왔습니다.": ["Document loaded.", "書類を読み込みました。", "文档已载入。"], "견적을 삭제했습니다.": ["Document deleted.", "書類を削除しました。", "文档已删除。"], "올바른 견적 보관함 백업 파일이 아닙니다.": ["This is not a valid document backup.", "有効な書類バックアップではありません。", "这不是有效的文档备份文件。"], "백업을 복원했습니다.": ["Backup restored.", "バックアップを復元しました。", "已恢复备份。"], "백업 복원 실패:": ["Backup restore failed:", "バックアップ復元に失敗：", "备份恢复失败："], "거래처 미입력": ["No customer", "取引先未入力", "未填写客户"], "번호 없음": ["No number", "番号なし", "无编号"], "작성일": ["Issue date", "発行日", "出具日期"], "총액": ["Total", "合計", "总额"], "저장": ["Saved", "保存", "保存"], "원": ["KRW", "ウォン", "韩元"], "합계 직접입력 모드": ["Manual total", "合計を直接入力", "手动输入总额"], "합계(VAT 포함)": ["Total (incl. VAT)", "合計（税込）", "合计（含税）"], "단가기준 자동계산": ["Calculate from unit price", "単価から自動計算", "按单价自动计算"], "위로 이동": ["Move up", "上へ移動", "上移"], "아래로 이동": ["Move down", "下へ移動", "下移"], "{0}번 품목 위로 이동": ["Move item {0} up", "品目{0}を上へ移動", "将第{0}项上移"], "{0}번 품목 아래로 이동": ["Move item {0} down", "品目{0}を下へ移動", "将第{0}项下移"], "노리 라임": ["Nori lime", "ノリライム", "诺里青柠"], "소프트 그레이지": ["Soft greige", "ソフトグレージュ", "柔和灰米色"], "라이트 블루그레이": ["Light blue gray", "ライトブルーグレー", "浅蓝灰色"], "아이스 블루": ["Ice blue", "アイスブルー", "冰蓝色"], "세이지": ["Sage", "セージ", "鼠尾草绿"], "크림 베이지": ["Cream beige", "クリームベージュ", "奶油米色"], "노리 로고": ["Nori logo", "ノリのロゴ", "诺里标志"], "계산기 옆에서 견적서를 작성하는 노리": ["Nori writing a quotation beside a calculator", "電卓の横で見積書を書くノリ", "在计算器旁填写报价单的诺里"], "견적서와 거래명세서 편집 영역": ["Quotation and statement editor", "見積書・取引明細書の編集領域", "报价单和交易明细编辑区"], "년": ["Year", "年", "年"], "월": ["Month", "月", "月"], "일": ["Day", "日", "日"], "이 력 서": ["RESUME", "履歴書", "个人简历"], "사 진": ["Photo", "写真", "照片"], "성 명": ["Name", "氏名", "姓名"], "한 글": ["Native script", "和文", "中文"], "영 문": ["Latin script", "ローマ字", "拉丁字母"], "주 소": ["Address", "住所", "地址"], "군 별": ["Branch", "軍種", "军种"], "병 역": ["Service status", "兵役区分", "兵役状况"], "계 급": ["Rank", "階級", "军衔"], "학 력 및 경 력 사 항": ["Education & experience", "学歴・職歴", "学历及经历"], "학 교 명": ["School", "学校名", "学校名称"], "학 과": ["Major", "学科", "专业"], "회 사 명": ["Company", "会社名", "公司名称"], "이 이력서는 노리툴즈에서 무료로 제작하였습니다": ["This resume was created for free with NORI Tools.", "この履歴書はNORI Toolsで無料作成しました。", "本简历由NORI Tools免费制作。"], "필요한 항목만 담는 이력서": ["A resume with just what you need", "必要な項目だけの履歴書", "只保留所需栏目"], "선택한 언어로 이력서를 작성합니다. 입력한 내용은 자동 저장되지 않으니, 페이지를 닫기 전에 인쇄하거나 PDF로 저장해 주세요.": ["Create your resume in the selected language. Entries are not saved automatically; print or save a PDF before closing.", "選択した言語で履歴書を作成します。入力内容は自動保存されません。閉じる前に印刷またはPDF保存してください。", "使用所选语言制作简历。填写内容不会自动保存，请在关闭页面前打印或保存为PDF。"], "성명 (현지어)": ["Name (native script)", "氏名（和文）", "姓名（中文）"], "육군": ["Army", "陸軍", "陆军"], "만기 전역": ["Completed service", "満期除隊", "服役期满"], "병장": ["Sergeant", "兵長", "兵长"], "청주": ["Cheongju", "清州", "清州"], "비대상": ["Not applicable", "対象外", "不适用"], "증명사진": ["ID photo", "証明写真", "证件照"], "사진": ["Photo", "写真", "照片"], "저장한 공급자 정보를 삭제할까요?": ["Delete this saved supplier?", "保存した発行者情報を削除しますか？", "删除此已保存供应商吗？"], "{0}개의 견적을 복원할까요? 같은 ID의 견적은 백업 내용으로 갱신됩니다.": ["Restore {0} documents? Matching IDs will be replaced by the backup.", "書類{0}件を復元しますか？同じIDの書類はバックアップ内容で更新されます。", "恢复{0}份文档？相同ID的文档将被备份内容覆盖。"], "견적서와 거래명세서를 무료로 작성하고, 부가세 자동 계산부터 PDF 저장까지. 노리와 가볍게 준비하세요.": ["Create quotes and transaction statements for free, with VAT calculation and PDF export.", "見積書と取引明細書を無料作成。税額の自動計算からPDF保存まで。", "免费制作报价单和交易明细，支持税额自动计算和PDF保存。"]};</script><script id="nori-document-translator">/* Local translations: no remote translation calls and no uploaded user content. */
+'use strict';
+(()=>{
+ const codes=['ko','en','ja','zh-CN'],indices={en:0,ja:1,'zh-CN':2},dict=window.NoriMessages||{},source=new WeakMap(),attributes=new WeakMap();
+ const normalize=s=>String(s).replace(/\s+/g,' ').trim(),normalized=new Map(Object.entries(dict).map(([k,v])=>[normalize(k),v]));
+ const valid=value=>value==='zh'||value==='zh-Hans'?'zh-CN':codes.includes(value)?value:null;
+ let locale='ko';try{locale=valid(document.documentElement.getAttribute('data-saved-language'))||valid(new URL(location.href).searchParams.get('lang'))||valid(localStorage.getItem('nori-language'))||'ko'}catch{}
+ const cache=new Map(),escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const templates=Object.entries(dict).filter(([k])=>/\{\d+\}/.test(k)).map(([k,v])=>({key:k,values:v,re:new RegExp('^'+k.trim().split(/\{\d+\}/).map(escape).join('(.*?)')+'$')}));
+ const fragments=Object.keys(dict).filter(k=>k.trim().length>=2&&!/^\d+\s*(?:회|개|장|초|분|쌍|점|위)$/.test(k.trim())&&!/\{\d+\}|[<>]|\$\{|\\[bdsw]/.test(k)).sort((a,b)=>b.length-a.length);
+ const phrasePattern=fragments.length?new RegExp(fragments.map(escape).join('|'),'g'):null;
+ const missing=new Set();
+ function format(key,...args){const v=(locale==='ko'?key:(dict[key]||normalized.get(normalize(key)))?.[indices[locale]])||key;return v.replace(/\{(\d+)\}/g,(_,i)=>String(args[i]??''))}
+ function t(value){
+  const raw=String(value??'');if(locale==='ko'||!/[가-힣]/.test(raw))return raw;
+  const cached=cache.get(raw);if(cached!==undefined)return cached;
+  const index=indices[locale],key=normalize(raw),entry=dict[raw]||normalized.get(key);
+  let result=entry?raw.replace(raw.trim(),entry[index]):raw;
+  if(!entry){
+   const template=templates.find(x=>x.re.test(raw.trim()));
+   if(template){const captures=raw.trim().match(template.re).slice(1);result=template.values[index].replace(/\{(\d+)\}/g,(_,i)=>t(captures[i]||''));}
+   else if(phrasePattern)result=raw.replace(phrasePattern,k=>{const v=dict[k][index];return (/^\s/.test(k)?' ':'')+v.trim()+(/\s$/.test(k)?' ':'')});
+   const units={개:[' items','個','个'],장:[' sheets','枚','张'],초:[' sec','秒','秒'],분:[' min','分','分钟'],회:[' moves','回','次'],점:[' points','点','分'],쌍:[' pairs','ペア','对'],위:[' place','位','名'],송이:[' flowers','輪','朵'],년:[' year','年','年'],월:[' month','月','月'],일:[' day','日','日'],시:[' hr','時','时'],번:[' times','回','次'],배:['×','倍','倍'],원:[' KRW','ウォン','韩元'],연속:[' streak','連続','连胜']};
+   result=result.replace(/([\d,.]+)\s*(송이|연속|개|장|초|분|회|점|쌍|위|년|월|일|시|번|배|원)(?![가-힣])/g,(_,n,u)=>n+units[u][index]);
+  }
+  if(locale==='en')result=result.replace(/(\d)(min|flowers|points|pairs|sec|moves)\b/g,'$1 $2').replace(/\b1 (flowers|points|pairs|moves)\b/g,(_,unit)=>'1 '+unit.slice(0,-1));
+  if(/[가-힣]/.test(result))missing.add(raw);
+  if(cache.size>12000)cache.clear();cache.set(raw,result);return result;
+ }
+ const skip='script,style,[translate="no"],[data-no-translate],.nori-language-bar,.rank-name,.rank-row-name,#finished-goal,#card-logo-name,.batch-item strong,.record-card strong,.price-table [data-user-text],#who,#garden-voice-name';
+ const textSkip=skip+',textarea,input,[contenteditable]:not([contenteditable="false"])';
+ function textNode(node){
+  const el=node.parentElement;if(!el||el.closest(textSkip))return;
+  if(el.tagName==='OPTION'&&!el.hasAttribute('value'))el.value=el.textContent;
+  const current=node.nodeValue,old=source.get(node),original=old&&current===old.output?old.original:(/[가-힣]/.test(current)?current:(el.childNodes.length===1&&el.dataset.noriOriginal?el.dataset.noriOriginal:current));
+  if(!original||(!/[가-힣]/.test(original)&&!old))return;
+  if(el.childNodes.length===1&&/[가-힣]/.test(original))el.dataset.noriOriginal=original;const output=t(original);source.set(node,{original,output});if(current!==output)node.nodeValue=output;
+ }
+ function attrs(el){
+  if(el.closest(skip))return;
+  let tracked=attributes.get(el);if(!tracked){tracked={};attributes.set(el,tracked)}
+  let originals={};try{originals=JSON.parse(el.dataset.noriAttrs||'{}')}catch{}
+  for(const name of ['title','aria-label','placeholder','alt',...(el.tagName==='META'?['content']:[])]){
+   if(!el.hasAttribute(name))continue;const current=el.getAttribute(name),old=tracked[name],original=old&&current===old.output?old.original:(/[가-힣]/.test(current)?current:originals[name]||current);
+   if(!/[가-힣]/.test(original)&&!old)continue;const output=t(original);tracked[name]={original,output};originals[name]=original;el.dataset.noriAttrs=JSON.stringify(originals);if(current!==output)el.setAttribute(name,output);
+  }
+ }
+ function translateTree(root){
+  if(root.nodeType===3){textNode(root);return}if(root.nodeType!==1&&root.nodeType!==9)return;
+  if(root.nodeType===9)root.querySelectorAll('input,textarea').forEach(attrs);
+  if(root.nodeType===1){if(root.closest(skip))return;attrs(root);root.querySelectorAll('input,textarea').forEach(attrs)}
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT,{acceptNode(node){if(node.nodeType===1&&node.matches(textSkip))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT}});
+  while(walker.nextNode()){const node=walker.currentNode;if(node.nodeType===3)textNode(node);else attrs(node)}
+ }
+ function metadata(){
+  document.documentElement.lang=locale;document.documentElement.dataset.noriLang=locale;
+  const url=new URL(location.pathname,location.origin);url.search=locale==='ko'?'':'?lang='+locale;
+  const canonical=document.querySelector('link[rel="canonical"]');if(canonical)canonical.href=url.href;
+  for(const lang of [...codes,'x-default']){let link=document.querySelector('link[data-nori-alternate="'+lang+'"]');if(!link){link=document.createElement('link');link.rel='alternate';link.hreflang=lang;link.dataset.noriAlternate=lang;document.head.append(link)}const u=new URL(location.pathname,location.origin);if(lang!=='ko'&&lang!=='x-default')u.searchParams.set('lang',lang);link.href=u.href}
+ }
+ function choose(value){
+  const next=valid(value)||'ko';if(locale===next)return;locale=next;cache.clear();missing.clear();try{localStorage.setItem('nori-language',locale)}catch{}
+  const url=new URL(location.href);url.searchParams.set('lang',locale);history.replaceState(history.state,'',url.href);
+  syncPicker();metadata();document.querySelectorAll('input,textarea').forEach(attrs);translateTree(document);document.dispatchEvent(new CustomEvent('nori:languagechange',{detail:{locale}}));
+ }
+ function syncPicker(){
+  document.querySelectorAll('.nori-language-button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.language===locale)));
+ }
+ function picker(){
+  if(document.getElementById('nori-language'))return;
+  const bar=document.createElement('div');bar.className='nori-language-bar';bar.setAttribute('translate','no');
+  const label=document.createElement('span');label.className='nori-language-label';label.textContent='Language';
+  const group=document.createElement('div');group.id='nori-language';group.className='nori-language-flags';group.setAttribute('role','group');group.setAttribute('aria-label','언어 선택 / Choose language');
+  ['한국어','English','日本語','简体中文'].forEach((name,i)=>{
+   const button=document.createElement('button');button.type='button';button.className='nori-language-button';button.dataset.language=codes[i];button.setAttribute('aria-label',name);button.title=name;
+   const flag=document.createElement('img');flag.src={"ko": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iI2ZhZmJmNyIgZD0iTTAgMGg2NHY2NEgweiIvPjxnIHRyYW5zZm9ybT0icm90YXRlKDI4IDMyIDMyKSI+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMTIiIGZpbGw9IiNjZTQxNDciLz48cGF0aCBmaWxsPSIjMzE2M2E0IiBkPSJNMjAgMzJhMTIgMTIgMCAwIDAgMjQgMGE2IDYgMCAwIDAtMTIgMGE2IDYgMCAwIDEtMTIgMCIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNyAxNykgcm90YXRlKC01NSkiIGZpbGw9IiMyNzMxMmUiPjxyZWN0IHg9Ii03IiB5PSItNS4zIiB3aWR0aD0iMTQiIGhlaWdodD0iMi42Ii8+PHJlY3QgeD0iLTciIHk9Ii0xLjMiIHdpZHRoPSIxNCIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSItNyIgeT0iMi43IiB3aWR0aD0iMTQiIGhlaWdodD0iMi42Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ3IDE3KSByb3RhdGUoNTUpIiBmaWxsPSIjMjczMTJlIj48cmVjdCB4PSItNyIgeT0iLTUuMyIgd2lkdGg9IjUuNSIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSIxLjUiIHk9Ii01LjMiIHdpZHRoPSI1LjUiIGhlaWdodD0iMi42Ii8+PHJlY3QgeD0iLTciIHk9Ii0xLjMiIHdpZHRoPSIxNCIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSItNyIgeT0iMi43IiB3aWR0aD0iNS41IiBoZWlnaHQ9IjIuNiIvPjxyZWN0IHg9IjEuNSIgeT0iMi43IiB3aWR0aD0iNS41IiBoZWlnaHQ9IjIuNiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNyA0Nykgcm90YXRlKDU1KSIgZmlsbD0iIzI3MzEyZSI+PHJlY3QgeD0iLTciIHk9Ii01LjMiIHdpZHRoPSIxNCIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSItNyIgeT0iLTEuMyIgd2lkdGg9IjUuNSIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSIxLjUiIHk9Ii0xLjMiIHdpZHRoPSI1LjUiIGhlaWdodD0iMi42Ii8+PHJlY3QgeD0iLTciIHk9IjIuNyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjIuNiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NyA0Nykgcm90YXRlKC01NSkiIGZpbGw9IiMyNzMxMmUiPjxyZWN0IHg9Ii03IiB5PSItNS4zIiB3aWR0aD0iNS41IiBoZWlnaHQ9IjIuNiIvPjxyZWN0IHg9IjEuNSIgeT0iLTUuMyIgd2lkdGg9IjUuNSIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSItNyIgeT0iLTEuMyIgd2lkdGg9IjUuNSIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSIxLjUiIHk9Ii0xLjMiIHdpZHRoPSI1LjUiIGhlaWdodD0iMi42Ii8+PHJlY3QgeD0iLTciIHk9IjIuNyIgd2lkdGg9IjUuNSIgaGVpZ2h0PSIyLjYiLz48cmVjdCB4PSIxLjUiIHk9IjIuNyIgd2lkdGg9IjUuNSIgaGVpZ2h0PSIyLjYiLz48L2c+PC9zdmc+Cg==", "en": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iI2ZhZmJmNyIgZD0iTTAgMGg2NHY2NEgweiIvPjxwYXRoIGZpbGw9IiNiZDQ0NTEiIGQ9Ik0wIDAuMDAwMGg2NHY0LjkyMzFIMHoiLz48cGF0aCBmaWxsPSIjYmQ0NDUxIiBkPSJNMCA5Ljg0NjJoNjR2NC45MjMxSDB6Ii8+PHBhdGggZmlsbD0iI2JkNDQ1MSIgZD0iTTAgMTkuNjkyM2g2NHY0LjkyMzFIMHoiLz48cGF0aCBmaWxsPSIjYmQ0NDUxIiBkPSJNMCAyOS41Mzg1aDY0djQuOTIzMUgweiIvPjxwYXRoIGZpbGw9IiNiZDQ0NTEiIGQ9Ik0wIDM5LjM4NDZoNjR2NC45MjMxSDB6Ii8+PHBhdGggZmlsbD0iI2JkNDQ1MSIgZD0iTTAgNDkuMjMwOGg2NHY0LjkyMzFIMHoiLz48cGF0aCBmaWxsPSIjYmQ0NDUxIiBkPSJNMCA1OS4wNzY5aDY0djQuOTIzMUgweiIvPjxwYXRoIGZpbGw9IiMzNDRjNzkiIGQ9Ik0wIDBoMzZ2MzQuNDYySDB6Ii8+PGcgZmlsbD0iI2ZhZmJmNyI+PHBvbHlnb24gcG9pbnRzPSIzLjAwMCwwLjg1MCAzLjM3MCwxLjk5MCA0LjU2OSwxLjk5MCAzLjU5OSwyLjY5NSAzLjk3MCwzLjgzNSAzLjAwMCwzLjEzMCAyLjAzMCwzLjgzNSAyLjQwMSwyLjY5NSAxLjQzMSwxLjk5MCAyLjYzMCwxLjk5MCIvPjxwb2x5Z29uIHBvaW50cz0iOS4wMDAsMC44NTAgOS4zNzAsMS45OTAgMTAuNTY5LDEuOTkwIDkuNTk5LDIuNjk1IDkuOTcwLDMuODM1IDkuMDAwLDMuMTMwIDguMDMwLDMuODM1IDguNDAxLDIuNjk1IDcuNDMxLDEuOTkwIDguNjMwLDEuOTkwIi8+PHBvbHlnb24gcG9pbnRzPSIxNS4wMDAsMC44NTAgMTUuMzcwLDEuOTkwIDE2LjU2OSwxLjk5MCAxNS41OTksMi42OTUgMTUuOTcwLDMuODM1IDE1LjAwMCwzLjEzMCAxNC4wMzAsMy44MzUgMTQuNDAxLDIuNjk1IDEzLjQzMSwxLjk5MCAxNC42MzAsMS45OTAiLz48cG9seWdvbiBwb2ludHM9IjIxLjAwMCwwLjg1MCAyMS4zNzAsMS45OTAgMjIuNTY5LDEuOTkwIDIxLjU5OSwyLjY5NSAyMS45NzAsMy44MzUgMjEuMDAwLDMuMTMwIDIwLjAzMCwzLjgzNSAyMC40MDEsMi42OTUgMTkuNDMxLDEuOTkwIDIwLjYzMCwxLjk5MCIvPjxwb2x5Z29uIHBvaW50cz0iMjcuMDAwLDAuODUwIDI3LjM3MCwxLjk5MCAyOC41NjksMS45OTAgMjcuNTk5LDIuNjk1IDI3Ljk3MCwzLjgzNSAyNy4wMDAsMy4xMzAgMjYuMDMwLDMuODM1IDI2LjQwMSwyLjY5NSAyNS40MzEsMS45OTAgMjYuNjMwLDEuOTkwIi8+PHBvbHlnb24gcG9pbnRzPSIzMy4wMDAsMC44NTAgMzMuMzcwLDEuOTkwIDM0LjU2OSwxLjk5MCAzMy41OTksMi42OTUgMzMuOTcwLDMuODM1IDMzLjAwMCwzLjEzMCAzMi4wMzAsMy44MzUgMzIuNDAxLDIuNjk1IDMxLjQzMSwxLjk5MCAzMi42MzAsMS45OTAiLz48cG9seWdvbiBwb2ludHM9IjYuMDAwLDQuNTMwIDYuMzcwLDUuNjcwIDcuNTY5LDUuNjcwIDYuNTk5LDYuMzc1IDYuOTcwLDcuNTE1IDYuMDAwLDYuODEwIDUuMDMwLDcuNTE1IDUuNDAxLDYuMzc1IDQuNDMxLDUuNjcwIDUuNjMwLDUuNjcwIi8+PHBvbHlnb24gcG9pbnRzPSIxMi4wMDAsNC41MzAgMTIuMzcwLDUuNjcwIDEzLjU2OSw1LjY3MCAxMi41OTksNi4zNzUgMTIuOTcwLDcuNTE1IDEyLjAwMCw2LjgxMCAxMS4wMzAsNy41MTUgMTEuNDAxLDYuMzc1IDEwLjQzMSw1LjY3MCAxMS42MzAsNS42NzAiLz48cG9seWdvbiBwb2ludHM9IjE4LjAwMCw0LjUzMCAxOC4zNzAsNS42NzAgMTkuNTY5LDUuNjcwIDE4LjU5OSw2LjM3NSAxOC45NzAsNy41MTUgMTguMDAwLDYuODEwIDE3LjAzMCw3LjUxNSAxNy40MDEsNi4zNzUgMTYuNDMxLDUuNjcwIDE3LjYzMCw1LjY3MCIvPjxwb2x5Z29uIHBvaW50cz0iMjQuMDAwLDQuNTMwIDI0LjM3MCw1LjY3MCAyNS41NjksNS42NzAgMjQuNTk5LDYuMzc1IDI0Ljk3MCw3LjUxNSAyNC4wMDAsNi44MTAgMjMuMDMwLDcuNTE1IDIzLjQwMSw2LjM3NSAyMi40MzEsNS42NzAgMjMuNjMwLDUuNjcwIi8+PHBvbHlnb24gcG9pbnRzPSIzMC4wMDAsNC41MzAgMzAuMzcwLDUuNjcwIDMxLjU2OSw1LjY3MCAzMC41OTksNi4zNzUgMzAuOTcwLDcuNTE1IDMwLjAwMCw2LjgxMCAyOS4wMzAsNy41MTUgMjkuNDAxLDYuMzc1IDI4LjQzMSw1LjY3MCAyOS42MzAsNS42NzAiLz48cG9seWdvbiBwb2ludHM9IjMuMDAwLDguMjEwIDMuMzcwLDkuMzUwIDQuNTY5LDkuMzUwIDMuNTk5LDEwLjA1NSAzLjk3MCwxMS4xOTUgMy4wMDAsMTAuNDkwIDIuMDMwLDExLjE5NSAyLjQwMSwxMC4wNTUgMS40MzEsOS4zNTAgMi42MzAsOS4zNTAiLz48cG9seWdvbiBwb2ludHM9IjkuMDAwLDguMjEwIDkuMzcwLDkuMzUwIDEwLjU2OSw5LjM1MCA5LjU5OSwxMC4wNTUgOS45NzAsMTEuMTk1IDkuMDAwLDEwLjQ5MCA4LjAzMCwxMS4xOTUgOC40MDEsMTAuMDU1IDcuNDMxLDkuMzUwIDguNjMwLDkuMzUwIi8+PHBvbHlnb24gcG9pbnRzPSIxNS4wMDAsOC4yMTAgMTUuMzcwLDkuMzUwIDE2LjU2OSw5LjM1MCAxNS41OTksMTAuMDU1IDE1Ljk3MCwxMS4xOTUgMTUuMDAwLDEwLjQ5MCAxNC4wMzAsMTEuMTk1IDE0LjQwMSwxMC4wNTUgMTMuNDMxLDkuMzUwIDE0LjYzMCw5LjM1MCIvPjxwb2x5Z29uIHBvaW50cz0iMjEuMDAwLDguMjEwIDIxLjM3MCw5LjM1MCAyMi41NjksOS4zNTAgMjEuNTk5LDEwLjA1NSAyMS45NzAsMTEuMTk1IDIxLjAwMCwxMC40OTAgMjAuMDMwLDExLjE5NSAyMC40MDEsMTAuMDU1IDE5LjQzMSw5LjM1MCAyMC42MzAsOS4zNTAiLz48cG9seWdvbiBwb2ludHM9IjI3LjAwMCw4LjIxMCAyNy4zNzAsOS4zNTAgMjguNTY5LDkuMzUwIDI3LjU5OSwxMC4wNTUgMjcuOTcwLDExLjE5NSAyNy4wMDAsMTAuNDkwIDI2LjAzMCwxMS4xOTUgMjYuNDAxLDEwLjA1NSAyNS40MzEsOS4zNTAgMjYuNjMwLDkuMzUwIi8+PHBvbHlnb24gcG9pbnRzPSIzMy4wMDAsOC4yMTAgMzMuMzcwLDkuMzUwIDM0LjU2OSw5LjM1MCAzMy41OTksMTAuMDU1IDMzLjk3MCwxMS4xOTUgMzMuMDAwLDEwLjQ5MCAzMi4wMzAsMTEuMTk1IDMyLjQwMSwxMC4wNTUgMzEuNDMxLDkuMzUwIDMyLjYzMCw5LjM1MCIvPjxwb2x5Z29uIHBvaW50cz0iNi4wMDAsMTEuODkwIDYuMzcwLDEzLjAzMCA3LjU2OSwxMy4wMzAgNi41OTksMTMuNzM1IDYuOTcwLDE0Ljg3NSA2LjAwMCwxNC4xNzAgNS4wMzAsMTQuODc1IDUuNDAxLDEzLjczNSA0LjQzMSwxMy4wMzAgNS42MzAsMTMuMDMwIi8+PHBvbHlnb24gcG9pbnRzPSIxMi4wMDAsMTEuODkwIDEyLjM3MCwxMy4wMzAgMTMuNTY5LDEzLjAzMCAxMi41OTksMTMuNzM1IDEyLjk3MCwxNC44NzUgMTIuMDAwLDE0LjE3MCAxMS4wMzAsMTQuODc1IDExLjQwMSwxMy43MzUgMTAuNDMxLDEzLjAzMCAxMS42MzAsMTMuMDMwIi8+PHBvbHlnb24gcG9pbnRzPSIxOC4wMDAsMTEuODkwIDE4LjM3MCwxMy4wMzAgMTkuNTY5LDEzLjAzMCAxOC41OTksMTMuNzM1IDE4Ljk3MCwxNC44NzUgMTguMDAwLDE0LjE3MCAxNy4wMzAsMTQuODc1IDE3LjQwMSwxMy43MzUgMTYuNDMxLDEzLjAzMCAxNy42MzAsMTMuMDMwIi8+PHBvbHlnb24gcG9pbnRzPSIyNC4wMDAsMTEuODkwIDI0LjM3MCwxMy4wMzAgMjUuNTY5LDEzLjAzMCAyNC41OTksMTMuNzM1IDI0Ljk3MCwxNC44NzUgMjQuMDAwLDE0LjE3MCAyMy4wMzAsMTQuODc1IDIzLjQwMSwxMy43MzUgMjIuNDMxLDEzLjAzMCAyMy42MzAsMTMuMDMwIi8+PHBvbHlnb24gcG9pbnRzPSIzMC4wMDAsMTEuODkwIDMwLjM3MCwxMy4wMzAgMzEuNTY5LDEzLjAzMCAzMC41OTksMTMuNzM1IDMwLjk3MCwxNC44NzUgMzAuMDAwLDE0LjE3MCAyOS4wMzAsMTQuODc1IDI5LjQwMSwxMy43MzUgMjguNDMxLDEzLjAzMCAyOS42MzAsMTMuMDMwIi8+PHBvbHlnb24gcG9pbnRzPSIzLjAwMCwxNS41NzAgMy4zNzAsMTYuNzEwIDQuNTY5LDE2LjcxMCAzLjU5OSwxNy40MTUgMy45NzAsMTguNTU1IDMuMDAwLDE3Ljg1MCAyLjAzMCwxOC41NTUgMi40MDEsMTcuNDE1IDEuNDMxLDE2LjcxMCAyLjYzMCwxNi43MTAiLz48cG9seWdvbiBwb2ludHM9IjkuMDAwLDE1LjU3MCA5LjM3MCwxNi43MTAgMTAuNTY5LDE2LjcxMCA5LjU5OSwxNy40MTUgOS45NzAsMTguNTU1IDkuMDAwLDE3Ljg1MCA4LjAzMCwxOC41NTUgOC40MDEsMTcuNDE1IDcuNDMxLDE2LjcxMCA4LjYzMCwxNi43MTAiLz48cG9seWdvbiBwb2ludHM9IjE1LjAwMCwxNS41NzAgMTUuMzcwLDE2LjcxMCAxNi41NjksMTYuNzEwIDE1LjU5OSwxNy40MTUgMTUuOTcwLDE4LjU1NSAxNS4wMDAsMTcuODUwIDE0LjAzMCwxOC41NTUgMTQuNDAxLDE3LjQxNSAxMy40MzEsMTYuNzEwIDE0LjYzMCwxNi43MTAiLz48cG9seWdvbiBwb2ludHM9IjIxLjAwMCwxNS41NzAgMjEuMzcwLDE2LjcxMCAyMi41NjksMTYuNzEwIDIxLjU5OSwxNy40MTUgMjEuOTcwLDE4LjU1NSAyMS4wMDAsMTcuODUwIDIwLjAzMCwxOC41NTUgMjAuNDAxLDE3LjQxNSAxOS40MzEsMTYuNzEwIDIwLjYzMCwxNi43MTAiLz48cG9seWdvbiBwb2ludHM9IjI3LjAwMCwxNS41NzAgMjcuMzcwLDE2LjcxMCAyOC41NjksMTYuNzEwIDI3LjU5OSwxNy40MTUgMjcuOTcwLDE4LjU1NSAyNy4wMDAsMTcuODUwIDI2LjAzMCwxOC41NTUgMjYuNDAxLDE3LjQxNSAyNS40MzEsMTYuNzEwIDI2LjYzMCwxNi43MTAiLz48cG9seWdvbiBwb2ludHM9IjMzLjAwMCwxNS41NzAgMzMuMzcwLDE2LjcxMCAzNC41NjksMTYuNzEwIDMzLjU5OSwxNy40MTUgMzMuOTcwLDE4LjU1NSAzMy4wMDAsMTcuODUwIDMyLjAzMCwxOC41NTUgMzIuNDAxLDE3LjQxNSAzMS40MzEsMTYuNzEwIDMyLjYzMCwxNi43MTAiLz48cG9seWdvbiBwb2ludHM9IjYuMDAwLDE5LjI1MCA2LjM3MCwyMC4zOTAgNy41NjksMjAuMzkwIDYuNTk5LDIxLjA5NSA2Ljk3MCwyMi4yMzUgNi4wMDAsMjEuNTMwIDUuMDMwLDIyLjIzNSA1LjQwMSwyMS4wOTUgNC40MzEsMjAuMzkwIDUuNjMwLDIwLjM5MCIvPjxwb2x5Z29uIHBvaW50cz0iMTIuMDAwLDE5LjI1MCAxMi4zNzAsMjAuMzkwIDEzLjU2OSwyMC4zOTAgMTIuNTk5LDIxLjA5NSAxMi45NzAsMjIuMjM1IDEyLjAwMCwyMS41MzAgMTEuMDMwLDIyLjIzNSAxMS40MDEsMjEuMDk1IDEwLjQzMSwyMC4zOTAgMTEuNjMwLDIwLjM5MCIvPjxwb2x5Z29uIHBvaW50cz0iMTguMDAwLDE5LjI1MCAxOC4zNzAsMjAuMzkwIDE5LjU2OSwyMC4zOTAgMTguNTk5LDIxLjA5NSAxOC45NzAsMjIuMjM1IDE4LjAwMCwyMS41MzAgMTcuMDMwLDIyLjIzNSAxNy40MDEsMjEuMDk1IDE2LjQzMSwyMC4zOTAgMTcuNjMwLDIwLjM5MCIvPjxwb2x5Z29uIHBvaW50cz0iMjQuMDAwLDE5LjI1MCAyNC4zNzAsMjAuMzkwIDI1LjU2OSwyMC4zOTAgMjQuNTk5LDIxLjA5NSAyNC45NzAsMjIuMjM1IDI0LjAwMCwyMS41MzAgMjMuMDMwLDIyLjIzNSAyMy40MDEsMjEuMDk1IDIyLjQzMSwyMC4zOTAgMjMuNjMwLDIwLjM5MCIvPjxwb2x5Z29uIHBvaW50cz0iMzAuMDAwLDE5LjI1MCAzMC4zNzAsMjAuMzkwIDMxLjU2OSwyMC4zOTAgMzAuNTk5LDIxLjA5NSAzMC45NzAsMjIuMjM1IDMwLjAwMCwyMS41MzAgMjkuMDMwLDIyLjIzNSAyOS40MDEsMjEuMDk1IDI4LjQzMSwyMC4zOTAgMjkuNjMwLDIwLjM5MCIvPjxwb2x5Z29uIHBvaW50cz0iMy4wMDAsMjIuOTMwIDMuMzcwLDI0LjA3MCA0LjU2OSwyNC4wNzAgMy41OTksMjQuNzc1IDMuOTcwLDI1LjkxNSAzLjAwMCwyNS4yMTAgMi4wMzAsMjUuOTE1IDIuNDAxLDI0Ljc3NSAxLjQzMSwyNC4wNzAgMi42MzAsMjQuMDcwIi8+PHBvbHlnb24gcG9pbnRzPSI5LjAwMCwyMi45MzAgOS4zNzAsMjQuMDcwIDEwLjU2OSwyNC4wNzAgOS41OTksMjQuNzc1IDkuOTcwLDI1LjkxNSA5LjAwMCwyNS4yMTAgOC4wMzAsMjUuOTE1IDguNDAxLDI0Ljc3NSA3LjQzMSwyNC4wNzAgOC42MzAsMjQuMDcwIi8+PHBvbHlnb24gcG9pbnRzPSIxNS4wMDAsMjIuOTMwIDE1LjM3MCwyNC4wNzAgMTYuNTY5LDI0LjA3MCAxNS41OTksMjQuNzc1IDE1Ljk3MCwyNS45MTUgMTUuMDAwLDI1LjIxMCAxNC4wMzAsMjUuOTE1IDE0LjQwMSwyNC43NzUgMTMuNDMxLDI0LjA3MCAxNC42MzAsMjQuMDcwIi8+PHBvbHlnb24gcG9pbnRzPSIyMS4wMDAsMjIuOTMwIDIxLjM3MCwyNC4wNzAgMjIuNTY5LDI0LjA3MCAyMS41OTksMjQuNzc1IDIxLjk3MCwyNS45MTUgMjEuMDAwLDI1LjIxMCAyMC4wMzAsMjUuOTE1IDIwLjQwMSwyNC43NzUgMTkuNDMxLDI0LjA3MCAyMC42MzAsMjQuMDcwIi8+PHBvbHlnb24gcG9pbnRzPSIyNy4wMDAsMjIuOTMwIDI3LjM3MCwyNC4wNzAgMjguNTY5LDI0LjA3MCAyNy41OTksMjQuNzc1IDI3Ljk3MCwyNS45MTUgMjcuMDAwLDI1LjIxMCAyNi4wMzAsMjUuOTE1IDI2LjQwMSwyNC43NzUgMjUuNDMxLDI0LjA3MCAyNi42MzAsMjQuMDcwIi8+PHBvbHlnb24gcG9pbnRzPSIzMy4wMDAsMjIuOTMwIDMzLjM3MCwyNC4wNzAgMzQuNTY5LDI0LjA3MCAzMy41OTksMjQuNzc1IDMzLjk3MCwyNS45MTUgMzMuMDAwLDI1LjIxMCAzMi4wMzAsMjUuOTE1IDMyLjQwMSwyNC43NzUgMzEuNDMxLDI0LjA3MCAzMi42MzAsMjQuMDcwIi8+PHBvbHlnb24gcG9pbnRzPSI2LjAwMCwyNi42MTAgNi4zNzAsMjcuNzUwIDcuNTY5LDI3Ljc1MCA2LjU5OSwyOC40NTUgNi45NzAsMjkuNTk1IDYuMDAwLDI4Ljg5MCA1LjAzMCwyOS41OTUgNS40MDEsMjguNDU1IDQuNDMxLDI3Ljc1MCA1LjYzMCwyNy43NTAiLz48cG9seWdvbiBwb2ludHM9IjEyLjAwMCwyNi42MTAgMTIuMzcwLDI3Ljc1MCAxMy41NjksMjcuNzUwIDEyLjU5OSwyOC40NTUgMTIuOTcwLDI5LjU5NSAxMi4wMDAsMjguODkwIDExLjAzMCwyOS41OTUgMTEuNDAxLDI4LjQ1NSAxMC40MzEsMjcuNzUwIDExLjYzMCwyNy43NTAiLz48cG9seWdvbiBwb2ludHM9IjE4LjAwMCwyNi42MTAgMTguMzcwLDI3Ljc1MCAxOS41NjksMjcuNzUwIDE4LjU5OSwyOC40NTUgMTguOTcwLDI5LjU5NSAxOC4wMDAsMjguODkwIDE3LjAzMCwyOS41OTUgMTcuNDAxLDI4LjQ1NSAxNi40MzEsMjcuNzUwIDE3LjYzMCwyNy43NTAiLz48cG9seWdvbiBwb2ludHM9IjI0LjAwMCwyNi42MTAgMjQuMzcwLDI3Ljc1MCAyNS41NjksMjcuNzUwIDI0LjU5OSwyOC40NTUgMjQuOTcwLDI5LjU5NSAyNC4wMDAsMjguODkwIDIzLjAzMCwyOS41OTUgMjMuNDAxLDI4LjQ1NSAyMi40MzEsMjcuNzUwIDIzLjYzMCwyNy43NTAiLz48cG9seWdvbiBwb2ludHM9IjMwLjAwMCwyNi42MTAgMzAuMzcwLDI3Ljc1MCAzMS41NjksMjcuNzUwIDMwLjU5OSwyOC40NTUgMzAuOTcwLDI5LjU5NSAzMC4wMDAsMjguODkwIDI5LjAzMCwyOS41OTUgMjkuNDAxLDI4LjQ1NSAyOC40MzEsMjcuNzUwIDI5LjYzMCwyNy43NTAiLz48cG9seWdvbiBwb2ludHM9IjMuMDAwLDMwLjI5MCAzLjM3MCwzMS40MzAgNC41NjksMzEuNDMwIDMuNTk5LDMyLjEzNSAzLjk3MCwzMy4yNzUgMy4wMDAsMzIuNTcwIDIuMDMwLDMzLjI3NSAyLjQwMSwzMi4xMzUgMS40MzEsMzEuNDMwIDIuNjMwLDMxLjQzMCIvPjxwb2x5Z29uIHBvaW50cz0iOS4wMDAsMzAuMjkwIDkuMzcwLDMxLjQzMCAxMC41NjksMzEuNDMwIDkuNTk5LDMyLjEzNSA5Ljk3MCwzMy4yNzUgOS4wMDAsMzIuNTcwIDguMDMwLDMzLjI3NSA4LjQwMSwzMi4xMzUgNy40MzEsMzEuNDMwIDguNjMwLDMxLjQzMCIvPjxwb2x5Z29uIHBvaW50cz0iMTUuMDAwLDMwLjI5MCAxNS4zNzAsMzEuNDMwIDE2LjU2OSwzMS40MzAgMTUuNTk5LDMyLjEzNSAxNS45NzAsMzMuMjc1IDE1LjAwMCwzMi41NzAgMTQuMDMwLDMzLjI3NSAxNC40MDEsMzIuMTM1IDEzLjQzMSwzMS40MzAgMTQuNjMwLDMxLjQzMCIvPjxwb2x5Z29uIHBvaW50cz0iMjEuMDAwLDMwLjI5MCAyMS4zNzAsMzEuNDMwIDIyLjU2OSwzMS40MzAgMjEuNTk5LDMyLjEzNSAyMS45NzAsMzMuMjc1IDIxLjAwMCwzMi41NzAgMjAuMDMwLDMzLjI3NSAyMC40MDEsMzIuMTM1IDE5LjQzMSwzMS40MzAgMjAuNjMwLDMxLjQzMCIvPjxwb2x5Z29uIHBvaW50cz0iMjcuMDAwLDMwLjI5MCAyNy4zNzAsMzEuNDMwIDI4LjU2OSwzMS40MzAgMjcuNTk5LDMyLjEzNSAyNy45NzAsMzMuMjc1IDI3LjAwMCwzMi41NzAgMjYuMDMwLDMzLjI3NSAyNi40MDEsMzIuMTM1IDI1LjQzMSwzMS40MzAgMjYuNjMwLDMxLjQzMCIvPjxwb2x5Z29uIHBvaW50cz0iMzMuMDAwLDMwLjI5MCAzMy4zNzAsMzEuNDMwIDM0LjU2OSwzMS40MzAgMzMuNTk5LDMyLjEzNSAzMy45NzAsMzMuMjc1IDMzLjAwMCwzMi41NzAgMzIuMDMwLDMzLjI3NSAzMi40MDEsMzIuMTM1IDMxLjQzMSwzMS40MzAgMzIuNjMwLDMxLjQzMCIvPjwvZz48L3N2Zz4K", "ja": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iI2ZhZmJmNyIgZD0iTTAgMGg2NHY2NEgweiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjE2IiBmaWxsPSIjYzgzZDRiIi8+PC9zdmc+Cg==", "zh-CN": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iI2NjNDE0MCIgZD0iTTAgMGg2NHY2NEgweiIvPjxnIGZpbGw9IiNmNmQ3NmEiPjxwb2x5Z29uIHBvaW50cz0iMTkuMDAwLDEyLjAwMCAyMS4wMjEsMTguMjE5IDI3LjU2MCwxOC4yMTkgMjIuMjcwLDIyLjA2MiAyNC4yOTAsMjguMjgxIDE5LjAwMCwyNC40MzggMTMuNzEwLDI4LjI4MSAxNS43MzAsMjIuMDYyIDEwLjQ0MCwxOC4yMTkgMTYuOTc5LDE4LjIxOSIvPjxwb2x5Z29uIHBvaW50cz0iMjguNjQxLDEyLjE2MiAyOS43ODUsMTAuMTM5IDI4LjIxNSw4LjQyNSAzMC40OTMsOC44ODggMzEuNjM3LDYuODY0IDMxLjkwMSw5LjE3NCAzNC4xNzksOS42MzcgMzIuMDY0LDEwLjYwMiAzMi4zMjgsMTIuOTEyIDMwLjc1NywxMS4xOTgiLz48cG9seWdvbiBwb2ludHM9IjM0LjgxOCwxOS4zMzUgMzYuOTQxLDE4LjM4OSAzNi42OTgsMTYuMDc3IDM4LjI1NCwxNy44MDQgNDAuMzc4LDE2Ljg1OCAzOS4yMTYsMTguODcyIDQwLjc3MiwyMC42MDAgMzguNDk3LDIwLjExNyAzNy4zMzUsMjIuMTMwIDM3LjA5MiwxOS44MTgiLz48cG9seWdvbiBwb2ludHM9IjM1LjEwOCwyOC42MzAgMzcuNDE0LDI4LjkyNyAzOC40MDksMjYuODI2IDM4LjgzOSwyOS4xMTEgNDEuMTQ1LDI5LjQwOCAzOS4xMDUsMzAuNTIzIDM5LjUzNCwzMi44MDggMzcuODQ0LDMxLjIxMiAzNS44MDQsMzIuMzI3IDM2Ljc5OSwzMC4yMjYiLz48cG9seWdvbiBwb2ludHM9IjI5LjIyNSwzNi4zMzcgMzEuMDQ5LDM3Ljc3OSAzMi45ODQsMzYuNDg5IDMyLjE3NywzOC42NjkgMzQuMDAxLDQwLjExMSAzMS42NzgsNDAuMDE3IDMwLjg3MSw0Mi4xOTcgMzAuMjQyLDM5Ljk1OSAyNy45MTksMzkuODY1IDI5Ljg1NCwzOC41NzYiLz48L2c+PC9zdmc+Cg=="}[codes[i]];flag.alt='';flag.width=32;flag.height=32;flag.setAttribute('aria-hidden','true');button.append(flag);button.onclick=()=>choose(codes[i]);group.append(button);
+  });bar.append(label,group);document.body.prepend(bar);syncPicker();
+ }
+ function confirmLocalized(message){return noriConfirm(t(message))}
+ function alertLocalized(message){return window.alert(t(message))}
+ let booted=false;function boot(){
+  if(booted)return;booted=true;
+  picker();metadata();try{localStorage.setItem('nori-language',locale)}catch{}document.querySelectorAll('input,textarea').forEach(attrs);translateTree(document);
+  const pending=new Set();let scheduled=false;
+  new MutationObserver(records=>{
+   for(const r of records){if(r.type==='childList')r.addedNodes.forEach(n=>pending.add(n));else pending.add(r.target)}
+   if(!scheduled){scheduled=true;queueMicrotask(()=>{scheduled=false;const list=[...pending];pending.clear();for(const node of list)if(node.isConnected)translateTree(node)})}
+  }).observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','placeholder','alt','content']});
+  window.addEventListener('popstate',()=>{const requested=valid(new URL(location.href).searchParams.get('lang'));if(requested&&requested!==locale)choose(requested);metadata()});
+ }
+ window.NoriI18n={t,format,choose,confirm:confirmLocalized,alert:alertLocalized,get locale(){return locale},get missing(){return [...missing]},search(values){return values.map(v=>[v,...(dict[v]||normalized.get(normalize(v))||[])]).flat().join(' ')}};
+ // Wait for the original pages' asynchronous framework scripts before touching their text nodes.
+ function start(){if(document.querySelector('script[src*="0_mmq9in"]')&&!window.NoriHydrated)return;boot()}
+ document.addEventListener('nori:hydrated',start);if(document.readyState==='complete')start();else window.addEventListener('load',start,{once:true});
+})();
+</script>
+<style>
+html:not([lang="ko"]) .sheet .title{font-size:24px;letter-spacing:.04em;text-indent:0;text-align:center;max-width:460px}
+html:not([lang="ko"]) .sheet table.supplier{font-size:11px}
+html[lang="en"] .sheet table.supplier .side-label{writing-mode:horizontal-tb;text-orientation:mixed;letter-spacing:0;width:60px;min-width:60px;padding:4px;font-size:10px;word-break:normal}
+html:not([lang="ko"]) .sheet td.label{overflow-wrap:normal;line-height:1.3}
+html:not([lang="ko"]) .korean-amount{display:none}
+html:not([lang="ko"]) .sheet .rounding-buttons{flex-wrap:wrap}
+html:not([lang="ko"]) .sheet .rounding-buttons button{font-size:9px;white-space:normal}
+html:not([lang="ko"]) .sheet table.items th{font-size:10px;line-height:1.3;white-space:normal}
+html:not([lang="ko"]) .nori-hero h1{letter-spacing:-.6px}
+@media print{.nori-language-bar{display:none!important}}
+</style><style>.date-iso{display:none}html[lang="en"] .date-iso{display:inline}html[lang="en"] .date-ko{display:none}</style></head>
 <body>
 <header class="nori-topbar nori-chrome"><a class="nori-brand" href="https://ahnhs1227-tech.github.io/noritools/"><b>N</b>NORI TOOLS</a><a href="https://ahnhs1227-tech.github.io/noritools/">도구함으로 돌아가기 ↗</a></header>
 <section class="nori-hero nori-chrome"><div><span class="nori-eyebrow">NORI PAPERWORK</span><h1>노리 견적서<br>거래명세서</h1><p>품목만 채우면, 금액은 노리가.<br>거래의 시작과 마무리를 깔끔하게 준비해요.</p><div class="nori-chips"><span>부가세 자동 계산</span><span>PDF·인쇄</span><span>내 기기에 보관</span></div></div><img src="/noritools/assets/nori/characters/nori-quotation.webp" alt="계산기 옆에서 견적서를 작성하는 노리" width="180" height="195"></section>
@@ -1126,8 +1242,8 @@ body{background:#f3f6ed;color:#253022;padding:0 20px 40px;font-family:"Apple SD 
   <button type="button" class="native-color-btn" onclick="openNativeColorPicker()">기기 색상 선택기 열기</button>
 </div>
 
-<p class="nori-help nori-chrome"><strong>글자를 눌러 바로 수정하세요.</strong> 기본 정보는 가상의 예시입니다. 발송 전 내 사업자 정보로 바꿔 주세요.<br>모바일에서는 문서를 좌우로 밀어 편집할 수 있어요. 작성 중인 내용은 자동 저장되지 않습니다.</p>
-<main class="document-scroll" aria-label="견적서와 거래명세서 편집 영역"><div class="sheet" translate="no">
+<p class="nori-help nori-chrome"><strong>글자를 눌러 바로 수정하세요.</strong> <span>기본 정보는 가상의 예시입니다. 발송 전 내 사업자 정보로 바꿔 주세요.</span><br>모바일에서는 문서를 좌우로 밀어 편집할 수 있어요. 작성 중인 내용은 자동 저장되지 않습니다.</p>
+<main class="document-scroll" aria-label="견적서와 거래명세서 편집 영역"><div class="sheet">
 
   <div class="top">
     <div class="logo"><img src="data:image/webp;base64,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" alt="노리 로고"></div>
@@ -1163,9 +1279,9 @@ body{background:#f3f6ed;color:#253022;padding:0 20px 40px;font-family:"Apple SD 
 <div class="header-grid">
     <div class="left-block">
       <div class="date-line">
-        <span contenteditable="true" id="y">2026</span> 년
-        <span contenteditable="true" id="m">01</span> 월
-        <span contenteditable="true" id="d">01</span> 일
+        <span contenteditable="true" id="y">2026</span><span class="date-ko"> 년</span><span class="date-iso" translate="no">-</span>
+        <span contenteditable="true" id="m">01</span><span class="date-ko"> 월</span><span class="date-iso" translate="no">-</span>
+        <span contenteditable="true" id="d">01</span><span class="date-ko"> 일</span>
       </div>
       <div class="recipient">
         <span contenteditable="true">거래처명</span>
@@ -1177,7 +1293,7 @@ body{background:#f3f6ed;color:#253022;padding:0 20px 40px;font-family:"Apple SD 
 <table class="supplier">
       <tr>
         <td class="side-label" rowspan="5">공&nbsp;급&nbsp;자</td>
-        <td class="label">등록<br>번호</td>
+        <td class="label">등록번호</td>
         <td colspan="3" contenteditable="true" id="supplierRegNo">000-00-00000</td>
       </tr>
       <tr>
@@ -1213,7 +1329,7 @@ body{background:#f3f6ed;color:#253022;padding:0 20px 40px;font-family:"Apple SD 
   <div class="amount-bar">
     <div class="amount-label"><span id="documentAmountLabel">견적금액</span><br><span id="vatModeLabel" style="font-weight:400;font-size:11px;">(VAT포함)</span></div>
     <div class="amount-value" id="amountText">
-      일금 <span id="amountKorean">영</span>원정(₩<span id="finalAmount" contenteditable="true">0</span>)
+      <span class="korean-amount" translate="no">일금 <span id="amountKorean">영</span>원정</span><span class="currency-prefix" translate="no"> (KRW ₩</span><span id="finalAmount" contenteditable="true">0</span>)
       <span class="rounding-buttons" aria-label="최종금액 절삭">
         <button type="button" onclick="truncateFinalAmount(100)">10원 절삭</button>
         <button type="button" onclick="truncateFinalAmount(1000)">100원 절삭</button>
@@ -1278,8 +1394,10 @@ body{background:#f3f6ed;color:#253022;padding:0 20px 40px;font-family:"Apple SD 
 <div class="nori-attribution" id="noriAttribution">이 견적서는 노리툴즈에서 무료로 제작하였습니다</div>
 
 </div></main>
-<footer class="nori-bottom nori-chrome"><details><summary>저장과 인쇄 안내</summary><p>공급자와 견적 보관함은 이 기기의 현재 브라우저에 저장돼요. 다른 기기로 옮길 때는 보관함의 전체 백업이나 수정가능 파일 저장을 이용하세요. 브라우저 데이터를 지우면 보관함도 삭제됩니다.</p><p>내용은 서버로 전송하지 않습니다. 로고·도장 이미지를 직접 첨부하고 색상을 바꿀 수 있어요. PDF 저장은 처음 실행할 때 변환 프로그램을 불러오므로 인터넷 연결이 필요합니다.</p><p>한국어 문서 양식입니다. 인쇄 시 A4 세로, 머리글·바닥글 끄기를 권장해요. 품목이 많으면 PDF 한 장에 작게 저장되므로 인쇄 미리보기도 확인해 주세요.</p></details><p><a href="https://ahnhs1227-tech.github.io/noritools/privacy/">개인정보처리방침</a> · NORI Tools</p></footer>
+<footer class="nori-bottom nori-chrome"><p>표시 언어만 바뀌며 통화는 원화(KRW), 부가세는 10%로 유지됩니다.</p><details><summary>저장과 인쇄 안내</summary><p>공급자와 견적 보관함은 이 기기의 현재 브라우저에 저장돼요. 다른 기기로 옮길 때는 보관함의 전체 백업이나 수정가능 파일 저장을 이용하세요. 브라우저 데이터를 지우면 보관함도 삭제됩니다.</p><p>내용은 서버로 전송하지 않습니다. 로고·도장 이미지를 직접 첨부하고 색상을 바꿀 수 있어요. PDF 저장은 처음 실행할 때 변환 프로그램을 불러오므로 인터넷 연결이 필요합니다.</p><p>인쇄 시 A4 세로를 선택하고 머리글·바닥글을 꺼 주세요. 품목이 많으면 PDF가 작아질 수 있으니 미리보기를 확인해 주세요.</p></details><p><a href="https://ahnhs1227-tech.github.io/noritools/privacy/">개인정보처리방침</a> · NORI Tools</p></footer>
 <script>
+function noriAlert(message){window.alert(window.NoriI18n.t(message));}
+function noriConfirm(message){return window.confirm(window.NoriI18n.t(message));}
 let rowCount = 0;
 
 const DOCUMENT_TYPES = {
@@ -1368,9 +1486,9 @@ function changeDocumentType(type){
 }
 
 function getDocumentTypeName(){
-  return document.documentElement.getAttribute('data-document-type') === 'statement'
+  return window.NoriI18n.t( document.documentElement.getAttribute('data-document-type') === 'statement'
     ? '거래명세서'
-    : '견적서';
+    : '견적서');
 }
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -1570,11 +1688,9 @@ function addRow(name, spec, unit, qty, price){
 function delRow(btn){
   const tr = btn.closest('tr');
   const itemName = (tr.querySelector('.name')?.textContent || '').trim();
-  const message = itemName
-    ? `“${itemName}” 품목을 삭제하시겠습니까?`
-    : '이 품목을 삭제하시겠습니까?';
+  const message = '이 품목을 삭제하시겠습니까?';
 
-  if(!window.confirm(message)) return;
+  if(!noriConfirm(message)) return;
 
   tr.remove();
   renumber();
@@ -1879,6 +1995,8 @@ function saveEditableFile(){
 
   const clone = document.documentElement.cloneNode(true);
   clone.setAttribute('data-saved-estimate', 'true');
+  clone.setAttribute('data-saved-language', window.NoriI18n.locale);
+  clone.querySelectorAll('.nori-language-bar,link[data-nori-alternate]').forEach(el=>el.remove());
   clone.querySelectorAll('.nori-chrome').forEach(el=>el.remove());
   clone.querySelectorAll('input[type=file]').forEach(el=>el.value='');
 
@@ -2008,8 +2126,8 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
       btn.style.top = positions[index] + 'px';
       btn.addEventListener('click', function(){
         const itemName = tr.querySelector('td.name')?.textContent.trim() || '';
-        const msg = itemName ? `“${itemName}” 품목을 삭제하시겠습니까?` : '이 품목을 삭제하시겠습니까?';
-        if(confirm(msg)){
+        const msg = '이 품목을 삭제하시겠습니까?';
+        if(noriConfirm(msg)){
           tr.remove();
           renumber();
           calcAll();
@@ -2263,7 +2381,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
       pdf.save(docno + '_' + getDocumentTypeName() + '.pdf');
     }catch(err){
       console.error(err);
-      alert('고정형 PDF 생성에 실패했습니다. 인터넷 연결 상태를 확인한 뒤 다시 시도해주세요.');
+      noriAlert('고정형 PDF 생성에 실패했습니다. 인터넷 연결 상태를 확인한 뒤 다시 시도해주세요.');
     }finally{
       if(stage) stage.remove();
     }
@@ -2344,7 +2462,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
     const input=document.getElementById('colorHexInput');
     if(!input) return;
     if(!window.applyBackgroundPalette(input.value)){
-      alert('색상은 #DDF58A 같은 6자리 HEX 형식으로 입력해주세요.');
+      noriAlert('색상은 #DDF58A 같은 6자리 HEX 형식으로 입력해주세요.');
     }
   };
 
@@ -2433,6 +2551,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
 
   function applySupplier(data){
     if(!data) return;
+    document.querySelectorAll('.supplier [data-nori-example]').forEach(el=>el.dataset.noriUser='true');
     setVal('supplierRegNo',data.regNo);
     setVal('supplierCompany',data.company);
     setVal('supplierName',data.name);
@@ -2476,13 +2595,13 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
       localStorage.setItem(STORAGE_KEY,JSON.stringify(list));
       return true;
     }catch(e){
-      alert('공급자 정보를 저장할 공간이 부족합니다. 큰 도장 이미지가 포함된 경우 이미지 용량을 줄여주세요.');
+      noriAlert('공급자 정보를 저장할 공간이 부족합니다. 큰 도장 이미지가 포함된 경우 이미지 용량을 줄여주세요.');
       return false;
     }
   }
 
   window.clearSupplierInfo=function(){
-    if(!confirm('현재 공급자 정보를 모두 비울까요?\\n저장해 둔 공급자 목록은 삭제되지 않습니다.')) return;
+    if(!noriConfirm('현재 공급자 정보를 모두 비울까요?\\n저장해 둔 공급자 목록은 삭제되지 않습니다.')) return;
     applySupplier({
       regNo:'',company:'',name:'',address:'',bizType:'',bizItem:'',tel:'',fax:'',stampSrc:'',logoSrc:''
     });
@@ -2510,7 +2629,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
   window.saveCurrentSupplierPreset=function(){
     const input=el('supplierPresetName');
     const name=(input?.value||'').trim();
-    if(!name){ alert('저장할 공급자 이름을 입력해주세요.'); input?.focus(); return; }
+    if(!name){ noriAlert('저장할 공급자 이름을 입력해주세요.'); input?.focus(); return; }
 
     const list=loadPresets();
     const existing=list.findIndex(x=>x.title===name);
@@ -2521,7 +2640,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
       data:currentSupplier()
     };
     if(existing>=0){
-      if(!confirm('같은 이름의 공급자가 있습니다. 현재 정보로 덮어쓸까요?')) return;
+      if(!noriConfirm('같은 이름의 공급자가 있습니다. 현재 정보로 덮어쓸까요?')) return;
       list[existing]=item;
     }else{
       list.push(item);
@@ -2546,7 +2665,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
     const item=list.find(x=>x.id===id);
     if(!item) return;
     if(!item.favorite && list.filter(x=>x.favorite).length>=3){
-      alert('즐겨찾기는 최대 3개까지 지정할 수 있습니다.');
+      noriAlert('즐겨찾기는 최대 3개까지 지정할 수 있습니다.');
       return;
     }
     item.favorite=!item.favorite;
@@ -2560,7 +2679,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
     const list=loadPresets();
     const item=list.find(x=>x.id===id);
     if(!item) return;
-    if(!confirm('“'+item.title+'” 공급자 저장정보를 삭제할까요?')) return;
+    if(!noriConfirm('저장한 공급자 정보를 삭제할까요?')) return;
     if(savePresets(list.filter(x=>x.id!==id))){
       renderSupplierManager();
       renderFavoriteButtons();
@@ -2574,7 +2693,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
     loadPresets().filter(x=>x.favorite).slice(0,3).forEach(item=>{
       const b=document.createElement('button');
       b.type='button';
-      b.textContent='★ '+item.title;
+      b.setAttribute('translate','no');b.textContent='★ '+item.title;
       b.onclick=()=>window.applySupplierPreset(item.id);
       wrap.appendChild(b);
     });
@@ -2597,17 +2716,17 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
       main.className='supplier-preset-main';
       const title=document.createElement('div');
       title.className='supplier-preset-title';
-      title.textContent=item.title;
+      title.setAttribute('translate','no');title.textContent=item.title;
       const sub=document.createElement('div');
       sub.className='supplier-preset-sub';
       const assetInfo=[];
       if(item.data?.logoSrc) assetInfo.push('로고');
       if(item.data?.stampSrc) assetInfo.push('도장');
-      sub.textContent=[
+      sub.setAttribute('translate','no');sub.textContent=[
         item.data?.company,
         item.data?.regNo,
         item.data?.name,
-        assetInfo.length ? assetInfo.join('+')+' 저장됨' : ''
+        assetInfo.length ? assetInfo.map(x=>window.NoriI18n.t(x)).join('+')+' '+window.NoriI18n.t('저장됨') : ''
       ].filter(Boolean).join(' · ');
       main.append(title,sub);
 
@@ -2645,7 +2764,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
 window.deleteCompanyLogo = function(){
   const logo = document.querySelector('.logo img');
   if(!logo) return;
-  if(!window.confirm('현재 로고를 삭제할까요?')) return;
+  if(!noriConfirm('현재 로고를 삭제할까요?')) return;
   logo.removeAttribute('src');
   logo.style.visibility = 'hidden';
 };
@@ -2709,6 +2828,7 @@ window.deleteCompanyLogo = function(){
   }
   function qv_meta(){return {recipient:qv_text($('.recipient span[contenteditable]')),date:[qv_text($('#y')),qv_text($('#m')),qv_text($('#d'))].join('-'),docno:qv_text($('#docno')),total:qv_text($('#finalAmount')),documentType:$('#documentTypeSelect')?.value||'estimate'};}
   function qv_restoreState(state){
+    document.querySelectorAll('[data-nori-example]').forEach(el=>el.dataset.noriUser='true');
     if(!state||state.schema!==1)throw new Error('지원하지 않는 백업 형식입니다.');
     syncVatMode(state.vatMode || 'included');
     if($('#balanceAmount'))$('#balanceAmount').textContent=state.balanceAmount||'0';
@@ -2726,18 +2846,18 @@ window.deleteCompanyLogo = function(){
     try{const meta=qv_meta(),now=new Date().toISOString();let id=overwrite&&qv_currentId?qv_currentId:(crypto.randomUUID?crypto.randomUUID():'qv-'+Date.now()+'-'+Math.random().toString(16).slice(2));let createdAt=now;
       if(overwrite&&qv_currentId){const found=(await qv_all()).find(x=>x.id===qv_currentId);if(found)createdAt=found.createdAt||now;}
       await qv_tx('readwrite',s=>s.put({id,createdAt,updatedAt:now,...meta,state:qv_capture()}));qv_currentId=id;qv_toast(overwrite?'견적을 덮어썼습니다.':'현재 견적을 저장했습니다.');if($('#qvVaultModal').classList.contains('qv-open'))qv_render();
-    }catch(e){alert('견적 저장 중 오류가 발생했습니다.\n'+e.message);}
+    }catch(e){noriAlert('견적 저장 중 오류가 발생했습니다.\n'+e.message);}
   }
   function qv_escape(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   async function qv_render(){const list=$('#qvList'),term=$('#qvSearch').value.trim().toLowerCase();let items=(await qv_all()).sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt)));items=items.filter(x=>[x.date,x.recipient,x.docno].join(' ').toLowerCase().includes(term));
     if(!items.length){list.innerHTML='<div class="qv-empty">'+(term?'검색 결과가 없습니다.':'아직 저장된 견적이 없습니다.')+'</div>';return;}
-    list.innerHTML=items.map(x=>'<article class="qv-card"><div><div class="qv-title">'+(x.documentType==='statement'?'거래명세서':'견적서')+' · '+qv_escape(x.recipient||'거래처 미입력')+' · '+qv_escape(x.docno||'번호 없음')+'</div><div class="qv-meta">작성일 '+qv_escape(x.date||'-')+' · 총액 '+qv_escape(x.total||'0')+'원 · 저장 '+qv_escape(new Date(x.updatedAt).toLocaleString('ko-KR'))+'</div></div><div class="qv-actions"><button data-qv-load="'+qv_escape(x.id)+'">불러오기</button><button class="qv-light" data-qv-overwrite="'+qv_escape(x.id)+'">현재 내용으로 덮어쓰기</button><button class="qv-danger" data-qv-delete="'+qv_escape(x.id)+'">삭제</button></div></article>').join('');}
+    list.innerHTML=items.map(x=>'<article class="qv-card"><div><div class="qv-title">'+(x.documentType==='statement'?'거래명세서':'견적서')+' · '+'<span translate="no">'+qv_escape(x.recipient||window.NoriI18n.t('거래처 미입력'))+'</span>'+' · '+'<span translate="no">'+qv_escape(x.docno||window.NoriI18n.t('번호 없음'))+'</span>'+'</div><div class="qv-meta">작성일 '+qv_escape(x.date||'-')+' · 총액 '+qv_escape(x.total||'0')+'원 · 저장 '+qv_escape(new Date(x.updatedAt).toLocaleString(window.NoriI18n.locale))+'</div></div><div class="qv-actions"><button data-qv-load="'+qv_escape(x.id)+'">불러오기</button><button class="qv-light" data-qv-overwrite="'+qv_escape(x.id)+'">현재 내용으로 덮어쓰기</button><button class="qv-danger" data-qv-delete="'+qv_escape(x.id)+'">삭제</button></div></article>').join('');}
   async function qv_get(id){return (await qv_all()).find(x=>x.id===id);}
-  async function qv_load(id){const item=await qv_get(id);if(!item)return;if(!confirm('현재 작성 중인 내용을 저장된 견적으로 바꿀까요?'))return;qv_restoreState(item.state);qv_currentId=id;qv_close();qv_toast('저장된 견적을 불러왔습니다.');}
-  async function qv_overwrite(id){if(!confirm('선택한 저장 견적을 현재 화면 내용으로 덮어쓸까요?'))return;qv_currentId=id;await qv_save(true);}
-  async function qv_delete(id){if(!confirm('이 저장 견적을 삭제할까요? 삭제 후에는 복구할 수 없습니다.'))return;await qv_tx('readwrite',s=>s.delete(id));if(qv_currentId===id)qv_currentId=null;await qv_render();qv_toast('견적을 삭제했습니다.');}
+  async function qv_load(id){const item=await qv_get(id);if(!item)return;if(!noriConfirm('현재 작성 중인 내용을 저장된 견적으로 바꿀까요?'))return;qv_restoreState(item.state);qv_currentId=id;qv_close();qv_toast('저장된 견적을 불러왔습니다.');}
+  async function qv_overwrite(id){if(!noriConfirm('선택한 저장 견적을 현재 화면 내용으로 덮어쓸까요?'))return;qv_currentId=id;await qv_save(true);}
+  async function qv_delete(id){if(!noriConfirm('이 저장 견적을 삭제할까요? 삭제 후에는 복구할 수 없습니다.'))return;await qv_tx('readwrite',s=>s.delete(id));if(qv_currentId===id)qv_currentId=null;await qv_render();qv_toast('견적을 삭제했습니다.');}
   async function qv_backup(){const data={format:'qv-estimate-vault-backup',version:1,exportedAt:new Date().toISOString(),estimates:await qv_all()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='견적보관함_전체백업_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-  async function qv_import(file){try{const data=JSON.parse(await file.text());if(data.format!=='qv-estimate-vault-backup'||!Array.isArray(data.estimates))throw new Error('올바른 견적 보관함 백업 파일이 아닙니다.');if(!confirm(data.estimates.length+'개의 견적을 복원할까요? 같은 ID의 견적은 백업 내용으로 갱신됩니다.'))return;for(const item of data.estimates)await qv_tx('readwrite',s=>s.put(item));await qv_render();qv_toast('백업을 복원했습니다.');}catch(e){alert('백업 복원 실패: '+e.message);}}
+  async function qv_import(file){try{const data=JSON.parse(await file.text());if(data.format!=='qv-estimate-vault-backup'||!Array.isArray(data.estimates))throw new Error('올바른 견적 보관함 백업 파일이 아닙니다.');if(!noriConfirm(data.estimates.length+'개의 견적을 복원할까요? 같은 ID의 견적은 백업 내용으로 갱신됩니다.'))return;for(const item of data.estimates)await qv_tx('readwrite',s=>s.put(item));await qv_render();qv_toast('백업을 복원했습니다.');}catch(e){noriAlert('백업 복원 실패: '+e.message);}}
   function qv_open(){const m=$('#qvVaultModal');m.classList.add('qv-open');m.setAttribute('aria-hidden','false');qv_render();setTimeout(()=>$('#qvSearch').focus(),0);}
   function qv_close(){const m=$('#qvVaultModal');m.classList.remove('qv-open');m.setAttribute('aria-hidden','true');}
   window.qv_saveCurrentEstimate=()=>qv_save(false);window.qv_openEstimateVault=qv_open;
@@ -2751,5 +2871,20 @@ window.deleteCompanyLogo = function(){
 
 <script id="nori-editing-guard">
 document.addEventListener('paste',function(e){const target=e.target.closest('[contenteditable="true"]');if(!target)return;e.preventDefault();const text=e.clipboardData.getData('text/plain');document.execCommand('insertText',false,text);});
+</script><script id="nori-document-examples">(()=>{
+ const samples={ko:{person:'김노리',company:'노리주식회사',address:'서울특별시 노리구 노리로 123 (예시)',type:'서비스업',activity:'디자인',recipient:'거래처명',item:'품목명을 입력하세요',spec:'규격'},en:{person:'Nori Doh',company:'Nori Company',address:'123 Nori Lane, Nori City (example)',type:'Services',activity:'Design',recipient:'Customer name',item:'Enter an item name',spec:'Size'},ja:{person:'佐藤ノリ',company:'株式会社ノリ',address:'ノリ市ノリ町1-2-3（架空の住所）',type:'サービス業',activity:'デザイン',recipient:'取引先名',item:'品名を入力してください',spec:'仕様'},'zh-CN':{person:'王诺里',company:'诺里有限公司',address:'诺里市诺里路123号（示例）',type:'服务业',activity:'设计',recipient:'客户名称',item:'请输入品名',spec:'规格'}};
+ const saved=document.documentElement.hasAttribute('data-saved-estimate');
+ const fields={'.meta-row [contenteditable]:first-of-type':'person','#supplierName':'person','#supplierCompany':'company','#supplierAddress':'address','#supplierBizType':'type','#supplierBizItem':'activity','.recipient [contenteditable]':'recipient','#itemsBody tr:first-child td:nth-child(2)':'item','#itemsBody tr:first-child td:nth-child(3)':'spec'};
+ if(!saved)for(const [selector,key] of Object.entries(fields)){const el=document.querySelector(selector);if(el)el.dataset.noriExample=key;}
+ document.addEventListener('input',e=>{const el=e.target.closest('[data-nori-example]');if(el)el.dataset.noriUser='true';});
+ function apply(){
+  const data=samples[window.NoriI18n.locale]||samples.ko;
+  if(!saved)document.querySelectorAll('[data-nori-example]').forEach(el=>{if(el.dataset.noriUser!=='true')el.textContent=data[el.dataset.noriExample];});
+  // Refresh calculated/static labels; all editable values stay unchanged.
+  updateDocumentFooter();
+  document.title=window.NoriI18n.t('노리 견적서·거래명세서')+' · NORI Tools';
+ }
+ document.addEventListener('nori:languagechange',apply);window.addEventListener('load',apply,{once:true});
+})();
 </script></body>
 </html>

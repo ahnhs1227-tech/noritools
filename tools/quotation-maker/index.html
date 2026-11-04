@@ -1177,7 +1177,70 @@ html:not([lang="ko"]) .sheet .rounding-buttons button{font-size:9px;white-space:
 html:not([lang="ko"]) .sheet table.items th{font-size:10px;line-height:1.3;white-space:normal}
 html:not([lang="ko"]) .nori-hero h1{letter-spacing:-.6px}
 @media print{.nori-language-bar{display:none!important}}
-</style><style>.date-iso{display:none}html[lang="en"] .date-iso{display:inline}html[lang="en"] .date-ko{display:none}</style><meta property="og:title" content="무료 견적서·거래명세서 작성·PDF 저장 | 노리툴즈"><meta property="og:description" content="무료 견적서와 거래명세서를 브라우저에서 바로 작성하세요. 품목·수량·단가 입력, 부가세 자동 계산, 로고·도장 첨부, PDF 저장과 인쇄를 지원합니다."><meta property="og:url" content="https://nori-tools.com/tools/quotation-maker/"><meta property="og:type" content="website"><link rel="stylesheet" href="/assets/nori/search-guides.css?v=20261104-search1"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "무료 견적서·거래명세서 작성·PDF 저장", "description": "무료 견적서와 거래명세서를 브라우저에서 바로 작성하세요. 품목·수량·단가 입력, 부가세 자동 계산, 로고·도장 첨부, PDF 저장과 인쇄를 지원합니다.", "url": "https://nori-tools.com/tools/quotation-maker/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script></head>
+</style><style>.date-iso{display:none}html[lang="en"] .date-iso{display:inline}html[lang="en"] .date-ko{display:none}</style><meta property="og:title" content="무료 견적서·거래명세서 작성·PDF 저장 | 노리툴즈"><meta property="og:description" content="무료 견적서와 거래명세서를 브라우저에서 바로 작성하세요. 품목·수량·단가 입력, 부가세 자동 계산, 로고·도장 첨부, PDF 저장과 인쇄를 지원합니다."><meta property="og:url" content="https://nori-tools.com/tools/quotation-maker/"><meta property="og:type" content="website"><link rel="stylesheet" href="/assets/nori/search-guides.css?v=20261104-search1"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "무료 견적서·거래명세서 작성·PDF 저장", "description": "무료 견적서와 거래명세서를 브라우저에서 바로 작성하세요. 품목·수량·단가 입력, 부가세 자동 계산, 로고·도장 첨부, PDF 저장과 인쇄를 지원합니다.", "url": "https://nori-tools.com/tools/quotation-maker/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script><style id="nori-mobile-document-style">.mobile-document-controls,.mobile-document-draft-note{display:none}
+@media screen and (max-width:767px){
+html[lang="ko"] .mobile-document-controls:not([hidden]){display:block;max-width:100%;margin:0 auto 10px;padding:0 12px;color:#526443;font:13px/1.6 system-ui,sans-serif}
+.mobile-document-buttons{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.mobile-document-buttons button{min-height:44px;padding:8px 14px;border:1px solid #cedbb7;border-radius:12px;background:#fff;color:#3b512d;font:700 13px/1.3 system-ui,sans-serif;cursor:pointer;touch-action:manipulation}
+.mobile-document-buttons button[aria-pressed="true"]{background:#e2f68d;border-color:#adca53;color:#2d4020}
+.mobile-document-buttons output{margin-left:auto;font-size:12px;font-variant-numeric:tabular-nums}
+.mobile-document-controls p{margin:8px 0 0;font-size:12px}
+main[data-resume-locale] .paper-wrap[data-mobile-document],.document-scroll[data-mobile-document]{width:100%;max-width:100%;min-width:0;padding:12px;overflow-x:auto;overscroll-behavior-x:contain;border-radius:0}
+.paper-wrap[data-mobile-document]>.modern-paper{width:820px;min-width:820px;max-width:820px;padding:38px;min-height:1100px;margin:0 80px 0 0;zoom:var(--mobile-document-scale,1)}
+.document-scroll[data-mobile-document]>.sheet{margin:0 64px 0 0;zoom:var(--mobile-document-scale,1)}
+html[lang="ko"] .mobile-edit-tip,html[lang="ko"] .document-mobile-pan-note{display:none}
+html[lang="ko"] .mobile-document-draft-note{display:inline}
+html[lang="ko"] .direct-tip::after{content:none}
+}
+@media print{.mobile-document-controls{display:none!important}}
+</style><script id="nori-mobile-document-script">/* Fit the Korean mobile editor without changing the document's print layout. */
+(()=>{
+  const mounted=new WeakSet();
+  const mobile=matchMedia('screen and (max-width:767px)');
+  function mount(){
+    const viewport=document.querySelector('.paper-wrap, .document-scroll');
+    if(!viewport||mounted.has(viewport))return false;
+    const resume=viewport.classList.contains('paper-wrap');
+    const paper=viewport.querySelector(resume?'.modern-paper':'.sheet');
+    if(!paper)return false;
+    const totalWidth=resume?900:964;
+    mounted.add(viewport);
+    const previous=viewport.previousElementSibling;
+    const bar=previous?.classList.contains('mobile-document-controls')?previous:document.createElement('div');
+    bar.className='mobile-document-controls';bar.setAttribute('translate','no');
+    bar.innerHTML='<div class="mobile-document-buttons" role="group" aria-label="문서 화면 크기"><button type="button" data-mode="fit" aria-pressed="true">화면에 맞춤</button><button type="button" data-mode="large" aria-pressed="false">크게 보기</button><output aria-label="문서 표시 배율"></output></div><p>전체 문서를 한눈에 확인하고, 입력할 때는 크게 보기를 눌러 주세요.</p>';
+    if(!bar.isConnected)viewport.before(bar);
+    let mode='fit',frame=0;
+    function update(){
+      const enabled=mobile.matches&&document.documentElement.lang==='ko';
+      viewport.toggleAttribute('data-mobile-document',enabled);bar.hidden=!enabled;
+      if(!enabled){viewport.style.removeProperty('--mobile-document-scale');return;}
+      const available=Math.max(1,viewport.clientWidth-24);
+      const scale=mode==='fit'?Math.min(1,available/totalWidth):1;
+      viewport.style.setProperty('--mobile-document-scale',String(scale));
+      viewport.dataset.documentView=mode;
+      bar.querySelector('output').textContent=Math.round(scale*100)+'%';
+      bar.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.mode===mode)));
+      if(mode==='fit')viewport.scrollLeft=0;
+      if(typeof window.refreshDeleteOverlay==='function')window.refreshDeleteOverlay();
+    }
+    function schedule(){if(!frame)frame=requestAnimationFrame(()=>{frame=0;update();});}
+    bar.addEventListener('click',event=>{const button=event.target.closest('button[data-mode]');if(!button)return;mode=button.dataset.mode;update();});
+    new ResizeObserver(schedule).observe(viewport);
+    mobile.addEventListener('change',schedule);
+    document.addEventListener('nori:languagechange',schedule);
+    new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    update();
+    return true;
+  }
+  function start(){
+    if(mount())return;
+    const root=document.getElementById('resume-root');
+    if(root){const observer=new MutationObserver(()=>{if(mount())observer.disconnect();});observer.observe(root,{childList:true,subtree:true});}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+</script></head>
 <body>
 <header class="nori-topbar nori-chrome"><a class="nori-brand" href="https://nori-tools.com/"><b>N</b>NORI TOOLS</a><a href="https://nori-tools.com/">도구함으로 돌아가기 ↗</a></header>
 <section class="nori-hero nori-chrome"><div><span class="nori-eyebrow">NORI PAPERWORK</span><h1>노리 견적서<br>거래명세서</h1><p>품목만 채우면, 금액은 노리가.<br>거래의 시작과 마무리를 깔끔하게 준비해요.</p><div class="nori-chips"><span>부가세 자동 계산</span><span>PDF·인쇄</span><span>내 기기에 보관</span></div></div><img src="/assets/nori/characters/nori-quotation.webp" alt="계산기 옆에서 견적서를 작성하는 노리" width="180" height="195"></section>
@@ -1242,7 +1305,7 @@ html:not([lang="ko"]) .nori-hero h1{letter-spacing:-.6px}
   <button type="button" class="native-color-btn" onclick="openNativeColorPicker()">기기 색상 선택기 열기</button>
 </div>
 
-<p class="nori-help nori-chrome"><strong>글자를 눌러 바로 수정하세요.</strong> <span>기본 정보는 가상의 예시입니다. 발송 전 내 사업자 정보로 바꿔 주세요.</span><br>모바일에서는 문서를 좌우로 밀어 편집할 수 있어요. 작성 중인 내용은 자동 저장되지 않습니다.</p>
+<p class="nori-help nori-chrome"><strong>글자를 눌러 바로 수정하세요.</strong> <span>기본 정보는 가상의 예시입니다. 발송 전 내 사업자 정보로 바꿔 주세요.</span><br><span class="document-mobile-pan-note">모바일에서는 문서를 좌우로 밀어 편집할 수 있어요. 작성 중인 내용은 자동 저장되지 않습니다.</span><span class="mobile-document-draft-note" translate="no">작성 중인 내용은 자동 저장되지 않습니다.</span></p>
 <main class="document-scroll" aria-label="견적서와 거래명세서 편집 영역"><div class="sheet">
 
   <div class="top">
@@ -2099,9 +2162,10 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
     const rows = getBodyRows();
     // 위치를 한 번에 읽은 뒤 버튼을 교체해 반복적인 레이아웃 계산을 피한다.
     const tableTop = table.getBoundingClientRect().top;
+    const renderedScale = table.closest('[data-mobile-document]') ? (table.getBoundingClientRect().width / table.offsetWidth || 1) : 1;
     const positions = rows.map(tr=>{
       const rect = tr.getBoundingClientRect();
-      return rect.top - tableTop + rect.height/2;
+      return (rect.top - tableTop + rect.height/2) / renderedScale;
     });
     const fragment = document.createDocumentFragment();
     rows.forEach((tr,index)=>{

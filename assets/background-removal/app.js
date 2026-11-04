@@ -71,9 +71,9 @@
   }
   if(/KAKAOTALK/i.test(navigator.userAgent)){
     $('inapp-notice').hidden=false;
-    const siteURL='https://ahnhs1227-tech.github.io/noritools/tools/background-remover/';
+    const siteURL='https://nori-tools.com/tools/background-remover/';
     if(/Android/i.test(navigator.userAgent)){
-      const intent='intent://ahnhs1227-tech.github.io/noritools/tools/background-remover/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(siteURL)+';end';
+      const intent='intent://nori-tools.com/tools/background-remover/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(siteURL)+';end';
       $('open-chrome').href=intent;$('open-chrome').hidden=false;$('save-chrome').href=intent;$('inapp-save-actions').hidden=false;
     }
     $('copy-site').onclick=async()=>{try{await navigator.clipboard.writeText(siteURL);$('copy-status').textContent='주소를 복사했어요. Chrome 또는 삼성 인터넷 주소창에 붙여 넣어주세요.';}catch{$('copy-status').textContent='이 주소를 길게 눌러 복사해 주세요: '+siteURL;}};

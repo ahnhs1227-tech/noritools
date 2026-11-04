@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
-const $=id=>document.getElementById(id),R=NoriGameRules,base='/noritools/',reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=id=>document.getElementById(id),R=NoriGameRules,base='/',reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function read(k,fallback){try{const x=JSON.parse(localStorage.getItem(k));return x===null?fallback:x}catch{return fallback}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 let audio,mute=read('nori-play-muted',true)!==false;

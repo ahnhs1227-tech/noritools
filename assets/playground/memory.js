@@ -22,8 +22,8 @@ function best(){const b=P.read('nori-memory-'+count,null);return b&&Number.isFin
 function bestLabel(){const b=best();game.setBestLabel(b?b.moves+'회 · '+b.seconds+'초':'아직 없어요')}
 function build(){
  board.dataset.count=count;
- board.innerHTML=s.cards.map((id,i)=>`<button type="button" class="memory-card" data-card="${i}" style="--card-tint:${faces[id][3]}" aria-label="${i+1}번 카드"><span class="memory-back" aria-hidden="true"><span class="memory-flower">✿</span><b>NORI</b><small>LITTLE MOMENTS</small><i>${String(i+1).padStart(2,'0')}</i></span><span class="memory-face"><img src="/noritools/${faces[id][2]}" alt="" draggable="false"><small>${faces[id][1]}</small><span class="memory-check" aria-hidden="true">✓</span></span></button>`).join('');
- $('memory-album').innerHTML=s.ids.map(id=>`<span class="album-slot" data-face="${id}" title="${faces[id][0]}"><img src="/noritools/${faces[id][2]}" alt="${faces[id][0]}" draggable="false"><span aria-hidden="true">✓</span></span>`).join('');
+ board.innerHTML=s.cards.map((id,i)=>`<button type="button" class="memory-card" data-card="${i}" style="--card-tint:${faces[id][3]}" aria-label="${i+1}번 카드"><span class="memory-back" aria-hidden="true"><span class="memory-flower">✿</span><b>NORI</b><small>LITTLE MOMENTS</small><i>${String(i+1).padStart(2,'0')}</i></span><span class="memory-face"><img src="/${faces[id][2]}" alt="" draggable="false"><small>${faces[id][1]}</small><span class="memory-check" aria-hidden="true">✓</span></span></button>`).join('');
+ $('memory-album').innerHTML=s.ids.map(id=>`<span class="album-slot" data-face="${id}" title="${faces[id][0]}"><img src="/${faces[id][2]}" alt="${faces[id][0]}" draggable="false"><span aria-hidden="true">✓</span></span>`).join('');
 }
 function note(text,duration=1.6){message=text;messageTime=duration;game.announce(text)}
 function redraw(){

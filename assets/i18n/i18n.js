@@ -72,7 +72,7 @@
   const group=document.createElement('div');group.id='nori-language';group.className='nori-language-flags';group.setAttribute('role','group');group.setAttribute('aria-label','언어 선택 / Choose language');
   ['한국어','English','日本語','简体中文'].forEach((name,i)=>{
    const button=document.createElement('button');button.type='button';button.className='nori-language-button';button.dataset.language=codes[i];button.setAttribute('aria-label',name);button.title=name;
-   const flag=document.createElement('img');flag.src='/noritools/assets/i18n/flags/'+codes[i]+'.svg';flag.alt='';flag.width=32;flag.height=32;flag.setAttribute('aria-hidden','true');button.append(flag);button.onclick=()=>choose(codes[i]);group.append(button);
+   const flag=document.createElement('img');flag.src='/assets/i18n/flags/'+codes[i]+'.svg';flag.alt='';flag.width=32;flag.height=32;flag.setAttribute('aria-hidden','true');button.append(flag);button.onclick=()=>choose(codes[i]);group.append(button);
   });bar.append(label,group);document.body.prepend(bar);syncPicker();
  }
  function confirmLocalized(message){return window.confirm(t(message))}

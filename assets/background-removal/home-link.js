@@ -5,7 +5,7 @@
     if(!document.getElementById('fortune-home-card'))return;
     const list=document.querySelector('.tool-list');
     if(list&&!document.getElementById('background-remover-card')){
-      const card=document.createElement('a');card.id='background-remover-card';card.className='tool-card';card.href='/noritools/tools/background-remover/';
+      const card=document.createElement('a');card.id='background-remover-card';card.className='tool-card';card.href='/tools/background-remover/';
       card.innerHTML='<span class="tool-icon lime" aria-hidden="true">▧</span><div><small>IMAGE / NEW</small><h3>이미지 배경 지우기</h3><p>사진은 이 기기에서 처리하고, 배경 없는 PNG로 저장해요.</p></div><b>바로 사용하기 ↗</b>';
       list.appendChild(card);
     }

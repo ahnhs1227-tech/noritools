@@ -3,8 +3,8 @@ self.__BUILD_MANIFEST = {
     "afterFiles": [],
     "beforeFiles": [
       {
-        "source": "/noritools//_next/:path+",
-        "destination": "/noritools/_next/:path+"
+        "source": "//_next/:path+",
+        "destination": "/_next/:path+"
       }
     ],
     "fallback": []

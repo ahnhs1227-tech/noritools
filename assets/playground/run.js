@@ -65,7 +65,7 @@ function burst(x,y,color,n=10){if(P.reduced)return;for(let i=0;i<n;i++)particles
 function message(text){banner=text;bannerTime=1.8;game.announce(text)}
 function update(dt){if(game.phase!=='running')return;model.step(dt);for(const e of s.events){
  if(e.type==='rocket-start'){release();P.runMusic?.space(true);message('로켓 출발! 위아래로 움직여요')}
- if(e.type==='rocket-fly')message('5초 우주 비행! 행성과 운석을 피해요');
+ if(e.type==='rocket-fly')message('10초 우주 비행! 행성과 운석을 피해요');
  if(e.type==='space-star'){burst(e.x,e.y,'#ffe7a1',5);if(s.time-lastSound>.1){P.sound();lastSound=s.time}}
  if(e.type==='rocket-win'){release();P.sound('win');message('우주 비행 성공! +200점')}
  if(e.type==='rocket-hit'){release();P.sound('bad');message('괜찮아! 날아온 거리는 그대로예요')}
@@ -134,5 +134,5 @@ function draw(){
  if(game.phase==='idle'){for(let i=0;i<5;i++)candy({kind:'star',x:190+i*41,y:ground-75-Math.sin(i/4*Math.PI)*45,w:22,h:22});obstacle({kind:'stump',x:310,y:ground-36,w:36,h:36})}
  ctx.restore();
 }
-P.animate(update,draw);P.ready([run,contact,jump,slidePose]);hud();
+P.animate(update,draw);P.ready([run,contact,jump,slidePose,...NoriRocketVisual.images]);hud();
 })();

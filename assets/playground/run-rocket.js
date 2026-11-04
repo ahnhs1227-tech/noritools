@@ -1,7 +1,8 @@
-/* Canvas-native rocket art uses the existing Nori mascot; no external assets/services. */
+/* Locally hosted plush sprites with the original Nori mascot. */
 'use strict';
 (()=>{
  const P=NoriPlay,{W,H,PX,G}=NoriRun;
+ const art={rocket:P.image('assets/playground/space/rocket-plush-v1.png'),planet:P.image('assets/playground/space/planet-plush-v1.png'),meteor:P.image('assets/playground/space/meteor-plush-v1.png')};
  const oval=(c,x,y,rx,ry,color)=>{c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill()};
  const pill=(c,x,y,w,h,r,color)=>{c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill()};
  function label(c,t,x,y,size=12,color='#fff9ed'){
@@ -9,6 +10,7 @@
  }
  function hull(c,scale=1){
   c.save();c.scale(scale,scale);
+  if(art.rocket.complete&&art.rocket.naturalWidth){c.drawImage(art.rocket,-64,-28,128,64);c.restore();return;}
   // Soft fins, cream belly, lime nose and a little star insignia.
   c.fillStyle='#d29cc7';c.beginPath();c.moveTo(-28,-9);c.quadraticCurveTo(-45,-37,-57,-22);c.lineTo(-46,4);c.fill();
   c.beginPath();c.moveTo(-25,12);c.quadraticCurveTo(-42,38,-55,28);c.lineTo(-44,4);c.fill();
@@ -36,20 +38,31 @@
  }
  function space(c,s,reduced){
   const travel=reduced?0:s.travel;
-  const gradient=c.createLinearGradient(0,0,W,H);gradient.addColorStop(0,'#29264c');gradient.addColorStop(.55,'#58517f');gradient.addColorStop(1,'#8d78a2');c.fillStyle=gradient;c.fillRect(0,0,W,H);
-  oval(c,395,275,160,80,'#b49bce14');oval(c,120,70,140,95,'#a6b8ed0c');
+  const gradient=c.createLinearGradient(0,0,W,H);gradient.addColorStop(0,'#38334f');gradient.addColorStop(.55,'#716184');gradient.addColorStop(1,'#a58a9b');c.fillStyle=gradient;c.fillRect(0,0,W,H);
+  // Wide, softly lit nebulae keep the tactile toys in a warm, calm backdrop.
+  for(const [x,y,r,color] of [[375,265,230,'#e6b6cc32'],[70,90,210,'#a9b2da24']]){const glow=c.createRadialGradient(x,y,0,x,y,r);glow.addColorStop(0,color);glow.addColorStop(1,'#ffffff00');c.fillStyle=glow;c.fillRect(0,0,W,H)}
+
   for(let i=0;i<65;i++){const z=.17+(i%4)*.16,x=((i*137-travel*z)%540+540)%540-30,y=24+(i*73)%310;
    oval(c,x,y,i%7===0?1.8:.8,i%7===0?1.8:.8,i%3?'#fff8e9b0':'#e5c6efaa');
    if(i%11===0)P.star(c,x,y,3,'#ffeeccc0');
   }
-  // Distant smiling moon: decorative and distinct from incoming outlined hazards.
-  oval(c,400,87,35,35,'#e8cfac');oval(c,408,80,35,34,'#6a5b88');
-  oval(c,382,88,2,3,'#735f83');oval(c,385,100,5,2,'#d4a9b0');
+  // A little padded moon, shaded in the same warm light as the plush sprites.
+  c.save();c.translate(400,87);c.rotate(-.22);
+  const moon=c.createRadialGradient(-14,-18,2,0,0,37);moon.addColorStop(0,'#fff3d8');moon.addColorStop(.6,'#e8c9a5');moon.addColorStop(1,'#ad8a80');
+  c.fillStyle=moon;c.beginPath();c.moveTo(10,-32);c.bezierCurveTo(-45,-37,-48,35,10,34);c.bezierCurveTo(-16,20,-19,-17,10,-32);c.fill();
+  c.strokeStyle='#fff3dc75';c.lineWidth=.8;c.setLineDash([2,2]);c.beginPath();c.moveTo(4,-29);c.bezierCurveTo(-37,-30,-40,29,4,31);c.stroke();c.setLineDash([]);
+  oval(c,-24,1,1.6,2.4,'#735f72');oval(c,-22,10,4,2,'#dca6ac');c.restore();
   c.strokeStyle='#d7cef423';c.lineWidth=1;if(!reduced)for(let i=0;i<7;i++){let x=((i*101-s.travel*.8)%600+600)%600-50;c.beginPath();c.moveTo(x,40+i*45);c.lineTo(x+25,40+i*45);c.stroke()}
  }
  function object(c,o,time){
   if(o.kind==='space-star'){P.star(c,o.x,o.y,10,'#ffe4a0');return}
   c.save();c.translate(o.x,o.y);
+  const sprite=art[o.kind];
+  if(sprite?.complete&&sprite.naturalWidth){
+   if(o.kind==='meteor')c.rotate(Math.sin(time*.6+(o.spin||0))*.12);
+   const width=o.r*(o.kind==='planet'?3.2:2.35),height=width*sprite.naturalHeight/sprite.naturalWidth;
+   c.drawImage(sprite,-width/2,-height/2,width,height);c.restore();return;
+  }
   if(o.kind==='planet'){
    c.save();c.rotate(-.35);c.strokeStyle='#f0c6de';c.lineWidth=6;c.beginPath();c.ellipse(0,0,o.r+12,10,0,0,7);c.stroke();c.restore();
    oval(c,0,0,o.r,o.r,'#d9a4c5');oval(c,-8,-9,7,4,'#edc2d9');oval(c,9,11,10,4,'#c38cad');
@@ -77,10 +90,10 @@
    pill(c,47,23,386,49,20,'#fff9efd9');label(c,r.success?'우주 비행 성공! +200점':'괜찮아! 날아온 거리는 그대로예요',240,53,14,'#6d557c');
   }else{
    rocket(c,PX,r.y,im,s.time,reduced);
-   pill(c,112,15,256,52,18,'#29233dbb');label(c,r.phase==='ascent'?'로켓 출발!':'5초 우주 비행',240,35,12);
-   for(let i=0;i<5;i++)pill(c,163+i*32,45,26,7,4,r.left>i?'#d4ed9a':'#ffffff26');
+   pill(c,112,15,256,52,18,'#29233dbb');label(c,r.phase==='ascent'?'로켓 출발!':'10초 우주 비행',240,35,12);
+   for(let i=0;i<NoriRun.ROCKET_SECONDS;i++)pill(c,151+i*18,45,13,7,4,r.left>i?'#d4ed9a':'#ffffff26');
    label(c,'위아래로 움직여 행성과 운석을 피해요',240,H-15,11,'#fff6e1');
   }
  }
- window.NoriRocketVisual={draw,pickup};
+ window.NoriRocketVisual={draw,pickup,images:Object.values(art)};
 })();

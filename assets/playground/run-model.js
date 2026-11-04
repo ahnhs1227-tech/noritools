@@ -2,7 +2,7 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.NoriRun=factory()})(typeof globalThis!=='undefined'?globalThis:this,()=>{
 'use strict';
 const W=480,H=360,G=292,PX=92,FEVER_STARS=28,FEVER_SECONDS=4,MAGNET_SECONDS=3,MAGNET_RADIUS=72,SHIELD_SECONDS=6,POWER_GAP=26,SLIDE_HEIGHT=64,GATE_CLEARANCE=78;
-const ROCKET_SECONDS=5,ROCKET_BONUS=200,ROCKET_GAP=45,ROCKET_ASCENT=.7,ROCKET_DESCENT=.85;
+const ROCKET_SECONDS=10,ROCKET_BONUS=200,ROCKET_GAP=45,ROCKET_ASCENT=.7,ROCKET_DESCENT=.85;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const overlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
 function difficulty(distance){const level=1+Math.floor(distance/160),tier=Math.min(8,level);return{level,tier,speed:Math.min(340,210+distance*.085),rest:Math.max(.9,1.35-(tier-1)*.065)}}

@@ -1,4 +1,4 @@
-/* Fit the Korean mobile editor without changing the document's print layout. */
+/* Fit the mobile editor without changing the document's print layout. */
 (()=>{
   const mounted=new WeakSet();
   const mobile=matchMedia('screen and (max-width:767px)');
@@ -17,7 +17,14 @@
     if(!bar.isConnected)viewport.before(bar);
     let mode='fit',frame=0;
     function update(){
-      const enabled=mobile.matches&&document.documentElement.lang==='ko';
+      const locale=document.documentElement.lang;
+      const enabled=mobile.matches&&(resume||locale==='ko');
+      const labels=({en:['Document display size','Fit to screen','Enlarge','Document scale','See the full document, then enlarge it to enter text.'],ja:['書類の表示サイズ','画面に合わせる','拡大表示','書類の表示倍率','全体を確認し、入力時は拡大表示をご利用ください。'],'zh-CN':['文档显示大小','适应屏幕','放大查看','文档显示比例','先查看整份文档，输入时请放大查看。']})[locale]||['문서 화면 크기','화면에 맞춤','크게 보기','문서 표시 배율','전체 문서를 한눈에 확인하고, 입력할 때는 크게 보기를 눌러 주세요.'];
+      bar.querySelector('[role=group]').setAttribute('aria-label',labels[0]);
+      bar.querySelector('[data-mode=fit]').textContent=labels[1];
+      bar.querySelector('[data-mode=large]').textContent=labels[2];
+      bar.querySelector('output').setAttribute('aria-label',labels[3]);
+      bar.querySelector('p').textContent=labels[4];
       viewport.toggleAttribute('data-mobile-document',enabled);bar.hidden=!enabled;
       if(!enabled){viewport.style.removeProperty('--mobile-document-scale');return;}
       const available=Math.max(1,viewport.clientWidth-24);

@@ -2,43 +2,75 @@
 (()=>{
 const P=NoriPlay,{$}=P,{canvas,ctx}=P.canvasStage(),{W:w,H:h,G:ground,PX:px}=NoriRun;
 const run=P.image('assets/playground/nori-run.webp'),contact=P.image('assets/playground/nori-contact.webp'),jump=P.image('assets/playground/nori-jump.webp'),slidePose=P.image('assets/playground/nori-slide-v3.webp');
+let flightKeys=new Set(),flightTouches=new Map(),flightDrag=null;
 let model=NoriRun.create(),s=model.s,particles=[],floaters=[],banner='별사탕 숲으로 출발!',bannerTime=3,shake=0,lastSound=0,lastBiome=0,held=false,hudTime=0;
-const game=P.controller({key:'run',onStart(){model=NoriRun.create();s=model.s;particles=[];floaters=[];banner='별사탕 숲으로 출발!';bannerTime=3;shake=0;lastSound=0;lastBiome=0;held=false;hudTime=0;hud();P.runMusic?.start()},onPause(){release();P.runMusic?.pause()},onResume(){release();P.runMusic?.resume()}});
+const game=P.controller({key:'run',onStart(){release();P.runMusic?.space(false);model=NoriRun.create();s=model.s;particles=[];floaters=[];banner='별사탕 숲으로 출발!';bannerTime=3;shake=0;lastSound=0;lastBiome=0;held=false;hudTime=0;hud();P.runMusic?.start()},onPause(){release();P.runMusic?.pause()},onResume(){release();P.runMusic?.resume()}});
 const effectsButton=$('game-mute'),toggleEffects=effectsButton.onclick;
 function effectLabel(){effectsButton.textContent=effectsButton.textContent.replace(/^소리/,'효과음')}
 effectLabel();effectsButton.onclick=()=>{toggleEffects?.();effectLabel()};
 function leap(){if(game.phase==='running'&&model.jump()){P.sound('jump');burst(px,ground-s.y-8,'#ffffff',9)}}
-function release(){held=false;model.slide(false);$('slide-button').classList.remove('is-held')}
+function release(){held=false;flightKeys.clear();flightTouches.clear();flightDrag=null;model.steer(0);model.slide(false);for(const id of ['slide-button','jump-button'])$(id).classList.remove('is-held')}
 function duck(){if(game.phase!=='running')return;held=true;model.slide(true);$('slide-button').classList.add('is-held')}
-canvas.addEventListener('pointerdown',e=>{if(game.phase==='running'){e.preventDefault();leap()}});
-$('jump-button').addEventListener('pointerdown',e=>{e.preventDefault();leap()});
-$('jump-button').addEventListener('click',e=>{if(e.detail===0)leap()});
-$('slide-button').addEventListener('pointerdown',e=>{e.preventDefault();$('slide-button').setPointerCapture(e.pointerId);duck()});
-for(const type of ['pointerup','pointercancel','lostpointercapture'])$('slide-button').addEventListener(type,release);
-$('slide-button').addEventListener('keydown',e=>{if(['Space','Enter'].includes(e.code)){e.preventDefault();duck()}});
-$('slide-button').addEventListener('keyup',release);
-$('slide-button').addEventListener('blur',release);
+function flightDirection(){const dirs=[...flightKeys,...flightTouches.values()];model.steer((dirs.includes('down')?1:0)-(dirs.includes('up')?1:0))}
+canvas.addEventListener('pointerdown',e=>{
+ if(game.phase!=='running')return;e.preventDefault();
+ if(s.rocket){if(flightDrag)return;flightDrag={id:e.pointerId,start:e.clientY,y:s.rocket.y};canvas.setPointerCapture(e.pointerId)}else leap();
+});
+canvas.addEventListener('pointermove',e=>{
+ if(game.phase!=='running'||!s.rocket||flightDrag?.id!==e.pointerId)return;e.preventDefault();
+ model.aim(flightDrag.y+(e.clientY-flightDrag.start)*h/canvas.getBoundingClientRect().height);
+});
+for(const type of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(type,e=>{if(flightDrag?.id===e.pointerId){flightDrag=null;model.steer(0)}});
+for(const [id,dir] of [['slide-button','down'],['jump-button','up']]){
+ const button=$(id);
+ button.addEventListener('pointerdown',e=>{if(game.phase!=='running')return;e.preventDefault();button.setPointerCapture(e.pointerId);
+  if(s.rocket){flightTouches.set(e.pointerId,dir);flightDirection();button.classList.add('is-held')}else if(dir==='down')duck();else leap();
+ });
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(type,e=>{flightTouches.delete(e.pointerId);flightDirection();button.classList.remove('is-held');if(dir==='down'){held=false;model.slide(false)}});
+ button.addEventListener('keydown',e=>{if(!['Space','Enter'].includes(e.code)||game.phase!=='running')return;e.preventDefault();if(s.rocket){flightKeys.add(dir);flightDirection()}else if(dir==='down')duck();else if(!e.repeat)leap()});
+ button.addEventListener('keyup',e=>{if(['Space','Enter'].includes(e.code)){e.preventDefault();release()}});
+ button.addEventListener('blur',release);
+ button.addEventListener('click',e=>{if(e.detail!==0||game.phase!=='running')return;if(s.rocket)model.aim(s.rocket.y+(dir==='up'?-65:65));else if(dir==='up')leap()});
+}
 document.addEventListener('keydown',e=>{
  if(game.phase!=='running'||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.target.isContentEditable)return;
- // Cancel native scrolling before rejecting repeats or checking focused buttons.
- if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)){
-  e.preventDefault();if(e.code==='ArrowUp'&&!e.repeat)leap();if(e.code==='ArrowDown')duck();return;
+ if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','KeyW','KeyS'].includes(e.code)){
+  if(e.code==='Space'&&e.target.closest('button,a'))return;e.preventDefault();
+  if(s.rocket){if(['ArrowUp','KeyW','Space'].includes(e.code))flightKeys.add('up');if(['ArrowDown','KeyS'].includes(e.code))flightKeys.add('down');flightDirection();return}
+  if(['ArrowDown','KeyS'].includes(e.code))duck();else if(['ArrowUp','KeyW','Space'].includes(e.code)&&!e.repeat)leap();
  }
- if(e.target.closest('button,a'))return;
- if(['Space','KeyW','KeyS'].includes(e.code)){e.preventDefault();if(e.repeat)return;if(e.code==='KeyS')duck();else leap()}
 });
-document.addEventListener('keyup',e=>{if(['ArrowDown','KeyS'].includes(e.code))release()});
+document.addEventListener('keyup',e=>{
+ if(['ArrowUp','KeyW','Space'].includes(e.code))flightKeys.delete('up');if(['ArrowDown','KeyS'].includes(e.code)){flightKeys.delete('down');held=false;model.slide(false);$('slide-button').classList.remove('is-held')}flightDirection();
+});
+let controlsFlight=null;
+function flightControls(){
+ const active=!!s.rocket;if(controlsFlight===active)return;controlsFlight=active;
+ $('jump-button').querySelector('b').innerHTML=active?'위로<small>누르고 있기 · ↑ / W</small>':'점프<small>두 번까지 · SPACE / ↑</small>';
+ $('slide-button').querySelector('b').innerHTML=active?'아래로<small>누르고 있기 · ↓ / S</small>':'슬라이드<small>누르고 있기 · ↓ / S</small>';
+ document.querySelector('.game-caption').textContent=active?'화면 어디서든 위아래로 드래그 · 버튼을 꾹 눌러도 움직여요':'화면을 눌러도 점프해요 · 공중에서 한 번 더!';
+ document.querySelector('.runner-stage').classList.toggle('is-space',active);
+}
 function hud(){
+ flightControls();
  $('score').textContent=model.total().toLocaleString();$('distance').textContent=Math.floor(s.distance)+'m';$('lives').textContent='♥'.repeat(s.hearts)+'♡'.repeat(3-s.hearts);$('lives').setAttribute('aria-label','남은 기회 '+s.hearts+'번');$('stars').textContent=s.stars+'개';
  $('fever-fill').style.width=(s.fever>0?s.fever/NoriRun.FEVER_SECONDS:s.charge/NoriRun.FEVER_STARS)*100+'%';$('fever-label').textContent=s.fever>0?`피버 ${Math.ceil(s.fever)}초 · 무적 + 사탕 2배`:`별사탕 ${s.charge} / ${NoriRun.FEVER_STARS} · 모으면 피버!`;
  $('run-combo').textContent=s.combo>=5?s.combo+' COMBO':'SWEET RUN';
  $('run-power').textContent=[s.magnet>0?'자석 '+s.magnet.toFixed(1)+'초':'',s.shield>0?'보호막 '+Math.ceil(s.shield)+'초':''].filter(Boolean).join(' · ')||'2단 점프 + 슬라이드';
+ if(s.rocket)$('run-power').textContent=s.rocket.phase==='flight'?'우주 비행 · '+s.rocket.left.toFixed(1)+'초':'로켓 여행';
  $('run-zone').textContent='Lv.'+s.level+' · '+['별사탕 숲','복숭아 구름길','보랏빛 꿈길'][Math.floor(s.distance/300)%3];
  $('run-mission').textContent=s.distance>=300&&s.stars>=30?'첫 도전 성공! 더 멀리 달려봐요.':`첫 도전 · ${Math.min(300,Math.floor(s.distance))}/300m · 별사탕 ${Math.min(30,s.stars)}/30개`;
 }
 function burst(x,y,color,n=10){if(P.reduced)return;for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*140,vy:-30-Math.random()*130,t:.55,c:color});if(particles.length>100)particles.splice(0,particles.length-100)}
 function message(text){banner=text;bannerTime=1.8;game.announce(text)}
 function update(dt){if(game.phase!=='running')return;model.step(dt);for(const e of s.events){
+ if(e.type==='rocket-start'){release();P.runMusic?.space(true);message('로켓 출발! 위아래로 움직여요')}
+ if(e.type==='rocket-fly')message('5초 우주 비행! 행성과 운석을 피해요');
+ if(e.type==='space-star'){burst(e.x,e.y,'#ffe7a1',5);if(s.time-lastSound>.1){P.sound();lastSound=s.time}}
+ if(e.type==='rocket-win'){release();P.sound('win');message('우주 비행 성공! +200점')}
+ if(e.type==='rocket-hit'){release();P.sound('bad');message('괜찮아! 날아온 거리는 그대로예요')}
+ if(e.type==='rocket-land'){lastBiome=s.level;release();P.runMusic?.space(false);message('안전하게 착지! 다시 달려요')}
+
  if(e.type==='star'){burst(e.x,e.y,'#ffdc70',5);if(s.time-lastSound>.09){P.sound();lastSound=s.time}if(s.combo%5===0)floaters.push({x:e.x,y:e.y,text:s.combo+' COMBO',t:.8})}
  if(e.type==='damage'){shake=.22;burst(px,ground-s.y-40,'#f7a3ab',14);P.sound('bad');message('괜찮아, 다시 달려보자!')}
  if(e.type==='fever'){message('SWEET FEVER! 무적 + 사탕 2배');P.sound('win');burst(px,ground-50,'#e7f89b',24)}
@@ -47,7 +79,7 @@ function update(dt){if(game.phase!=='running')return;model.step(dt);for(const e 
  if(e.type==='smash')burst(e.x,e.y,'#f5cd90',12);
  if(e.type==='land')burst(px,ground-s.y,'#fff9df',5);
  }
- const level=s.level;if(level!==lastBiome&&level>1){lastBiome=level;message('LEVEL '+level+' · '+(level===2?'계단 블록 등장! 위로 올라가요':level===3?'징검 발판과 연속 장애물!':'블록을 넘고 착지한 뒤 슬라이드!' ))}
+ const level=s.level;if(!s.rocket&&level!==lastBiome&&level>1){lastBiome=level;message('LEVEL '+level+' · '+(level===2?'계단 블록 등장! 위로 올라가요':level===3?'징검 발판과 연속 장애물!':'블록을 넘고 착지한 뒤 슬라이드!' ))}
  particles=particles.filter(p=>{p.t-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=360*dt;return p.t>0});floaters=floaters.filter(p=>{p.t-=dt;p.y-=35*dt;return p.t>0});bannerTime=Math.max(0,bannerTime-dt);shake=Math.max(0,shake-dt);hudTime-=dt;if(hudTime<=0||s.over){hud();hudTime=.08;}
  if(s.over){release();P.runMusic?.stop();game.end(model.total(),'달콤한 모험 완료!',Math.floor(s.distance)+'m · 별사탕 '+s.stars+'개 · 최고 '+s.bestCombo+'콤보. 다시 달리면 더 멀리 갈 수 있어요!')}
 }
@@ -84,9 +116,9 @@ function obstacle(o){
   box(o.x,o.y+10,o.w,o.h-10,8,'#b28062');box(o.x-5,o.y,o.w+10,17,7,'#f2c397');box(o.x+6,o.y+22,4,Math.max(3,o.h-30),2,'#dca77e');ellipse(o.x+13,o.y+25,2,3,'#77523e');ellipse(o.x+26,o.y+25,2,3,'#77523e');
  }
 }
-function candy(o){const cx=o.x+o.w/2,cy=o.y+o.h/2;ctx.save();ctx.translate(cx,cy);if(!P.reduced)ctx.translate(0,Math.sin(s.time*5+o.x*.02)*2);if(o.kind==='star'){ellipse(0,2,14,14,'#ffffff75');P.star(ctx,0,0,12,'#f6be43');ellipse(-3,-3,2,2,'#fff7c5')}else{ellipse(0,0,18,18,'#ffffffba');ellipse(0,0,15,15,o.kind==='shield'?'#9bdce7':'#eca7c5');text(o.kind==='shield'?'◇':'U',0,6,20,'#fff');}ctx.restore()}
+function candy(o){if(o.kind==='rocket'){NoriRocketVisual.pickup(ctx,o.x+o.w/2,o.y+o.h/2,s.time);return}const cx=o.x+o.w/2,cy=o.y+o.h/2;ctx.save();ctx.translate(cx,cy);if(!P.reduced)ctx.translate(0,Math.sin(s.time*5+o.x*.02)*2);if(o.kind==='star'){ellipse(0,2,14,14,'#ffffff75');P.star(ctx,0,0,12,'#f6be43');ellipse(-3,-3,2,2,'#fff7c5')}else{ellipse(0,0,18,18,'#ffffffba');ellipse(0,0,15,15,o.kind==='shield'?'#9bdce7':'#eca7c5');text(o.kind==='shield'?'◇':'U',0,6,20,'#fff');}ctx.restore()}
 function draw(){
- ctx.save();if(shake>0&&!P.reduced)ctx.translate(Math.sin(s.time*85)*3,0);scenery();for(const o of s.objects){if(['stump','gate','platform','spikes'].includes(o.kind))obstacle(o);else candy(o)}
+ ctx.save();if(s.rocket){NoriRocketVisual.draw(ctx,s,run,scenery,P.reduced);ctx.restore();return}if(shake>0&&!P.reduced)ctx.translate(Math.sin(s.time*85)*3,0);scenery();for(const o of s.objects){if(['stump','gate','platform','spikes'].includes(o.kind))obstacle(o);else candy(o)}
  ellipse(px,ground-(s.grounded?s.y:0)+5,Math.max(12,30-(s.grounded?0:s.y)*.08),5,'#688d7840');ctx.save();ctx.translate(px,ground-s.y);
  if(s.fever>0&&!P.reduced){for(let i=3;i>0;i--){ctx.globalAlpha=.08;if(s.slide&&s.grounded){const sw=NoriRun.SLIDE_HEIGHT*(slidePose.naturalWidth||384)/(slidePose.naturalHeight||256);P.sprite(ctx,slidePose,-sw*.52-i*16,1-NoriRun.SLIDE_HEIGHT,sw,NoriRun.SLIDE_HEIGHT)}else P.sprite(ctx,run,-51-i*16,-94,100,100)}ctx.globalAlpha=1}
  if(s.shield>0||s.invincible>0||s.fever>0){ellipse(0,-40,43,48,s.fever>0?'#fff9c760':'#c6f1ff60');ctx.strokeStyle=s.fever>0?'#fff8c2':'#e2fbff';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-40,43,48,0,0,7);ctx.stroke()}

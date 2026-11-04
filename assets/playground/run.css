@@ -6,3 +6,10 @@
 @media(prefers-reduced-motion:reduce){.fever-track span{transition:none}.run-controls button{transition:none}}
 
 .run-route-guide{padding:15px 0 5px;border-bottom:1px solid #e0e6d7}.run-route-guide h3{margin:0 0 12px}.run-route-guide ul{padding:0;margin:0;list-style:none;font-size:11px;line-height:2.2}.run-route-guide li b{display:inline-block;width:49px;color:#897591}.run-route-guide p{font-size:11px}
+
+/* Rocket controls keep page gestures outside the play surface. */
+.runner-stage canvas,.run-controls button{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overscroll-behavior:contain}
+.runner-stage.is-space{box-shadow:0 0 0 2px #b3a3e1,0 9px 30px #7863b52b}
+.run-rocket-guide{margin:0 0 20px;padding:18px;border:1px solid #ded5ed;border-radius:19px;background:linear-gradient(145deg,#f5f0ff,#edf5dc)}
+.run-rocket-guide h3{margin:0 0 10px;font-size:17px;color:#68518c}.run-rocket-guide p{font-size:11px}.run-rocket-guide small{font-size:10px;color:#7d7e78;line-height:1.7;display:block}.run-rocket-guide .run-kicker{color:#8872ac}
+.rocket-rewards{display:flex;gap:6px;flex-wrap:wrap}.rocket-rewards b{font-size:10px;background:#ffffffc9;border-radius:20px;padding:6px 9px;color:#786095}

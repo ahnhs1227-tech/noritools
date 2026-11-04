@@ -10,7 +10,7 @@ const makeRow=(id:number,count:number):Row=>({id,values:Array(count).fill('')});
 export default function Home(){
   const [locale,setLocale]=useState((window as any).NoriI18n?.locale||document.documentElement.lang);
   useEffect(()=>{const change=()=>setLocale(document.documentElement.lang);document.addEventListener('nori:languagechange',change);return ()=>document.removeEventListener('nori:languagechange',change)},[]);
-  useEffect(()=>{document.title=t('노리 이력서')+' · NORI Tools'},[locale]);
+  useEffect(()=>{document.title=t('무료 이력서 작성·양식·PDF 저장 | 노리 이력서')},[locale]);
   const examples:Record<string,{name:string;roman:string;address:string}>={ko:{name:'김노리',roman:'Kim Nori',address:'서울특별시 노리구 노리로 123 (예시)'},en:{name:'Nori Doh',roman:'Nori Doh',address:'123 Nori Lane, Nori City (example)'},ja:{name:'佐藤ノリ',roman:'Nori Sato',address:'ノリ市ノリ町1-2-3（架空の住所）'},'zh-CN':{name:'王诺里',roman:'Nori Wang',address:'诺里市诺里路123号（示例）'}};
   const example=examples[locale]||examples.ko;
   const ids=useRef(20);

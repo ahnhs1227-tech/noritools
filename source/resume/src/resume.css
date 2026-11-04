@@ -66,14 +66,14 @@ html:not([lang="ko"]) .military-grid b,html:not([lang="ko"]) .paper-table-head>b
 
 .paper-table-row>span:last-of-type{border-right:0}
 
-/* Korean review: tools sit beside the sheet; other locales retain approved UI. */
+/* Approved compact side controls for all resume languages. */
 @media screen{
-main[data-resume-locale="ko"] .paper-wrap{max-width:1030px;padding-right:112px}
-main[data-resume-locale="ko"] .paper-table-row>.row-actions{position:absolute;left:calc(100% + 7px);top:50%;transform:translateY(-50%);width:max-content;min-height:0;padding:0;gap:3px;border:0;background:transparent}
-main[data-resume-locale="ko"] .row-actions>span,main[data-resume-locale="ko"] .row-actions button span{display:none}
-main[data-resume-locale="ko"] .row-actions .row-move,main[data-resume-locale="ko"] .row-actions .row-delete{width:28px;min-width:28px;height:28px;padding:0;margin:0;font-size:16px;border-radius:7px;box-shadow:0 1px 3px #344a2b08}
+main[data-resume-locale] .paper-wrap{max-width:1030px;padding-right:112px}
+main[data-resume-locale] .paper-table-row>.row-actions{position:absolute;left:calc(100% + 7px);top:50%;transform:translateY(-50%);width:max-content;min-height:0;padding:0;gap:3px;border:0;background:transparent}
+main[data-resume-locale] .row-actions>span,main[data-resume-locale] .row-actions button span{display:none}
+main[data-resume-locale] .row-actions .row-move,main[data-resume-locale] .row-actions .row-delete{width:28px;min-width:28px;height:28px;padding:0;margin:0;font-size:16px;border-radius:7px;box-shadow:0 1px 3px #344a2b08}
 }
 @media screen and (max-width:650px){
-main[data-resume-locale="ko"] .paper-wrap{padding-right:112px}
-main[data-resume-locale="ko"] .row-actions .row-move,main[data-resume-locale="ko"] .row-actions .row-delete{width:32px;min-width:32px;height:38px}
+main[data-resume-locale] .paper-wrap{padding-right:112px}
+main[data-resume-locale] .row-actions .row-move,main[data-resume-locale] .row-actions .row-delete{width:32px;min-width:32px;height:38px}
 }

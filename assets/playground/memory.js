@@ -11,9 +11,15 @@ const faces=[
  ['글 쓰는 노리','끄적끄적 작가','assets/playground/memory-writing.webp','#f4e8d5'],
  ['사과 노리','사과 한 입','assets/playground/memory-apple.webp','#f5dedf'],
  ['줄자 노리','얼마나 클까?','assets/playground/memory-measure.webp','#e4e8f5'],
- ['집 꾸미는 노리','우리 집 꾸미기','assets/playground/memory-floor-measure.webp','#e8ebd8']
+ ['집 꾸미는 노리','우리 집 꾸미기','assets/playground/memory-floor-measure.webp','#e8ebd8'],
+ ['로켓 노리','별 너머로!','assets/playground/space/nori-rocket-seated-v1.png','#e9e3f4'],
+ ['낙하산 노리','포근하게 착지','assets/playground/world/nori-parachute-v1.png','#f8e8d9'],
+ ['고리 행성','빙글빙글 행성','assets/playground/space/planet-plush-v1.png','#f2deeb'],
+ ['포근한 운석','우주에서 안녕','assets/playground/space/meteor-plush-v1.png','#e4e4f3'],
+ ['별 나무','별이 열린 나무','assets/playground/world/star-tree-v1.png','#e6eddb'],
+ ['버섯집','작은 숲속 집','assets/playground/world/mushroom-house-v1.png','#f8e2d3']
 ];
-let model=NoriMemory.create(6),s=model.s,lastSecond=-1,lastPreview=-1,messageTime=0,message='',count=6,focusAfterResolve=false;
+let model=NoriMemory.create(6,Math.random,faces.length),s=model.s,lastSecond=-1,lastPreview=-1,messageTime=0,message='',count=6,focusAfterResolve=false;
 const game=P.controller({key:'memory-6',onStart:start,onPause(){P.memoryMusic?.pause();board.inert=true;$('memory-peek').disabled=true},onResume(){P.memoryMusic?.resume();board.inert=false;redraw()}});
 const effectsButton=$('game-mute'),toggleEffects=effectsButton.onclick;
 function effectsLabel(){effectsButton.textContent=effectsButton.textContent.replace(/^소리/,'효과음')}
@@ -32,19 +38,19 @@ function redraw(){
  $('moves').textContent=s.moves+'회';$('pairs').textContent=s.matched.size/2+' / '+count;$('elapsed').textContent=Math.floor(s.time)+'초';
  $('memory-progress-fill').style.width=(s.matched.size/(count*2)*100)+'%';$('memory-progress').setAttribute('aria-valuenow',s.matched.size/2);$('memory-progress').setAttribute('aria-valuemax',count);
  $('memory-stars').textContent='★'.repeat(model.stars())+'☆'.repeat(3-model.stars());$('memory-stars').setAttribute('aria-label','현재 별 '+model.stars()+'개');
- $('memory-streak').textContent=s.streak>=2?s.streak+'연속 짝꿍!':'노리의 하루를 모아요';
+ $('memory-streak').textContent=s.streak>=2?s.streak+'연속 짝꿍!':'노리와 포근한 친구들';
  const peek=$('memory-peek');peek.textContent=s.hints?'살짝 보기 · +2회':'살짝 보기 사용 완료';peek.disabled=game.phase!=='running'||s.preview>0||s.reveal>0||s.resolve>0||s.chosen.length>0||!s.hints||s.over;
  hintText();
 }
 function hintText(){
- $('memory-hint').textContent=s.preview>0?`그림을 기억해요 · ${Math.ceil(s.preview)}초`:s.reveal>0?'살짝 보여줄게요! 도전 횟수 +2회':messageTime>0?message:'같은 노리 두 장을 찾아주세요.';
+ $('memory-hint').textContent=s.preview>0?`그림을 기억해요 · ${Math.ceil(s.preview)}초`:s.reveal>0?'살짝 보여줄게요! 도전 횟수 +2회':messageTime>0?message:'같은 그림 두 장을 찾아주세요.';
  $('memory-hint').classList.toggle('is-preview',s.preview>0||s.reveal>0);
 }
 function start(){
  P.memoryMusic?.start();
- count=Number(level.value);model=NoriMemory.create(count);s=model.s;lastSecond=lastPreview=-1;messageTime=0;focusAfterResolve=false;level.disabled=true;board.inert=false;build();redraw();bestLabel();
+ count=Number(level.value);model=NoriMemory.create(count,Math.random,faces.length);s=model.s;lastSecond=lastPreview=-1;messageTime=0;focusAfterResolve=false;level.disabled=true;board.inert=false;build();redraw();bestLabel();
  if(typeof matchMedia==='function'&&matchMedia('(max-width:650px)').matches)board.closest('.game-panel')?.scrollIntoView({block:'start',behavior:'auto'});
- game.announce(Math.ceil(s.preview)+'초 동안 노리의 모습을 기억해요.');
+ game.announce(Math.ceil(s.preview)+'초 동안 그림을 기억해요.');
 }
 function focusNext(){[...board.children].find(b=>!b.disabled)?.focus({preventScroll:true})}
 function end(){
@@ -59,7 +65,7 @@ function events(){
   if(e.type==='match'){P.sound();note(e.streak>=2?`${e.streak}연속! 기억력이 반짝반짝`:`${faces[e.id][0]}의 짝꿍을 찾았어요!`)}
   if(e.type==='miss')note('이 두 장, 기억해 두면 돼요.',1.4);
   if(e.type==='hint')note('남은 카드를 잠깐 보여줄게요. 도전 횟수에 2회가 더해져요.',1.8);
-  if(e.type==='ready'){note('이제 같은 노리의 짝을 찾아요!',1.8);redraw();focusNext()}
+  if(e.type==='ready'){note('이제 같은 그림의 짝을 찾아요!',1.8);redraw();focusNext()}
   if(e.type==='end')end();
   if(e.type==='settled'&&focusAfterResolve){focusAfterResolve=false;redraw();focusNext()}
  }
@@ -71,7 +77,7 @@ board.addEventListener('keydown',e=>{
  let next=index+delta;while(next>=0&&next<board.children.length){if(!board.children[next].disabled){board.children[next].focus();break}next+=delta}
 });
 $('memory-peek').onclick=()=>{if(game.phase==='running'&&model.hint()){events();redraw()}};
-level.onchange=()=>{count=Number(level.value);P.records?.view('memory-'+count);bestLabel();if(game.phase==='idle'){model=NoriMemory.create(count);s=model.s;s.preview=0;build();redraw()}};
+level.onchange=()=>{count=Number(level.value);P.records?.view('memory-'+count);bestLabel();if(game.phase==='idle'){model=NoriMemory.create(count,Math.random,faces.length);s=model.s;s.preview=0;build();redraw()}};
 P.animate(dt=>{
  if(game.phase!=='running')return;model.step(dt);events();messageTime=Math.max(0,messageTime-dt);
  const sec=Math.floor(s.time),pre=Math.ceil(s.preview),hasEvents=s.events.length>0;

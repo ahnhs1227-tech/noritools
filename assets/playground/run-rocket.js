@@ -2,7 +2,7 @@
 'use strict';
 (()=>{
  const P=NoriPlay,{W,H,PX,G}=NoriRun;
- const art={pilot:P.image('assets/playground/space/nori-rocket-seated-v1.png'),rocket:P.image('assets/playground/space/rocket-plush-v1.png'),planet:P.image('assets/playground/space/planet-plush-v1.png'),meteor:P.image('assets/playground/space/meteor-plush-v1.png')};
+ const art={parachute:P.image('assets/playground/world/nori-parachute-v1.png'),pilot:P.image('assets/playground/space/nori-rocket-seated-v1.png'),rocket:P.image('assets/playground/space/rocket-plush-v1.png'),planet:P.image('assets/playground/space/planet-plush-v1.png'),meteor:P.image('assets/playground/space/meteor-plush-v1.png')};
  const oval=(c,x,y,rx,ry,color)=>{c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill()};
  const pill=(c,x,y,w,h,r,color)=>{c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill()};
  function label(c,t,x,y,size=12,color='#fff9ed'){
@@ -84,11 +84,11 @@
   for(const o of r.objects)object(c,o,s.time);
   if(r.phase==='descent'){
    const x=PX,y=r.y;
-   // A small parachute brings Nori home; no loss of a heart on a rocket collision.
-   c.strokeStyle='#fff2d6';c.lineWidth=1.5;for(const dx of [-32,0,32]){c.beginPath();c.moveTo(x+dx,y-76);c.lineTo(x,y-15);c.stroke()}
-   c.fillStyle='#edbed5';c.beginPath();c.ellipse(x,y-76,38,25,0,Math.PI,Math.PI*2);c.closePath();c.fill();
-   c.fillStyle='#fff0b8';c.beginPath();c.ellipse(x,y-76,14,25,0,Math.PI,Math.PI*2);c.closePath();c.fill();
-   P.sprite(c,im,x-36,y-47,72,72);
+   const chute=art.parachute;
+   if(chute.complete&&chute.naturalWidth){
+    const height=164,width=height*chute.naturalWidth/chute.naturalHeight;
+    c.save();c.translate(x,y);if(!reduced)c.rotate(Math.sin(r.phaseTime*4)*.025);c.drawImage(chute,-width/2,-126,width,height);c.restore();
+   }
    pill(c,47,23,386,49,20,'#fff9efd9');label(c,r.success?'우주 비행 성공! +200점':'괜찮아! 날아온 거리는 그대로예요',240,53,14,'#6d557c');
   }else{
    rocket(c,PX,r.y,im,s.time,reduced);

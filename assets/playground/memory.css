@@ -5,3 +5,6 @@ html.memory-document{scroll-behavior:auto}.memory-page .game-layout{grid-templat
 @media(prefers-reduced-motion:reduce){.memory-progress span{transition:none}.memory-page .is-matched .memory-face{animation:none}}
 
 .memory-page .memory-card:disabled{opacity:1}
+
+/* Longer localized captions stay inside small cards. */
+.memory-page .memory-face>small{max-width:100%;white-space:normal;text-align:center;font-size:clamp(7px,1.8vw,9px);line-height:1.2;min-height:2.4em;display:flex;align-items:center;justify-content:center;padding:0 2px}.memory-page .memory-face>img{height:73%}

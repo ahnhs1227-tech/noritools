@@ -2,9 +2,10 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.NoriMemory=factory()})(typeof globalThis!=='undefined'?globalThis:this,()=>{
 'use strict';
 const shuffle=(list,random)=>{const a=list.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-function create(count=6,random=Math.random){
+function create(count=6,random=Math.random,poolSize=10){
  if(![6,8,10].includes(count))count=6;
- const ids=shuffle(Array.from({length:10},(_,i)=>i),random).slice(0,count);
+ poolSize=Number.isInteger(poolSize)&&poolSize>=count&&poolSize<=100?poolSize:10;
+ const ids=shuffle(Array.from({length:poolSize},(_,i)=>i),random).slice(0,count);
  const s={count,ids,cards:shuffle(ids.flatMap(id=>[id,id]),random),chosen:[],matched:new Set(),moves:0,time:0,preview:count===6?3:count===8?4:5,reveal:0,resolve:0,streak:0,bestStreak:0,hints:1,over:false,events:[]};
  const visible=i=>s.preview>0||s.reveal>0||s.chosen.includes(i)||s.matched.has(i);
  function pick(i){

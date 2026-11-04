@@ -2,7 +2,7 @@
 'use strict';
 (()=>{
  const P=NoriPlay,{W,H,PX,G}=NoriRun;
- const art={rocket:P.image('assets/playground/space/rocket-plush-v1.png'),planet:P.image('assets/playground/space/planet-plush-v1.png'),meteor:P.image('assets/playground/space/meteor-plush-v1.png')};
+ const art={pilot:P.image('assets/playground/space/nori-rocket-seated-v1.png'),rocket:P.image('assets/playground/space/rocket-plush-v1.png'),planet:P.image('assets/playground/space/planet-plush-v1.png'),meteor:P.image('assets/playground/space/meteor-plush-v1.png')};
  const oval=(c,x,y,rx,ry,color)=>{c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill()};
  const pill=(c,x,y,w,h,r,color)=>{c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill()};
  function label(c,t,x,y,size=12,color='#fff9ed'){
@@ -27,7 +27,9 @@
  function rocket(c,x,y,im,time,reduced){
   c.save();c.translate(x,y);
   for(let i=0;i<5;i++){const shift=reduced?i*14:(time*160+i*17)%92;P.star(c,-58-shift,Math.sin(i*2+time*4)*(reduced?3:9),Math.max(2,7-shift*.04),i%2?'#efadd2':'#ffe4a0')}
-  // The same plush Nori sits behind the hull, inside a transparent helmet.
+  // The seated pilot, cockpit rim and paws are one coherent sprite: no floating head.
+  if(art.pilot.complete&&art.pilot.naturalWidth){const width=148,height=width*art.pilot.naturalHeight/art.pilot.naturalWidth;c.drawImage(art.pilot,-74,-height*.68,width,height);c.restore();return;}
+  // Loading fallback; play is gated on all sprite decodes.
   oval(c,-3,-42,31,34,'#c8eaff25');
   c.save();c.beginPath();c.ellipse(-3,-42,30,33,0,0,7);c.clip();
   if(im.complete&&im.naturalWidth)c.drawImage(im,140,0,310,300,-32,-75,60,58);

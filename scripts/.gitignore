@@ -1,0 +1,5 @@
+__pycache__/
+locale-inventory.json
+locale-translations.json
+locale-missing.json
+locale-resume.json

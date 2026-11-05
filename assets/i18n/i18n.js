@@ -4,7 +4,28 @@
  const codes=['ko','en','ja','zh-CN'],indices={en:0,ja:1,'zh-CN':2},dict=window.NoriMessages||{},source=new WeakMap(),attributes=new WeakMap();
  const normalize=s=>String(s).replace(/\s+/g,' ').trim(),normalized=new Map(Object.entries(dict).map(([k,v])=>[normalize(k),v]));
  const valid=value=>value==='zh'||value==='zh-Hans'?'zh-CN':codes.includes(value)?value:null;
- let locale='ko';try{locale=valid(new URL(location.href).searchParams.get('lang'))||valid(localStorage.getItem('nori-language'))||'ko'}catch{}
+ const basePath=path=>path.replace(/^\/(en|ja|zh-CN)(?=\/|$)/,'')||'/';
+ const pathLocale=()=>valid(location.pathname?.split('/')[1])||'ko';
+ const localizedPath=(path,lang)=> (lang==='ko'?'':'/'+lang)+basePath(path);
+ let locale='ko';try{locale=valid(new URL(location.href).searchParams.get('lang'))||pathLocale()}catch{}
+ const localizedURL=(href,lang=locale)=>{const u=new URL(href,location.href);u.pathname=localizedPath(u.pathname,lang);u.searchParams.delete('lang');return u};
+ function localLinks(root){
+  const links=[...(root.matches?.('a[href]')?[root]:[]),...(root.querySelectorAll?.('a[href]')||[])];
+  for(const a of links){const raw=a.getAttribute('href');if(!raw||raw.startsWith('#')||a.closest('.nori-language-bar')||a.hasAttribute('download'))continue;
+   try{const u=new URL(raw,location.href);if(![location.origin,'https://nori-tools.com'].includes(u.origin)||/\.[^/]+$/.test(u.pathname)||!/^\/(?:$|about(?:\/|$)|privacy(?:\/|$)|notes(?:\/|$)|tools\/|playground(?:\/|$))/.test(basePath(u.pathname)))continue;
+    if(!u.pathname.endsWith('/'))u.pathname+='/';const lang=valid(u.searchParams.get('lang'))||locale;const next=localizedURL(u,lang);const href=next.pathname+next.search+next.hash;if(raw!==href)a.setAttribute('href',href);
+   }catch{}
+  }
+ }
+ const seeded=new WeakSet();
+ function seed(root){
+  for(const el of [...(root.matches?.('[data-nori-source],[data-nori-attrs]')?[root]:[]),...(root.querySelectorAll?.('[data-nori-source],[data-nori-attrs]')||[])]){
+   if(seeded.has(el))continue;seeded.add(el);
+   try{for(const [i,original,output] of JSON.parse(el.getAttribute('data-nori-source')||'[]')){const node=el.childNodes[i];if(node?.nodeType===3&&node.nodeValue===output)source.set(node,{original,output})}
+    const tracked={};for(const [name,original,output] of JSON.parse(el.getAttribute('data-nori-attrs')||'[]'))if(el.getAttribute(name)===output)tracked[name]={original,output};attributes.set(el,tracked);
+   }catch{}
+  }
+ }
  const cache=new Map(),escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  const templates=Object.entries(dict).filter(([k])=>/\{\d+\}/.test(k)).map(([k,v])=>({key:k,values:v,re:new RegExp('^'+k.trim().split(/\{\d+\}/).map(escape).join('(.*?)')+'$')}));
  const fragments=Object.keys(dict).filter(k=>k.trim().length>=2&&!/^\d+\s*(?:회|개|장|초|분|쌍|점|위)$/.test(k.trim())&&!/\{\d+\}|[<>]|\$\{|\\[bdsw]/.test(k)).sort((a,b)=>b.length-a.length);
@@ -45,6 +66,7 @@
   }
  }
  function translateTree(root){
+  seed(root);localLinks(root);
   if(root.nodeType===3){textNode(root);return}if(root.nodeType!==1&&root.nodeType!==9)return;
   if(root.nodeType===9)root.querySelectorAll('input,textarea').forEach(attrs);
   if(root.nodeType===1){if(root.closest(skip))return;attrs(root);root.querySelectorAll('input,textarea').forEach(attrs)}
@@ -53,26 +75,27 @@
  }
  function metadata(){
   document.documentElement.lang=locale;document.documentElement.dataset.noriLang=locale;
-  const url=new URL(location.pathname,location.origin);url.search=locale==='ko'?'':'?lang='+locale;
+  const url=localizedURL(new URL(basePath(location.pathname),'https://nori-tools.com'),locale);url.search='';url.hash='';
   const canonical=document.querySelector('link[rel="canonical"]');if(canonical)canonical.href=url.href;
-  for(const lang of [...codes,'x-default']){let link=document.querySelector('link[data-nori-alternate="'+lang+'"]');if(!link){link=document.createElement('link');link.rel='alternate';link.hreflang=lang;link.dataset.noriAlternate=lang;document.head.append(link)}const u=new URL(location.pathname,location.origin);if(lang!=='ko'&&lang!=='x-default')u.searchParams.set('lang',lang);link.href=u.href}
+  const og=document.querySelector('meta[property="og:url"]');if(og)og.content=url.href;
+  for(const lang of [...codes,'x-default']){let link=document.querySelector('link[hreflang="'+lang+'"]');if(!link){link=document.createElement('link');link.rel='alternate';link.hreflang=lang;document.head.append(link)}link.dataset.noriAlternate=lang;link.href='https://nori-tools.com'+localizedPath(location.pathname,lang==='x-default'?'ko':lang)}
  }
  function choose(value){
   const next=valid(value)||'ko';if(locale===next)return;locale=next;cache.clear();missing.clear();try{localStorage.setItem('nori-language',locale)}catch{}
-  const url=new URL(location.href);url.searchParams.set('lang',locale);history.replaceState(history.state,'',url.href);
+  const url=localizedURL(location.href,locale);history.replaceState(history.state,'',url.href);
   syncPicker();metadata();document.querySelectorAll('input,textarea').forEach(attrs);translateTree(document);document.dispatchEvent(new CustomEvent('nori:languagechange',{detail:{locale}}));
  }
  function syncPicker(){
-  document.querySelectorAll('.nori-language-button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.language===locale)));
+  document.querySelectorAll('.nori-language-button').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.language===locale));button.href=localizedURL(location.href,button.dataset.language).href});
  }
  function picker(){
-  if(document.getElementById('nori-language'))return;
+  if(document.getElementById('nori-language')){document.querySelectorAll('.nori-language-button').forEach(button=>button.onclick=event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();choose(button.dataset.language)});syncPicker();return;}
   const bar=document.createElement('div');bar.className='nori-language-bar';bar.setAttribute('translate','no');
   const label=document.createElement('span');label.className='nori-language-label';label.textContent='Language';
   const group=document.createElement('div');group.id='nori-language';group.className='nori-language-flags';group.setAttribute('role','group');group.setAttribute('aria-label','언어 선택 / Choose language');
   ['한국어','English','日本語','简体中文'].forEach((name,i)=>{
-   const button=document.createElement('button');button.type='button';button.className='nori-language-button';button.dataset.language=codes[i];button.setAttribute('aria-label',name);button.title=name;
-   const flag=document.createElement('img');flag.src='/assets/i18n/flags/'+codes[i]+'.svg';flag.alt='';flag.width=32;flag.height=32;flag.setAttribute('aria-hidden','true');button.append(flag);button.onclick=()=>choose(codes[i]);group.append(button);
+   const button=document.createElement('a');button.setAttribute('role','button');button.href=localizedURL(location.href,codes[i]).href;button.className='nori-language-button';button.dataset.language=codes[i];button.setAttribute('aria-label',name);button.title=name;
+   const flag=document.createElement('img');flag.src='/assets/i18n/flags/'+codes[i]+'.svg';flag.alt='';flag.width=32;flag.height=32;flag.setAttribute('aria-hidden','true');button.append(flag);button.onclick=event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();choose(codes[i])};group.append(button);
   });bar.append(label,group);document.body.prepend(bar);syncPicker();
  }
  function confirmLocalized(message){return window.confirm(t(message))}
@@ -84,8 +107,8 @@
   new MutationObserver(records=>{
    for(const r of records){if(r.type==='childList')r.addedNodes.forEach(n=>pending.add(n));else pending.add(r.target)}
    if(!scheduled){scheduled=true;queueMicrotask(()=>{scheduled=false;const list=[...pending];pending.clear();for(const node of list)if(node.isConnected)translateTree(node)})}
-  }).observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','placeholder','alt','content']});
-  window.addEventListener('popstate',()=>{const requested=valid(new URL(location.href).searchParams.get('lang'));if(requested&&requested!==locale)choose(requested);metadata()});
+  }).observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','placeholder','alt','content','href']});
+  window.addEventListener('popstate',()=>{const requested=valid(new URL(location.href).searchParams.get('lang'))||pathLocale();if(requested&&requested!==locale)choose(requested);metadata()});
  }
  window.NoriI18n={t,format,choose,confirm:confirmLocalized,alert:alertLocalized,get locale(){return locale},get missing(){return [...missing]},search(values){return values.map(v=>[v,...(dict[v]||normalized.get(normalize(v))||[])]).flat().join(' ')}};
  // Wait for the original pages' asynchronous framework scripts before touching their text nodes.

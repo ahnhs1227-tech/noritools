@@ -1262,7 +1262,21 @@ html[lang="ko"] .direct-tip::after{content:none}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
-</script><link rel="canonical" href="https://nori-tools.com/tools/quotation-maker/"><link rel="alternate" hreflang="ko" href="https://nori-tools.com/tools/quotation-maker/"><link rel="alternate" hreflang="en" href="https://nori-tools.com/en/tools/quotation-maker/"><link rel="alternate" hreflang="ja" href="https://nori-tools.com/ja/tools/quotation-maker/"><link rel="alternate" hreflang="zh-CN" href="https://nori-tools.com/zh-CN/tools/quotation-maker/"><link rel="alternate" hreflang="x-default" href="https://nori-tools.com/tools/quotation-maker/"></head>
+</script><link rel="canonical" href="https://nori-tools.com/tools/quotation-maker/"><link rel="alternate" hreflang="ko" href="https://nori-tools.com/tools/quotation-maker/"><link rel="alternate" hreflang="en" href="https://nori-tools.com/en/tools/quotation-maker/"><link rel="alternate" hreflang="ja" href="https://nori-tools.com/ja/tools/quotation-maker/"><link rel="alternate" hreflang="zh-CN" href="https://nori-tools.com/zh-CN/tools/quotation-maker/"><link rel="alternate" hreflang="x-default" href="https://nori-tools.com/tools/quotation-maker/"><style id="nori-supplier-fixed-columns">
+/* Keep the original Korean column widths, including when every field is empty.
+   Row heights are minima: longer entries wrap and grow without clipping. */
+.sheet table.supplier{table-layout:fixed !important;min-width:462px;max-width:462px}
+.sheet table.supplier col.supplier-side{width:33px}
+.sheet table.supplier col.supplier-label{width:58px}
+.sheet table.supplier col.supplier-detail{width:166px}
+.sheet table.supplier col.supplier-person{width:146px}
+.sheet table.supplier tr{height:27px}
+.sheet table.supplier tr:first-child{height:42px}
+.sheet table.supplier td[contenteditable],
+.sheet table.supplier .stamp-name{white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal}
+.sheet table.supplier .stamp-name{display:block;width:100%;min-height:1.25em;outline:none}
+#deleteStampButton:disabled{opacity:.45;cursor:default}
+</style></head>
 <body><div class="nori-language-bar" translate="no" data-nori-static-picker=""><span class="nori-language-label">Language</span><div id="nori-language" class="nori-language-flags" role="group" aria-label="Choose language"><a class="nori-language-button" role="button" data-language="ko" href="/tools/quotation-maker/" aria-label="한국어" title="한국어" aria-pressed="true"><img src="/assets/i18n/flags/ko.svg" alt="" width="32" height="32" aria-hidden="true"></a><a class="nori-language-button" role="button" data-language="en" href="/en/tools/quotation-maker/" aria-label="English" title="English" aria-pressed="false"><img src="/assets/i18n/flags/en.svg" alt="" width="32" height="32" aria-hidden="true"></a><a class="nori-language-button" role="button" data-language="ja" href="/ja/tools/quotation-maker/" aria-label="日本語" title="日本語" aria-pressed="false"><img src="/assets/i18n/flags/ja.svg" alt="" width="32" height="32" aria-hidden="true"></a><a class="nori-language-button" role="button" data-language="zh-CN" href="/zh-CN/tools/quotation-maker/" aria-label="简体中文" title="简体中文" aria-pressed="false"><img src="/assets/i18n/flags/zh-CN.svg" alt="" width="32" height="32" aria-hidden="true"></a></div></div>
 <header class="nori-topbar nori-chrome"><a class="nori-brand" href="/"><b>N</b>NORI TOOLS</a><a href="/">도구함으로 돌아가기 ↗</a></header>
 <section class="nori-hero nori-chrome"><div><span class="nori-eyebrow">NORI PAPERWORK</span><h1>노리 견적서<br>거래명세서</h1><p>품목만 채우면, 금액은 노리가.<br>거래의 시작과 마무리를 깔끔하게 준비해요.</p><div class="nori-chips"><span>부가세 자동 계산</span><span>PDF·인쇄</span><span>내 기기에 보관</span></div></div><img src="/assets/nori/characters/nori-quotation.webp" alt="계산기 옆에서 견적서를 작성하는 노리" width="180" height="195"></section>
@@ -1296,6 +1310,7 @@ html[lang="ko"] .direct-tip::after{content:none}
   <button type="button" class="secondary" onclick="document.getElementById(&#x27;logoFileInput&#x27;).click()">🖼 로고 변경</button>
   <button type="button" class="secondary" onclick="deleteCompanyLogo()">✕ 로고 삭제</button>
   <button type="button" class="secondary" onclick="document.getElementById(&#x27;stampFileInput&#x27;).click()">🔴 도장 변경</button>
+  <button type="button" class="secondary" id="deleteStampButton" onclick="deleteCompanyStamp()" disabled>✕ 도장 삭제</button>
   <button type="button" class="secondary" onclick="toggleColorPanel()">🎨 배경색 변경</button>
   <button type="button" onclick="saveEditableFile()">💾 수정가능 파일 저장</button>
   <button class="secondary" onclick="saveFixedPdf()">📄 고정형 PDF 저장</button>
@@ -1376,6 +1391,7 @@ html[lang="ko"] .direct-tip::after{content:none}
 
     
 <table class="supplier">
+      <colgroup><col class="supplier-side"><col class="supplier-label"><col class="supplier-detail"><col class="supplier-label"><col class="supplier-person"></colgroup>
       <tr>
         <td class="side-label" rowspan="5">공 급 자</td>
         <td class="label">등록번호</td>
@@ -2255,6 +2271,25 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
   const logoInput = document.getElementById('logoFileInput');
   const stampInput = document.getElementById('stampFileInput');
   const bgInput = document.getElementById('bgColorInput');
+  let stampVersion = 0;
+  const stampDeleteButton = document.getElementById('deleteStampButton');
+  const stampImage = document.querySelector('.sheet .stamp-img');
+  function syncStampDeleteButton(){
+    if(stampDeleteButton) stampDeleteButton.disabled = !stampImage?.getAttribute('src')?.trim();
+  }
+  window.deleteCompanyStamp = function(){
+    if(!stampImage?.getAttribute('src')) return;
+    if(!noriConfirm('현재 도장을 삭제할까요?')) return;
+    stampVersion++;
+    document.querySelectorAll('.stamp-img').forEach(function(img){
+      img.removeAttribute('src');
+      img.style.visibility = 'hidden';
+    });
+    if(stampInput) stampInput.value = '';
+    syncStampDeleteButton();
+  };
+  if(stampImage) new MutationObserver(syncStampDeleteButton).observe(stampImage,{attributes:true,attributeFilter:['src']});
+  syncStampDeleteButton();
 
   if(logoInput){
     logoInput.addEventListener('change', function(){
@@ -2272,7 +2307,9 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
 
   if(stampInput){
     stampInput.addEventListener('change', function(){
+      const revision = ++stampVersion;
       fileToDataUrl(this.files && this.files[0], function(dataUrl){
+        if(revision !== stampVersion) return;
         document.querySelectorAll('.stamp-img').forEach(function(img){
           img.src = dataUrl;
           img.style.visibility = "visible";
@@ -2697,7 +2734,7 @@ if(document.fonts) document.fonts.ready.then(adjustNameSpecColumns);
 
   function ensureStampVisible(){
     const stamp=document.querySelector('.supplier .stamp-img');
-    if(stamp) stamp.style.visibility='';
+    if(stamp) stamp.style.visibility=stamp.getAttribute('src')?'visible':'hidden';
   }
 
   window.toggleSupplierManager=function(){

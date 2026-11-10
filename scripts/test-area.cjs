@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');
+const {area}=require('../assets/nori/calculations.js');
+const base={spaces:[{width:3,height:4,quantity:1}],unit:'m',loss:10,mode:'pack',price:20000,width:600,height:600,materialUnit:'mm',pack:4};
+let result=area(base);
+assert.equal(result.pieces,37);assert.equal(result.packs,10);assert.equal(result.bought,40);assert.equal(result.cost,200000);
+assert.ok(Math.abs(result.total-13.2)<1e-10);
+assert.equal(area({...base,mode:'piece',price:5000}).cost,185000);
+assert.equal(area({...base,mode:'sqm',price:10000}).cost,132000);
+assert.equal(area({...base,spaces:[...base.spaces,{width:1,height:2,quantity:2}]}).base,16);
+assert.equal(area({...base,loss:0,spaces:[{width:.6,height:.6,quantity:4}]}).pieces,4);
+assert.equal(area({...base,loss:0,spaces:[{width:.00001,height:.00001,quantity:1}]}).pieces,1);
+assert.equal(area({...base,unit:'cm',spaces:[{width:300,height:400,quantity:1}]}).base,12);
+for(const invalid of [{loss:-1},{price:-1},{price:Infinity},{width:0},{pack:0},{pack:1.5},{spaces:[]},{spaces:[{width:-1,height:2,quantity:1}]},{spaces:[{width:1,height:2,quantity:1.5}]}])assert.throws(()=>area({...base,...invalid}));
+console.log('Area: multi-space sums, units, waste, per-piece and pack pricing, rounding and invalid input passed.');

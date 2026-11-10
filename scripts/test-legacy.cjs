@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict');
+const r=require('../assets/nori/legacy-rules.js');
+assert(r.discount('50000','20','10','3000','2'));
+for(const q of ['-1','0','1.5','','1e309'])assert(!r.discount(50000,20,10,3000,q));
+assert(!r.discount(50000,101,10,0,1));assert(!r.discount(-1,20,10,0,1));assert(!r.discount(10,0,0,-1,1));
+assert(r.discount(0,100,0,0,1));
+assert(r.body(30,165,60,55));for(const age of ['',18,101,30.5])assert(!r.body(age,165,60,55));
+assert(!r.body(30,0,60,55));assert(!r.body(30,165,-1,55));assert(!r.body(30,165,60,''));
+assert(r.food('Tea',0,1));assert(r.food('Yogurt',80,1.5));assert(!r.food('',80,1));assert(!r.food('x',-1,1));assert(!r.portion(-1));assert(!r.portion(''));
+assert(r.unit(0,0));assert(!r.unit('',0));assert(!r.unit(-1,-10));assert(!r.unit('1e309',Infinity));
+assert.deepEqual(r.characters('가 나'),{all:3,noSpace:2,words:2,lines:1,bytes:7,minutes:1});
+assert.equal(r.characters('😀').all,1);assert.equal(r.characters('👨‍👩‍👧‍👦').all,1);assert.equal(r.characters('e\u0301').all,1);assert.equal(r.characters('').minutes,0);
+console.log('Legacy input and Unicode boundary checks passed.');

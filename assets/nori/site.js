@@ -18,7 +18,7 @@ window.Nori=(()=>{
  {id:'price',group:1,name:'가격·최저가 비교',desc:'용량·할인·배송비까지 같은 기준으로 비교.',path:'tools/price-comparison/',mark:'⇄',fresh:true,tags:'가격 비교 단가 쇼핑 최저가 최저가비교 최저가 비교 저렴한 싼 할인 배송비 쿠폰 가성비 물건 상품 가격비교 price shopping cheapest'},
  {id:'discount',group:1,name:'할인율 계산기',desc:'쿠폰과 중복 할인을 반영한 최종 가격.',path:'tools/discount-calculator/',mark:'%',tags:'할인 세일 쿠폰'},
  {id:'sticker',group:2,name:'스티커 배치 도우미',desc:'종이 위에 놓아 보고 필요한 장수 확인.',path:'tools/sticker-layout/',mark:'▦',fresh:true,tags:'인쇄 제작 스티커 용지'},
- {id:'area',group:2,name:'헤베 계산기',desc:'면적·평수·여유분을 한 번에 계산해요.',path:'tools/square-meter-calculator/',mark:'m²',tags:'공간 인테리어 면적 평수'},
+ {id:'area',group:2,name:'헤베 계산기',desc:'면적·평수·자재 수량과 비용을 계산해요.',path:'tools/square-meter-calculator/',mark:'m²',tags:'공간 인테리어 면적 평수'},
  {id:'unit',group:2,name:'단위 변환기',desc:'길이·무게·온도·인쇄 단위를 바꿔요.',path:'tools/unit-converter/',mark:'↔',tags:'변환 인치 센티미터 mm cm'},
  {id:'calorie',group:3,name:'칼로리 계산기',desc:'하루 기준과 먹은 음식의 열량을 확인.',path:'tools/calorie-calculator/',mark:'kcal',tags:'음식 건강 식단'},
  {id:'recipe',group:3,name:'레시피 인분 조절',desc:'2인분을 5인분으로, 재료 양을 맞춰요.',path:'tools/recipe-scaler/',mark:'½',fresh:true,tags:'요리 재료 음식 인분'},

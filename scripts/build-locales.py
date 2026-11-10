@@ -127,12 +127,14 @@ def language_bar(route,lang):
 def build():
  modules=ROOT/'source/resume/node_modules'
  if '--resume-modules' in sys.argv:modules=Path(sys.argv[sys.argv.index('--resume-modules')+1]).resolve()
- subprocess.run(['node',str(ROOT/'scripts/render-resume.cjs'),str(modules)],check=True)
+ if '--skip-resume' not in sys.argv:subprocess.run(['node',str(ROOT/'scripts/render-resume.cjs'),str(modules)],check=True)
  known=routes();inventory()
  subprocess.run(['node',str(ROOT/'scripts/translate-locales.cjs')],check=True)
  translations=json.loads((ROOT/'scripts/locale-translations.json').read_text())
  runtime=(ROOT/'assets/i18n/i18n.js').read_text();written=[]
- for route in known:
+ selected=sys.argv[sys.argv.index('--routes')+1].split(',') if '--routes' in sys.argv else known
+ for route in selected:
+  if route not in known:raise ValueError('Unknown route: '+route)
   original=route_file(route).read_text()
   for lang in LANGS:
    n=Parser(original).root;prepare(n,route)

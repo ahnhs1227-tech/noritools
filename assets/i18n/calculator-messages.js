@@ -418,3 +418,77 @@ Object.assign(window.NoriMessages,{
 });
 
 Object.assign(window.NoriMessages,{"바꾼 재료 양 = 원래 재료 양 × (만들 인분 ÷ 원래 인분)입니다. 2인분을 5인분으로 바꾸면 모든 수치가 2.5배가 돼요. 200g은 500g, 1/2큰술은 1.25큰술입니다. 결과는 선택한 소수점 자릿수로 반올림합니다. 아주 작은 양은 0 대신 표시 가능한 최소값 미만으로 안내해요.": ["Adjusted amount = original amount × (target servings ÷ original servings). Going from 2 to 5 servings multiplies amounts by 2.5: 200 g becomes 500 g and 1/2 tablespoon becomes 1.25 tablespoons. Results use your chosen decimal places; tiny amounts are shown as below the display threshold, not zero.", "変更後の量＝元の量×（作る人数÷元の人数）です。2人分から5人分なら2.5倍になり、200gは500g、大さじ1/2は1.25杯です。指定した桁数に丸め、ごく少量は0ではなく表示可能な最小値未満と示します。", "调整后用量＝原用量×（目标份数÷原份数）。2人份改为5人份时乘以2.5：200g变为500g，1/2大勺变为1.25大勺。结果按所选小数位数四舍五入，极小用量提示不足显示阈值，不显示为0。"], "인분도 배율도, 원하는 만큼.": ["Scale by servings or by a multiplier.", "人数でも倍率でも、必要な分だけ。", "按人数或倍数，轻松调整用量。"], "레시피 인분·배율 계산기 · NORI Tools": ["Recipe Servings & Multiplier · NORI Tools", "レシピ人数・倍率計算機 · NORI Tools", "食谱人数与倍数计算器 · NORI Tools"]});
+
+/* Searchable area formulas and print-material examples. */
+Object.assign(window.NoriMessages,{
+  "헤베 계산기 | mm·cm·m 면적·평수·자재비 계산 - 노리툴즈": [
+    "Area Calculator | mm, cm, m, Materials & Cost - NORI Tools",
+    "面積計算機 | mm・cm・m、材料数量・費用 - NORI Tools",
+    "面积计算器 | mm、cm、m、材料数量与费用 - NORI Tools"
+  ],
+  "가로·세로를 mm, cm, m로 입력해 헤베(㎡)와 평수를 계산하세요. 간판·시트지·타일 면적, 로스율과 ㎡당 단가를 반영한 예상 자재비를 무료로 확인할 수 있습니다.": [
+    "Enter width and height in mm, cm or m to calculate square metres and Korean pyeong. Estimate sign, sheet and tile areas, waste and material costs for free.",
+    "幅と高さをmm・cm・mで入力し、㎡と韓国の坪数を計算。看板・シート・タイルの面積、ロス率、㎡単価から材料費を無料で見積もれます。",
+    "输入以mm、cm或m为单位的宽和高，计算平方米与韩国坪数。免费估算招牌、贴膜、瓷砖的面积、损耗及材料费用。"
+  ],
+  "가로·세로만 입력하면 헤베(㎡), 평수와 예상 자재비를 계산해요. mm·cm·m 단위를 먼저 선택하세요.": [
+    "Enter width and height to calculate area and estimated material cost. Choose mm, cm or m first.",
+    "幅と高さを入力して面積と材料費を計算。最初にmm・cm・mを選んでください。",
+    "输入宽和高即可计算面积及材料费用。请先选择mm、cm或m。"
+  ],
+  "헤베 계산법: mm·cm를 ㎡로 바꾸기": [
+    "Area formulas: converting mm and cm to m²",
+    "面積の計算方法：mm・cmから㎡へ",
+    "面积计算方法：将mm、cm换算为㎡"
+  ],
+  "헤베 계산은 가로 × 세로입니다. 두 길이의 단위를 맞춘 뒤 아래 식으로 ㎡를 구하세요.": [
+    "Multiply width by height. Use the same unit for both lengths, then convert to m² with the formulas below.",
+    "幅×高さで面積を求めます。両方の長さの単位をそろえ、下の式で㎡に換算します。",
+    "面积等于宽×高。先统一两个长度的单位，再用以下公式换算为㎡。"
+  ],
+  "m 입력: 가로 × 세로 = ㎡. 예: 3m × 2m = 6㎡.": [
+    "In m: width × height = m². Example: 3m × 2m = 6m².",
+    "mの場合：幅×高さ＝㎡。例：3m×2m＝6㎡。",
+    "以m输入：宽×高＝㎡。例如：3m×2m＝6㎡。"
+  ],
+  "cm 입력: 가로 × 세로 ÷ 10,000 = ㎡. 예: 300cm × 200cm = 6㎡.": [
+    "In cm: width × height ÷ 10,000 = m². Example: 300cm × 200cm = 6m².",
+    "cmの場合：幅×高さ÷10,000＝㎡。例：300cm×200cm＝6㎡。",
+    "以cm输入：宽×高÷10,000＝㎡。例如：300cm×200cm＝6㎡。"
+  ],
+  "mm 입력: 가로 × 세로 ÷ 1,000,000 = ㎡. 예: 3,000mm × 2,000mm = 6㎡.": [
+    "In mm: width × height ÷ 1,000,000 = m². Example: 3,000mm × 2,000mm = 6m².",
+    "mmの場合：幅×高さ÷1,000,000＝㎡。例：3,000mm×2,000mm＝6㎡。",
+    "以mm输入：宽×高÷1,000,000＝㎡。例如：3,000mm×2,000mm＝6㎡。"
+  ],
+  "간판·시트지 견적 계산 예시": [
+    "Example: sign and sheet material costs",
+    "看板・シートの材料費の計算例",
+    "招牌与贴膜材料费用示例"
+  ],
+  "가로 3,000mm × 세로 1,000mm 간판 1개는 3㎡입니다. 공간 단위를 mm로 선택하고 가로 3000, 세로 1000, 수량 1을 입력하세요.": [
+    "A 3,000mm × 1,000mm sign has an area of 3m². Select mm, then enter width 3000, height 1000 and quantity 1.",
+    "幅3,000mm×高さ1,000mmの看板1枚は3㎡です。mmを選び、幅3000、高さ1000、数量1を入力します。",
+    "一块宽3,000mm、高1,000mm的招牌面积为3㎡。选择mm，输入宽3000、高1000、数量1。"
+  ],
+  "로스율 10%, 면적당 가격 30,000원/㎡를 입력하면 필요 면적은 3.3㎡, 예상 자재비는 99,000원입니다. 단가는 계산 예시이며 실제 판매가가 아닙니다.": [
+    "With 10% waste and a sample price of KRW 30,000/m², required area is 3.3m² and estimated material cost is KRW 99,000. This is an illustrative price, not a quote.",
+    "ロス率10%、例として30,000ウォン/㎡を入力すると必要面積は3.3㎡、材料費は99,000ウォンです。単価は計算例で、実際の販売価格ではありません。",
+    "按10%损耗和示例单价30,000韩元/㎡计算，所需面积为3.3㎡，材料费用为99,000韩元。此单价仅用于举例，并非实际报价。"
+  ],
+  "실제 간판·시트지 견적에는 최소 주문금액, 재단·인쇄·후가공·배송·시공비와 부가세가 별도로 반영될 수 있습니다. 이 계산기는 면적 기준 자재비를 추정합니다.": [
+    "Actual quotes may also include minimum charges, cutting, printing, finishing, delivery, installation and tax. This tool estimates area-based material cost.",
+    "実際の見積もりには最低注文金額、裁断・印刷・加工・配送・施工費、税金が別途含まれる場合があります。この計算機は面積に基づく材料費の目安です。",
+    "实际报价可能另计最低订单金额、裁切、印刷、后加工、配送、安装和税费。本工具估算按面积计算的材料费用。"
+  ],
+  "스티커 재단 배치도 확인하기": [
+    "Check sticker cutting layouts",
+    "ステッカーの裁断配置を確認",
+    "查看贴纸裁切排版"
+  ],
+  "견적서에 계산한 금액 정리하기": [
+    "Put your calculated costs in a quotation",
+    "計算した金額を見積書にまとめる",
+    "将计算金额整理为报价单"
+  ]
+});

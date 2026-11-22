@@ -23,7 +23,7 @@
     const originalAcross=fit(cross,original[pieceSize]);
     const turnedAcross=fit(cross,turned[pieceSize]);
     if(!originalAcross||!turnedAcross)continue;
-    for(let a=1,max=fit(span,original[bandSize]);a<max;a++){
+    for(let a=1,max=fit(span,original[bandSize]);a<=max;a++){
      const b=fit(span-a*(original[bandSize]+gap),turned[bandSize]);
      const count=a*originalAcross+b*turnedAcross;
      if(b&&count>best.count){

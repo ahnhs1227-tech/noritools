@@ -18,6 +18,9 @@ const facingColumns=sticker({...input,paperWidth:297,paperHeight:210});
 assert.deepEqual([facingColumns.count,facingColumns.pages,facingColumns.axis],[19,3,'column']);
 assert.equal(sticker({...input,paperWidth:30,paperHeight:30}).count,0);
 assert.equal(sticker({...input,width:40,height:40}).axis,undefined);
+// The most original columns can still leave enough width for one narrow turned column.
+const leftoverColumn={width:184.4,height:47.7,paperWidth:534.8,paperHeight:229.6,margin:3.3,gap:38.8,quantity:6146,rotate:true};
+assert.deepEqual([sticker(leftoverColumn).count,sticker(leftoverColumn).axis],[7,'column']);
 const fits=(available,size,gap)=>Math.max(0,Math.floor((available+gap)/(size+gap)+1e-9));
 function checkGeometry(r){
  const layout=sticker(r);
@@ -42,7 +45,7 @@ function checkGeometry(r){
   }
  }
 }
-for(const r of [input,{...input,paperWidth:297,paperHeight:210},{...input,rotate:false}])checkGeometry(r);
+for(const r of [input,{...input,paperWidth:297,paperHeight:210},{...input,rotate:false},leftoverColumn])checkGeometry(r);
 for(const paperWidth of [89,148,215.9])for(const paperHeight of [103,174,279.4])
  for(const width of [25,31.4,40,53])for(const height of [29.1,42,60])
   for(const gap of [0,3,4.2])checkGeometry({...input,paperWidth,paperHeight,width,height,gap});
@@ -147,6 +150,6 @@ async function run(){
  await file.onchange();
  assert.equal(selected.$('sticker-guides').checked,false,'An uploaded image also starts without guides');
  view(selected.$('sticker-preview').innerHTML,19,{showGuides:false,artwork:true});
- console.log('Sticker layout: mixed rows/columns, 327 geometry cases, all locales, artwork transforms, SVG and print guides passed.');
+ console.log('Sticker layout: mixed rows/columns, 328 geometry cases, all locales, artwork transforms, SVG and print guides passed.');
 }
 run().catch(error=>{console.error(error);process.exitCode=1});

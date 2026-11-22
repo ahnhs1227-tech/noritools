@@ -2,7 +2,63 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.NoriCalc=factory()})(typeof globalThis!=='undefined'?globalThis:this,()=>{
  'use strict';
  function price(r){const paid=r.price*r.packs;const free=r.offer==='1+1'?r.packs:r.offer==='2+1'?Math.floor(r.packs/2):0;const count=r.packs+free;const qty=r.amount*r.factor*count;const discounted=Math.floor(paid*(1-r.percent/100));const product=Math.max(0,discounted-r.coupon);const total=product+r.shipping;return {paid,free,count,qty,discounted,product,total,unitPrice:total/qty*r.basis}}
- function sticker(r){const aw=r.paperWidth-2*r.margin,ah=r.paperHeight-2*r.margin;function grid(w,h,rotated){const cols=Math.max(0,Math.floor((aw+r.gap)/(w+r.gap)+1e-9)),rows=Math.max(0,Math.floor((ah+r.gap)/(h+r.gap)+1e-9));return {width:w,height:h,cols,rows,count:cols*rows,rotated}}let best=grid(r.width,r.height,false);if(r.rotate){const other=grid(r.height,r.width,true);if(other.count>best.count)best=other}return {...best,pages:best.count?Math.ceil(r.quantity/best.count):0}}
+ function sticker(r){
+  const aw=r.paperWidth-2*r.margin,ah=r.paperHeight-2*r.margin,gap=r.gap;
+  const fit=(span,size)=>Math.max(0,Math.floor((span+gap)/(size+gap)+1e-9));
+  const original={width:r.width,height:r.height,rotated:false};
+  const turned={width:r.height,height:r.width,rotated:true};
+  function grid(piece){
+   const cols=fit(aw,piece.width),rows=fit(ah,piece.height);
+   return {...piece,cols,rows,count:cols*rows};
+  }
+  let best=grid(original);
+  if(r.rotate&&r.width!==r.height){
+   const other=grid(turned);
+   if(other.count>best.count)best=other;
+   // Compare horizontal shelves and their vertical counterpart. Enumerating
+   // one orientation's band count leaves a simple best fit for the other.
+   for(const axis of ['row','column']){
+    const isRow=axis==='row',span=isRow?ah:aw,cross=isRow?aw:ah;
+    const bandSize=isRow?'height':'width',pieceSize=isRow?'width':'height';
+    const originalAcross=fit(cross,original[pieceSize]);
+    const turnedAcross=fit(cross,turned[pieceSize]);
+    if(!originalAcross||!turnedAcross)continue;
+    for(let a=1,max=fit(span,original[bandSize]);a<=max;a++){
+     const b=fit(span-a*(original[bandSize]+gap),turned[bandSize]);
+     const count=a*originalAcross+b*turnedAcross;
+     if(b&&count>best.count){
+      best={axis,count,bands:[
+       {...original,number:a,across:originalAcross},
+       {...turned,number:b,across:turnedAcross}
+      ]};
+     }
+    }
+   }
+  }
+  return {...best,pages:best.count?Math.ceil(r.quantity/best.count):0};
+ }
+ function* stickerPositions(r,layout,limit=layout.count){
+  let left=Math.min(layout.count,limit);
+  if(!layout.axis){
+   const {cols,width,height,rotated}=layout;
+   for(let i=0;i<left;i++)yield {
+    x:r.margin+(i%cols)*(width+r.gap),y:r.margin+Math.floor(i/cols)*(height+r.gap),
+    width,height,rotated
+   };
+   return;
+  }
+  const isRow=layout.axis==='row';
+  let offset=r.margin;
+  for(const {width,height,rotated,number,across} of layout.bands){
+   for(let band=0;band<number&&left>0;band++){
+    for(let i=0;i<across&&left>0;i++,left--){
+     const along=r.margin+i*((isRow?width:height)+r.gap);
+     yield {x:isRow?along:offset,y:isRow?offset:along,width,height,rotated};
+    }
+    offset+=(isRow?height:width)+r.gap;
+   }
+  }
+ }
  function quantity(s){s=String(s).trim().replace(/½/g,' 1/2').replace(/¼/g,' 1/4').replace(/¾/g,' 3/4').trim();if(/^\d+\s+\d+\/\d+$/.test(s)){const [whole,frac]=s.split(/\s+/),[a,b]=frac.split('/').map(Number);return b>0?Number(whole)+a/b:NaN}if(/^\d+\/\d+$/.test(s)){const[a,b]=s.split('/').map(Number);return b>0?a/b:NaN}return /^\d+(?:\.\d+)?$/.test(s)?Number(s):NaN}
 
  function area(r){
@@ -22,5 +78,5 @@
   if(![base,total,coverage,cost].every(Number.isFinite)||total<=0)throw Error('입력한 값이 너무 큽니다. 더 작은 값을 입력해 주세요.');
   return {base,total,pieces,packs,bought,coverage,cost};
  }
- return {price,sticker,quantity,area};
+ return {price,sticker,stickerPositions,quantity,area};
 });
